@@ -1,4 +1,4 @@
-export interface dataLogin{
+export interface LoginInf{
     email: string,
     password: string,
 }

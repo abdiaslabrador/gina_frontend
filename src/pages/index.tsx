@@ -1,6 +1,8 @@
 import React from 'react'
 import Head from 'next/head'
 
+// ['success' => false, 'code' => '821', 'message' => 'Campos requeridos']
+
 const Caja = () => {
   return (
     <div >

@@ -1,12 +1,12 @@
 import React from "react";
 import Head from "next/head";
-import { dataLogin } from "../../interface/dataLogin";
+import { LoginInf } from "../../interface/auth";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import loginCss from "./styles/Login.module.css";
 const axios = require("axios").default;
 
-const backendUrl = "http://localhost:3000";
+const backendUrl = "http://localhost:4000";
 const Login = () => {
   let token: string = "";
 
@@ -16,16 +16,16 @@ const Login = () => {
     }
   }
   const router = useRouter();
-  const [datos, guardarDatos] = useState<dataLogin>({
+  const [login_form_data, saveLoginFormData] = useState<LoginInf>({
     email: "",
     password: "",
   });
 
-  const { email, password } = datos;
+  const { email, password } = login_form_data;
 
-  const setInformacion = (e: any) => {
-    guardarDatos({
-      ...datos,
+  const setInformation = (e: any) => {
+    saveLoginFormData({
+      ...login_form_data,
       [e.target.name]: e.target.value,
     });
   };
@@ -33,7 +33,7 @@ const Login = () => {
   function formHandler(e: any) {
     e.preventDefault();
     axios
-      .post(backendUrl + "/api/login", {
+      .post(backendUrl + "/api/auth/login", {
         email: email,
         password: password,
       })
@@ -65,7 +65,7 @@ const Login = () => {
             id="email"
             placeholder="Email"
             value={email}
-            onChange={setInformacion}
+            onChange={setInformation}
           />
           <input
             className={loginCss._form}
@@ -74,7 +74,7 @@ const Login = () => {
             id="password"
             placeholder="Contraseña"
             value={password}
-            onChange={setInformacion}
+            onChange={setInformation}
           />
           <button className={loginCss.button_login} type="submit">
             Entrar

@@ -54,6 +54,9 @@
     font-size: 2.5rem;
     border-style: none;
 }
+.button_login:active {
+    transform: scale(0.98);
+}
 
 .button_login:hover {
     background: #0eaab5;
