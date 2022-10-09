@@ -1,19 +1,28 @@
-import React from 'react'
+import React, {useContext, useEffect} from 'react'
 import Head from 'next/head'
+import  {authContext}    from "./login/authState";
 
 // ['success' => false, 'code' => '821', 'message' => 'Campos requeridos']
 
 const Caja = () => {
+  const {userAuthenticated, logOut} = useContext(authContext)
+  useEffect(() => {
+    const loadAuth = async ()=>{
+      await userAuthenticated()
+    }
+    loadAuth()
+  }, []);
   return (
-    <div >
+   <div>
+
       <Head>
         <title>Caja</title>
       </Head>
-
-      <main >
+      
         <h1>Desde caja</h1>
-      </main>
-    </div>
+        <button onClick={()=>{logOut()}} 
+        >LogOut</button>
+   </div>
   )
 }
 

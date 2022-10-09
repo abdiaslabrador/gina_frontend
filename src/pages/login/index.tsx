@@ -1,52 +1,56 @@
 import React from "react";
 import Head from "next/head";
-import { LoginInf } from "../../interface/auth";
-import { useState } from "react";
 import { useRouter } from "next/router";
-import loginCss from "./styles/Login.module.css";
-const axios = require("axios").default;
+import { useEffect, useState, useContext } from "react";
 
-const backendUrl = "http://localhost:4000";
+import LoginInf from "../../interface/auth";
+import customAxios from "../../config/axios";
+import authToken from "../../config/authToken";
+import authReducer from "./authReducer";
+import authTypes from "./authTypes";
+import  {authContext}    from "./authState";
+
+import loginCss from "./Login.module.css";
+
+const form_initialState = {
+  email: "",
+  password: "",
+};
 const Login = () => {
-  let token: string = "";
+  let token :string;
+  const router = useRouter()
+  const {user, mensaje, permitLogin, singIn} = useContext(authContext)
 
-  if (typeof window !== "undefined") {
-    token = String(localStorage.getItem("token"));
-    if (token) {
+  useEffect(() => {
+    const login_verify = async ()=>{
+    await permitLogin()
     }
-  }
-  const router = useRouter();
-  const [login_form_data, saveLoginFormData] = useState<LoginInf>({
-    email: "",
-    password: "",
-  });
+    login_verify()
+  }, []);
 
-  const { email, password } = login_form_data;
+  useEffect(() => {
+    if(user) router.push('/')
+  }, [user]);
+
+
+  const [login_form_data_state, saveLoginFormData] =
+    useState<LoginInf>(form_initialState);
+  
+  const { email, password } = login_form_data_state;
 
   const setInformation = (e: any) => {
     saveLoginFormData({
-      ...login_form_data,
+      ...login_form_data_state,
       [e.target.name]: e.target.value,
     });
   };
 
-  function formHandler(e: any) {
+  
+  const formHandler = async (e: any) => {
     e.preventDefault();
-    axios
-      .post(backendUrl + "/api/auth/login", {
-        email: email,
-        password: password,
-      })
-      .then(function (resp: any) {
-        if (typeof window !== "undefined") {
-          localStorage.setItem("token", JSON.stringify(resp.data));
-          router.replace("/");
-        }
-      })
-      .catch(function (error: any) {
-        console.log(error);
-      });
-  }
+    await singIn(email, password)
+
+  };
 
   return (
     <div className={loginCss.container}>
@@ -55,9 +59,10 @@ const Login = () => {
       </Head>
       <div className={loginCss.login_rectangle}>
         <form onSubmit={formHandler}>
-          <ul className={loginCss.error_msg}>
-            <li>ERROR AL INTRODUCIR LOS DATOS</li>
-          </ul>
+          {/* <form onSubmit={userAuthenticated}> */}
+          <div className={loginCss.error_msg}>
+          {(mensaje)?<div className={loginCss.error_msg_color}>- {mensaje}</div>:null}
+          </div>
           <input
             className={loginCss._form}
             type="email"
@@ -82,6 +87,7 @@ const Login = () => {
         </form>
       </div>
     </div>
+
   );
 };
 

@@ -42,6 +42,10 @@
     margin-bottom: 2.19rem;
     
 }
+.error_msg_color{
+    padding-left: 1rem;
+    background: #cf2222;
+}
 
 .button_login {
     width: 100%;
