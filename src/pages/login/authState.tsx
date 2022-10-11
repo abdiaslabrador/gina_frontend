@@ -31,7 +31,7 @@ const AuthProvider = (props: any) => {
     authToken(token);
 
     try {
-      const resp = await customAxios.get("/api/auth");
+      const resp = await customAxios.get("/auth");
       dispatch({
         type: authTypes.GET_USER,
         playload: { token: token, user: resp.data },
@@ -55,7 +55,7 @@ const AuthProvider = (props: any) => {
     authToken(token);
 
     try {
-      const resp = await customAxios.get("/api/auth/permitLogin");
+      const resp = await customAxios.get("/auth/permitLogin");
       //todo bien con el token, el usuario inició previamente sesió
       if(resp.data){
         dispatch({
@@ -83,7 +83,7 @@ const AuthProvider = (props: any) => {
 
   const singIn = async (email: string, password: string) => {
     try {
-      const resp = await customAxios.post("/api/auth/login", {
+      const resp = await customAxios.post("/auth/login", {
         email: email,
         password: password,
       });
@@ -97,7 +97,7 @@ const AuthProvider = (props: any) => {
 
       // userAuthenticated();
       // router.replace("/");
-      router.push("/");
+      await router.push("/");
     } catch (error: any) {
       console.log(error);
       let message: string = "";
@@ -111,10 +111,11 @@ const AuthProvider = (props: any) => {
     }
   };
 
-  const logOut = () => {
+  const logOut = async () => {
     dispatch({
       type: authTypes.LOG_OUT,
     });
+    await router.push("/login")
   }
 
   return (

@@ -7,29 +7,25 @@ const authReducer = (state: any = {}, action : any = {}) => {
           ...state,
           user: action.playload.user,
           token:action.playload.token,
+          authenticated:true,
           mensaje:""
         };
         case authTypes.LOGIN_SUCCESS:
         return {
           ...state,
           token:action.playload,
+          authenticated:true,
           mensaje: "",
         };
         case authTypes.LOGIN_ERROR:
-          localStorage.removeItem("token")
-        return {
-          ...state,
-          mensaje: action.playload,
-          user:null,
-          token:null
-        };
         case authTypes.LOG_OUT:
           localStorage.removeItem("token")
         return {
           ...state,
-          mensaje: "",
           user:null,
-          token:null
+          token:null,
+          authenticated:null,
+          mensaje: action.playload,
         };
       default:
         return state;
