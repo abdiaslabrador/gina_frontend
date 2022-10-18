@@ -1,7 +1,23 @@
-import React from 'react'
+import React, {useEffect, useContext} from 'react'
 import Head from 'next/head'
+import WithLayout from '../../components/layout/HocLayoutHeader'
 
-const Odontologia = () => {
+import { NextPage, GetServerSidePropsContext } from "next";
+import { getCookie } from "cookies-next";
+import {authContext} from '../../components/login/authState'
+ '../interface/user'
+
+const Odontologia : NextPage = () => {
+
+  const {userAuthenticated, errorFromServer} = useContext(authContext)
+
+  useEffect(()=>{
+    async function authCheck(){
+     await userAuthenticated()
+    }
+    authCheck()
+  },[])
+  
   return (
     <div >
       <Head>
@@ -15,4 +31,15 @@ const Odontologia = () => {
   )
 }
 
-export default Odontologia
+export async function getServerSideProps(ctx: GetServerSidePropsContext){
+  const {req, res} = ctx
+  const token  = getCookie("token", {req, res})
+
+  if (!token) {return {redirect: {destination: '/login',statusCode: 301,},}}
+  
+  return {
+    props: {}, 
+  }
+}
+
+export default WithLayout(Odontologia)

@@ -6,7 +6,7 @@ import { getCookie } from "cookies-next";
 import {authContext} from '../../components/login/authState'
  '../interface/user'
 
-const Lista_usuarios : NextPage = () => {
+const Settings : NextPage = () => {
 
   const {userAuthenticated, errorFromServer} = useContext(authContext)
 
@@ -16,29 +16,29 @@ const Lista_usuarios : NextPage = () => {
     }
     authCheck()
   },[])
-  
+
   return (
     <div >
       <Head>
-        <title>Lista usuarios</title>
+        <title>Settings</title>
       </Head>
 
       <main >
-        <h1>Desde Lista usuarios</h1>
+        <h1>Desde settings</h1>
       </main>
     </div>
   )
 }
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext){
-  const {req, res} = ctx
-  const token  = getCookie("token", {req, res})
-
-  if (!token) {return {redirect: {destination: '/login',statusCode: 301,},}}
+    const {req, res} = ctx
+    const token  = getCookie("token", {req, res})
   
-  return {
-    props: {}, 
+    if (!token) {return {redirect: {destination: '/login',statusCode: 301,},}}
+    
+    return {
+      props: {}, 
+    }
   }
-}
 
-export default WithLayout(Lista_usuarios)
+export default WithLayout(Settings)

@@ -1,60 +1,64 @@
-import React, {useContext, useEffect} from 'react'
-import Head from 'next/head'
-import  {authContext}    from "./login/authState";
-import Router ,{ useRouter } from "next/router";
-import authToken from "../config/authToken";
+import React, { useEffect, useContext }  from "react";
+import Head from "next/head";
+import Router  from "next/router";
+import { NextPage, GetServerSidePropsContext } from "next";
+import { getCookie } from "cookies-next";
+// import customAxios from "../config/axios";
+import ServerError from '../components/error/500'
+// import UserInf from "../interface/user";
+import {authContext} from '../components/login/authState'
+ '../interface/user'
+import WithLayout from '../components/layout/HocLayoutHeader'
 
 
-// ['success' => false, 'code' => '821', 'message' => 'Campos requeridos']
+const Caja: NextPage = ( ) => {
+const {userAuthenticated, errorFromServer} = useContext(authContext)
 
-const Caja = () => {
-  const router = useRouter()
-  const {user, userAuthenticated, logOut} = useContext(authContext)
-
-  useEffect(() => {
-    
-    const loadAuth = async ()=>{
-      if(typeof window !== "undefined") {
-        const token = localStorage.getItem("token");
-        if(!token){
-          await router.push('/login')
-          return null;   
-        }
-      }
-      await userAuthenticated()
+  useEffect(()=>{
+    async function authCheck(){
+     await userAuthenticated()
     }
-    loadAuth()
-  }, []);
+    authCheck()
+  },[])
 
   return (
-   <div>
-
+    <div>
       <Head>
         <title>Caja</title>
       </Head>
+    {(!errorFromServer)?
+    <div>
+      <h1 style={{color: "white"}}>Desde caja</h1>
+      {/* <button onClick={() => {}}>
+        LogOut
+      </button>
+      <br />
+      <br />
+       <br /> */}
+      <button onClick={() => {Router.push("/login");}}>
+        Login
+      </button>  
+      </div> :
+      <div>
+      <ServerError/>
+      </div>
+      }
       
-        <h1>Desde caja</h1>
-        <button onClick={()=>{logOut()}} 
-        >LogOut</button>
-   </div>
-  )
+    </div>
+  );
+};
+
+
+
+export async function getServerSideProps(ctx: GetServerSidePropsContext){
+  const {req, res} = ctx
+  const token  = getCookie("token", {req, res})
+
+  if (!token) {return {redirect: {destination: '/login',statusCode: 301,},}}
+  
+  return {
+    props: {}, 
+  }
 }
 
-// Caja.getInitialProps=async (ctx) =>{
-// const objeto = {
-//   nombre : "abdias",
-//   apellido: "labrador"
-// }
-
-// if (ctx.res) { // server
-//   ctx.res.writeHead(302, {
-//     Location: '/login'
-//   });
-
-//   ctx.res.end();
-// } 
-
-// return {objeto}
-// }
-
-export default Caja
+export default WithLayout(Caja);

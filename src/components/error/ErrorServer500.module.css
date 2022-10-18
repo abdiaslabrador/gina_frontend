@@ -1,0 +1,33 @@
+
+.main {
+  min-height: 100vh;
+  padding: 4rem 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: black;
+}
+
+.error_code{
+  display: inline-block;
+  margin: 0;
+  margin-right: 20px;
+  padding: 0 23px 0 0;
+  font-size: 24px;
+  line-height: 49px;
+  color:white;
+  border-right: 1px solid rgba(255, 255, 255, .3);
+}
+
+
+
+
+
+.server_error_message{
+  color: white;
+  vertical-align: top;
+  font-size: 14px;
+}
+

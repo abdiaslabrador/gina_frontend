@@ -1,5 +1,4 @@
-
-export interface UserInf{
+export default interface UserInf{
     id?:number,
      name?:string,
      last_name?:string,

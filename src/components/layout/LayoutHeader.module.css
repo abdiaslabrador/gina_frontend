@@ -1,0 +1,23 @@
+._header{
+    width: 100%;
+    height: 20px;
+    background-color: black;
+    font-size: 0.7rem;
+    color: white;
+}
+._header_link{
+    border-right: 1px solid #606060;
+    width: 31.25%;
+}
+._header_gear{
+    width: 6.25%;
+}
+._header_link, ._header_gear{
+    display: inline-block;
+    text-align: center;
+    height: 100%;
+    padding: 5px;
+    line-height: 10px;
+    cursor: pointer;
+}
+
