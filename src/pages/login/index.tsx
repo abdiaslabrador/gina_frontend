@@ -44,40 +44,40 @@ const Login : NextPage = () => {
             
             <Form>
             <div className={loginCss.container}>
-        <div className={loginCss.login_rectangle}>
-            <div className={loginCss.login_header_box}>
-                {/* {(message)?
-                <div className={loginCss.error_general_msg}>
+        <div className={loginCss["square"]}>
+            <div className={loginCss["square__header-box"]}>
+                {(message)?
+                <div className={loginCss["square__header-error"]}>
                 {message}
                 </div>
                 :  
                 null
-                } */}
+                }
             </div>
-            <div className={loginCss.login_form_box}>
+            <div className={loginCss["square__form-box"]}>
               <Field
-                  className={loginCss._form}
+                  className={loginCss["square__form"]}
                   type="email"
                   name="email"
                   placeholder="Email"
                 />
-                <ErrorMessage className={loginCss.input_error_msg} component="div" name="email"/> 
+                <ErrorMessage className={loginCss["square__form-error"]} component="div" name="email"/> 
               </div>
             
                       
-              <div className={loginCss.login_form_box}>
+              <div className={loginCss["square__form-box"]}>
                 <Field
-                  className={loginCss._form}
+                  className={loginCss["square__form"]}
                   type="password"
                   name="password"
                   placeholder="Contraseña"
                 />
-                <ErrorMessage className={loginCss.input_error_msg} component="div" name="password"/>          
+                <ErrorMessage className={loginCss["square__form-error"]} component="div" name="password"/>          
               </div>
               
               
-              <div className={loginCss.login_buttom_box}>
-                  <button className={loginCss.button_login} type="submit">
+              <div className={loginCss["square__buttom-box"]}>
+                  <button className={loginCss["square__button"]} type="submit">
                     Entrar
                   </button>
               </div>

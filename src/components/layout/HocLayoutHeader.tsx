@@ -6,21 +6,27 @@ const WithLayout = (ExternalComponent : React.FunctionComponent) => {
   const NewComponent = (props : any) =>{
     return (
         <div>
-          <div className={headerCss._header}>
-            <div className={headerCss._header_link} onClick={() => {Router.push('/')}}>
-                CAJA
-            </div>
-            <div className={headerCss._header_link} onClick={() => {Router.push('/odontologia')}}>
-                ODONTOLOGÍA
-            </div>
-            <div className={headerCss._header_link} onClick={() => {Router.push('/salaEspera')}}>
-                SALA DE ESPERA
-            </div>
-            <div className={headerCss._header_gear} onClick={() => {Router.push('/settings')}}>
-            <i  className="fa-solid fa-gear"></i>
-            </div>
-          </div>
+          <header className={headerCss.header}>
+            <nav>
+              <ul className={headerCss["nav__list"]}>
+              <li className={headerCss["nav__list-item"]} onClick={() => {Router.push('/')}}>
+                caja
+              </li>
+              <li className={headerCss["nav__list-item"]} onClick={() => {Router.push('/odontologia')}}>
+                odontología
+              </li>
+              <li className={headerCss["nav__list-item"]} onClick={() => {Router.push('/salaEspera')}}>
+                sala de espera
+              </li>
+              <li className={headerCss["nav__list-gear"]} onClick={() => {Router.push('/settings')}}>
+              <i  className="fa-solid fa-gear"></i>
+              </li>
+              </ul>
+            </nav> 
+          </header>
+          <main>
           <ExternalComponent {...props} />
+          </main>
         </div>
     )
   }

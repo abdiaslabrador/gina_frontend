@@ -1,23 +1,32 @@
-._header{
+.header{
     width: 100%;
-    height: 20px;
+    height: --navbar-height;
     background-color: black;
     font-size: 0.7rem;
     color: white;
+    
 }
-._header_link{
+.nav__list{
+    text-transform: uppercase;
+    display: flex; 
+    list-style: none;
+    margin:0;
+    padding:0;
+    font-size: 8px;
+}
+
+.nav__list-item{
     border-right: 1px solid #606060;
     width: 31.25%;
+    letter-spacing: 3px;
 }
-._header_gear{
+.nav__list-gear{
     width: 6.25%;
 }
-._header_link, ._header_gear{
-    display: inline-block;
+.nav__list-item, .nav__list-gear{
     text-align: center;
-    height: 100%;
-    padding: 5px;
-    line-height: 10px;
     cursor: pointer;
+    line-height: 5px;
+    padding: 2px;
 }
 
