@@ -1,5 +1,5 @@
 export function isBrowser() {
-  return typeof window !== 'undefined';
+  return typeof window !== "undefined";
 }
 // const authToken = (token: string | null)  => {
 //     if(token){
@@ -9,5 +9,3 @@ export function isBrowser() {
 //         delete customAxios.defaults.headers.common["authorization"]
 //     }
 // }
-
-

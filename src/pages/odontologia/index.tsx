@@ -1,45 +1,46 @@
-import React, {useEffect, useContext} from 'react'
-import Head from 'next/head'
-import WithLayout from '../../components/layout/HocLayoutHeader'
+import React, { useEffect, useContext } from "react";
+import Head from "next/head";
+import WithLayout from "../../components/layout/HocLayoutHeader";
 
 import { NextPage, GetServerSidePropsContext } from "next";
 import { getCookie } from "cookies-next";
-import {authContext} from '../../components/login/authState'
- '../interface/user'
+import { authContext } from "../../context/login/authContext";
+("../interface/user");
 
-const Odontologia : NextPage = () => {
+const Odontologia: NextPage = () => {
+  const { userAuthenticated, errorFromServer } = useContext(authContext);
 
-  const {userAuthenticated, errorFromServer} = useContext(authContext)
-
-  useEffect(()=>{
-    async function authCheck(){
-     await userAuthenticated()
+  useEffect(() => {
+    async function authCheck() {
+      await userAuthenticated();
     }
-    authCheck()
-  },[])
-  
+    authCheck();
+  }, []);
+
   return (
-    <div >
+    <div>
       <Head>
         <title>Odontologia</title>
       </Head>
 
-      <main >
+      <main>
         <h1>Desde Odontologia</h1>
       </main>
     </div>
-  )
-}
+  );
+};
 
-export async function getServerSideProps(ctx: GetServerSidePropsContext){
-  const {req, res} = ctx
-  const token  = getCookie("token", {req, res})
+export async function getServerSideProps(ctx: GetServerSidePropsContext) {
+  const { req, res } = ctx;
+  const token = getCookie("token", { req, res });
 
-  if (!token) {return {redirect: {destination: '/login',statusCode: 301,},}}
-  
-  return {
-    props: {}, 
+  if (!token) {
+    return { redirect: { destination: "/login", statusCode: 301 } };
   }
+
+  return {
+    props: {},
+  };
 }
 
-export default WithLayout(Odontologia)
+export default WithLayout(Odontologia);

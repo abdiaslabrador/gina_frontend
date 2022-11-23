@@ -3,13 +3,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background:var(--cl-bckgd-pages);
+    background: var(--cl-bckgd-pages);
 }
 
 .square {
     width: 400px;
     height: 400px;
-    background:var(--cl-headers);
+    background: var(--cl-headers);
     border-radius: 14px;
 }
 
@@ -21,7 +21,7 @@
     /* padding: 48px 50px 35px; */
 }
 
-.square__header-error{
+.square__header-error {
     font-weight: bold;
     color: black;
     text-align: center;
@@ -52,7 +52,7 @@
     /* padding: 20px 30px; */
 }
 
-.square__form-error{
+.square__form-error {
     height: 19.08%;
     /* height: 25px; */
     width: 100%;

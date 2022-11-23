@@ -1,32 +1,38 @@
-.header{
+.header {
     width: 100%;
     height: --navbar-height;
     background-color: black;
     font-size: 0.7rem;
     color: white;
-    
+
 }
-.nav__list{
+
+.nav__list {
     text-transform: uppercase;
-    display: flex; 
+    display: flex;
     list-style: none;
-    margin:0;
-    padding:0;
+    margin: 0;
+    padding: 0;
     font-size: 8px;
 }
 
-.nav__list-item{
+.nav__list-item {
     border-right: 1px solid #606060;
     width: 31.25%;
     letter-spacing: 3px;
 }
-.nav__list-gear{
+
+.nav__list-gear {
     width: 6.25%;
 }
-.nav__list-item, .nav__list-gear{
+
+.nav__list-item,
+.nav__list-gear {
     text-align: center;
     cursor: pointer;
     line-height: 5px;
     padding: 2px;
+    margin: 0;
+    color: white;
+    font-size: 0.5rem;
 }
-

@@ -1,19 +1,19 @@
 .container {
-  display: grid;
   width: 100%;
   height: calc(100vh - var(--navbar-height));
   color: white;
+  display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
   grid-template-rows: min-content minmax(56.47%, 1fr) min-content min-content;
   /* grid-template-rows: min-content minmax(56.47%, 1fr) min-content min-content; */
   grid-template-areas:
-      "client_info client_info pay_info pay_info"
-      "product_list product_list product_list product_list"
-      "buttom_form buttom_form buttom_form buttom_form"
-      "options options options options";
+    "client_info client_info pay_info pay_info"
+    "product_list product_list product_list product_list"
+    "buttom_form buttom_form buttom_form buttom_form"
+    "options options options options";
 }
 
-.container > * {
+.container>* {
   border: 1px solid rgb(255, 255, 255);
 }
 
@@ -87,10 +87,10 @@
   background-color: #164F4F;
   flex: 0 1 auto;
   display: grid;
-  grid-template-columns:1.2fr  2.9fr  0.98fr  1.6fr  1.0fr  2.0fr 4px;
+  grid-template-columns: 1.2fr 2.9fr 0.98fr 1.6fr 1.0fr 2.0fr 4px;
 }
 
-.product_list__titles>*{
+.product_list__titles>* {
   text-align: center;
   border-right: white 1px solid;
 
@@ -98,7 +98,7 @@
 
 .product_list__products {
   /*El height: 1px es solo para que el scroll aparezca*/
-  height: 1px; 
+  height: 1px;
   flex: 1 1 auto;
   overflow-y: scroll;
   background-color: #1B1A1A;
@@ -107,7 +107,7 @@
 .product_list__item {
   background-color: #504F4F;
   display: grid;
-  grid-template-columns: 1.2fr  2.9fr  0.98fr  1.6fr  1.0fr  2.0fr;
+  grid-template-columns: 1.2fr 2.9fr 0.98fr 1.6fr 1.0fr 2.0fr;
   grid-template-areas: "code 1 cant price ref subtotal";
 }
 
@@ -197,85 +197,88 @@
   transform: scale(0.98);
 }
 
+.options__items:hover {
+  background-color: #222121;
+}
+
 /*responsive*/
 /*coloca los botones de opciones de manera scroll*/
 @media only screen and (max-width: 960px) {
   .options {
-      overflow-x: scroll;
+    overflow-x: scroll;
   }
 }
 
 @media only screen and (max-width: 720px) {
   .container {
-      
-      grid-template-columns: minmax(0, 1fr);
-      grid-template-rows: min-content min-content minmax(27%, 1fr) min-content min-content;
-      grid-template-areas:
-          "client_info"
-          "pay_info"
-          "product_list"
-          "buttom_form"
-          "options";
+
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: min-content min-content minmax(27%, 1fr) min-content min-content;
+    grid-template-areas:
+      "client_info"
+      "pay_info"
+      "product_list"
+      "buttom_form"
+      "options";
   }
 
   /*oculto los titulos*/
   .product_list__titles {
-      display: none;
+    display: none;
   }
 
   .product_list__item {
-      grid-template-columns: 1fr;
-      grid-template-areas:
-          "code"
-          "description"
-          "cant"
-          "price"
-          "ref"
-          "subtotal";
-      padding: 3px 10px;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "code"
+      "description"
+      "cant"
+      "price"
+      "ref"
+      "subtotal";
+    padding: 3px 10px;
   }
 
-  .product_list__item> * {
-      border: none;
-      text-align: left;
+  .product_list__item>* {
+    border: none;
+    text-align: left;
   }
 
   .code::before {
-      content: "Código: ";
+    content: "Código: ";
   }
 
   .description::before {
-      content: "Descripción: ";
-      font-size:16px;
+    content: "Descripción: ";
+    font-size: 16px;
   }
 
   .cant::before {
-      content: "Cant: ";
+    content: "Cant: ";
   }
 
   .price::before {
-      content: "Precio: ";
+    content: "Precio: ";
   }
 
   .ref::before {
-      content: "Ref: ";
+    content: "Ref: ";
   }
 
   .subtotal::before {
-      content: "Subtotal: ";
+    content: "Subtotal: ";
   }
 
   .buttom_form {
-      grid-template-columns: 1fr;
+    grid-template-columns: 1fr;
   }
 
   .buttom_form__buttom {
-      margin: 10px 0px;
+    margin: 10px 0px;
   }
 
   .buttom_form__discount {
-      margin: 10px 0px;
-      justify-self: flex-start;
+    margin: 10px 0px;
+    justify-self: flex-start;
   }
 }
-

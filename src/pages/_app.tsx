@@ -1,12 +1,22 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
-import AuthProvider    from "../components/login/authState";
+import { NextUIProvider } from '@nextui-org/react';
+import AuthProvider    from "../context/login/authState";
+import ErrorServerProvider  from "../context/error/errorServerState";
+import EmployeeSettingsProvider    from "../context/employee/employeeState";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return ( 
-    <AuthProvider>
+  return (
+    <NextUIProvider> 
+      <ErrorServerProvider>
+      <AuthProvider>
+      <EmployeeSettingsProvider>
         <Component {...pageProps} />
-    </AuthProvider>
+      </EmployeeSettingsProvider>
+      </AuthProvider>
+      </ErrorServerProvider>
+    </NextUIProvider> 
+
   )
 }
 

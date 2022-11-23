@@ -1,0 +1,11 @@
+.sidebar__item {
+    padding: 0.5rem 0;
+}
+
+.sidebar__item:hover {
+    background-color: #222121;
+}
+
+.sidebar__item:active {
+    transform: scale(0.98);
+}

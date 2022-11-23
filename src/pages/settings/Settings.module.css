@@ -1,0 +1,130 @@
+.container {
+    width: 100%;
+    height: calc(100vh - var(--navbar-height));
+    color: white;
+    display: grid;
+    grid-template-columns: minmax(0, 16%) minmax(0, 1fr);
+
+}
+
+/*sidebar*/
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    border-right: 1px solid white;
+}
+
+.sidebar__item {
+    padding: 0.5rem 0;
+}
+
+.sidebar__item:hover {
+    background-color: #222121;
+}
+
+.sidebar__item:active {
+    transform: scale(0.98);
+}
+
+/*contenido principal*/
+.main {
+
+    display: flex;
+    justify-content: center;
+    /* align-items: center; */
+    flex-direction: column;
+    margin: 0 100px;
+}
+
+.buttom_form__buttom {
+    padding: 0 40px;
+    border: white 1px solid;
+}
+
+.buttom_form__buttom:hover {
+    background-color: #222121;
+}
+
+.buttom_form__buttom:active {
+    transform: scale(0.98);
+}
+
+.create_modify_bottom {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 50px;
+}
+
+.delete_bottom {
+    display: flex;
+    flex-direction: row;
+    margin-top: 50px;
+
+}
+
+/*lista de producto*/
+.product_list {
+    display: flex;
+    flex-direction: column;
+    font-size: 16px;
+}
+
+.product_list__titles {
+    background-color: #164F4F;
+    flex: 0 1 auto;
+    display: grid;
+    grid-template-columns: 0.17fr 0.22fr 0.22fr 0.17fr 0.22fr 0.22fr 4px;
+}
+
+.product_list__titles>* {
+    text-align: center;
+    border-right: white 1px solid;
+
+}
+
+.product_list__products {
+    /*El height: 1px es solo para que el scroll aparezca*/
+    height: 300px;
+    flex: 1 1 auto;
+    overflow-y: scroll;
+    background-color: #1B1A1A;
+}
+
+.product_list__item {
+    background-color: #504F4F;
+    display: grid;
+    grid-template-columns: 1.7fr 2.2fr 2.2fr 1.7fr 2.2fr 2.2fr;
+    grid-template-areas: "ci name last_name active secretary superuser";
+}
+
+.product_list__item>* {
+    text-align: center;
+    border: white 1px solid;
+}
+
+
+.ci {
+    grid-area: "ci";
+}
+
+.name {
+    grid-area: "name";
+}
+
+.last_name {
+    grid-area: "last_name";
+}
+
+.active {
+    grid-area: "active";
+}
+
+.secretary {
+    grid-area: "secretary";
+}
+
+.superuser {
+    grid-area: "superuser";
+}

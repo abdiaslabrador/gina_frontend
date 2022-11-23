@@ -1,37 +1,57 @@
-import React from 'react'
-import headerCss from './LayoutHeader.module.css'
-import Router  from "next/router";
+import React from "react";
+import headerCss from "./LayoutHeader.module.css";
+import Router from "next/router";
 
-const WithLayout = (ExternalComponent : React.FunctionComponent) => {
-  const NewComponent = (props : any) =>{
+const WithLayout = (ExternalComponent: React.FunctionComponent) => {
+  const NewComponent = (props: any) => {
     return (
-        <div>
-          <header className={headerCss.header}>
-            <nav>
-              <ul className={headerCss["nav__list"]}>
-              <li className={headerCss["nav__list-item"]} onClick={() => {Router.push('/')}}>
+      <div>
+        <header className={headerCss.header}>
+          <nav>
+            <ul className={headerCss["nav__list"]}>
+              <li
+                className={headerCss["nav__list-item"]}
+                onClick={() => {
+                  Router.push("/");
+                }}
+              >
                 caja
               </li>
-              <li className={headerCss["nav__list-item"]} onClick={() => {Router.push('/odontologia')}}>
+              <li
+                className={headerCss["nav__list-item"]}
+                onClick={() => {
+                  Router.push("/odontologia");
+                }}
+              >
                 odontología
               </li>
-              <li className={headerCss["nav__list-item"]} onClick={() => {Router.push('/salaEspera')}}>
+              <li
+                className={headerCss["nav__list-item"]}
+                onClick={() => {
+                  Router.push("/salaEspera");
+                }}
+              >
                 sala de espera
               </li>
-              <li className={headerCss["nav__list-gear"]} onClick={() => {Router.push('/settings')}}>
-              <i  className="fa-solid fa-gear"></i>
+              <li
+                className={headerCss["nav__list-gear"]}
+                onClick={() => {
+                  Router.push("/settings");
+                }}
+              >
+                <i className="fa-solid fa-gear"></i>
               </li>
-              </ul>
-            </nav> 
-          </header>
-          <main>
+            </ul>
+          </nav>
+        </header>
+        <main>
           <ExternalComponent {...props} />
-          </main>
-        </div>
-    )
-  }
+        </main>
+      </div>
+    );
+  };
 
-  return NewComponent
-}
+  return NewComponent;
+};
 
-export default WithLayout
+export default WithLayout;

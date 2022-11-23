@@ -1,10 +1,9 @@
-import UserInf  from './user'
+import EmployeeInf from "./EmployeeInf";
 
-export interface authContextInf{
-  user: UserInf,
-  message: string,
-  errorFromServer:boolean,
-  singIn(email: string, password: string) : void,
-  userAuthenticated() : void,
-  logOut():void,
+export interface authContextInf {
+  user: EmployeeInf;
+  message: string;
+  singIn(email: string, password: string): void;
+  userAuthenticated(): void;
+  logOut(): void;
 }
