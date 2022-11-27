@@ -1,68 +1,95 @@
 import {
     GET_EMPLOYEES,
+    CREATE_EMPLOYEE,
     SET_SELECTED_EMPLOYEE,
     DELETE_EMPLOYEE,
     UPDATE_EMPLOYEE,
     UPDATE_EMPLOYEE_PASSWORD,
-    EMPLOYEES_ERROR
+    EMPLOYEES_ERROR,
+    LOADING_FORM,
+    UPDATE_MSJ_SUCCESS,
+    UPDATE_MSJ_ERROR,
+    LOADING_FORM_PASSWORD
   } from "./employeeType";
-  import EmployeeInf from "../../interface/EmployeeInf";
+  import {EmployeeInf} from "../../interface/EmployeeInf";
   
   type Action =
+  
     | {
         type: "GET_EMPLOYEES";
         employeeList: EmployeeInf[];
       }
     | {
+        type: "CREATE_EMPLOYEE";
+        employeeList: EmployeeInf[];
+        msjSuccess : string,
+        msjError : string,
+        loadingForm : boolean,
+      }
+    | {
       type: "DELETE_EMPLOYEE";
       employeeList: EmployeeInf[];
       selectedEmployee: EmployeeInf;
+      loadingForm: false;
       }
     | {
       type: "UPDATE_EMPLOYEE";
       employeeList: EmployeeInf[];
       selectedEmployee: EmployeeInf;
+      msjSuccess : string,
+      msjError : string,
+      loadingForm : boolean,
       }
     | {
       type: "UPDATE_EMPLOYEE_PASSWORD";
-      employeeList: EmployeeInf[];
+      employeeList: EmployeeInf[],
+      msjSuccess: string,
+      msjError: string,
+      loadingPasswordForm: boolean,
       }
     | {
       type: "SET_SELECTED_EMPLOYEE";
       selectedEmployee: EmployeeInf;
       }
     | {
+      type: "LOADING_FORM";
+      loadingForm: boolean;
+      }
+    | {
+      type: "LOADING_FORM_PASSWORD";
+      loadingPasswordForm: boolean;
+      }
+    | {
         type: "EMPLOYEES_ERROR";
         employeeList: EmployeeInf[];
         selectedEmployee: EmployeeInf;
-      };
-    // | {
-    //     type: "LOGIN_ERROR";
-    //     user?: EmployeeInf;
-    //     authenticated?: boolean;
-    //     message?: string;
-    //   }
-    // | {
-    //     type: "LOGIN_ERROR_SERVER";
-    //     user?: EmployeeInf;
-    //     authenticated?: boolean;
-    //     message?: string;
-    //     errorServer?: boolean;
-    //   }
-    // | {
-    //     type: "LOG_OUT";
-    //     user?: EmployeeInf;
-    //     authenticated?: boolean;
-    //     message?: string;
-    //     errorServer?: boolean;
-    //   };
-  
+      }
+    | {
+      type: "UPDATE_MSJ_SUCCESS";
+      msjSuccess : string,
+      
+    }
+    | {
+      type: "UPDATE_MSJ_ERROR";
+      msjError : string,
+    };
+    
+    
   const employeeReducer = (state: any = {}, action: Action) => {
     switch (action.type) {
       case GET_EMPLOYEES:
         return {
           ...state,
           employeeList: action.employeeList
+        };
+        case CREATE_EMPLOYEE:
+        return {
+          ...state,
+          employeeList: action.employeeList,
+          msjSuccess : action.msjSuccess,
+          msjError : action.msjError,
+            loadingForm: action.loadingForm,
+
         };
         case SET_SELECTED_EMPLOYEE:
           return {
@@ -73,18 +100,26 @@ import {
           return {
             ...state,
             employeeList: action.employeeList,
-            selectedEmployee: action.selectedEmployee
+            selectedEmployee: action.selectedEmployee,
+            loadingForm: false
           };
           case UPDATE_EMPLOYEE:
           return {
             ...state,
             employeeList: action.employeeList,
-            selectedEmployee: action.selectedEmployee
+            selectedEmployee: action.selectedEmployee,
+            msjSuccess: action.msjSuccess,
+            msjError: action.msjError,
+            loadingForm: action.loadingForm,
           };
           case UPDATE_EMPLOYEE_PASSWORD:
           return {
             ...state,
-            employeeList: action.employeeList
+            type: UPDATE_EMPLOYEE_PASSWORD,
+            employeeList: action.employeeList,
+            msjSuccess: action.msjSuccess,
+            msjError: action.msjError,
+            loadingPasswordForm: action.loadingPasswordForm,
           };
           case EMPLOYEES_ERROR:
           return {
@@ -92,6 +127,27 @@ import {
             employeeList: action.employeeList,
             selectedEmployee: action.selectedEmployee
           };
+          case LOADING_FORM:
+          return {
+            ...state,
+            loadingForm: action.loadingForm,
+          };
+          case LOADING_FORM_PASSWORD:
+          return {
+            ...state,
+            loadingPasswordForm: action.loadingPasswordForm,
+          };
+          case UPDATE_MSJ_SUCCESS:
+            return {
+              ...state,
+              msjSuccess: action.msjSuccess,
+            };
+          case UPDATE_MSJ_ERROR:
+            return {
+              ...state,
+              msjError: action.msjError,
+            };
+
       default:
         return state;
     }

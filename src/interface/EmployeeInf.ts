@@ -1,4 +1,4 @@
-export default interface EmployeeInf {
+export interface EmployeeInf {
   id: number;
   name: string;
   last_name: string;
@@ -16,8 +16,12 @@ export default interface EmployeeInf {
 }
 
 export interface employeeContextInf {
-  selectedEmployee: EmployeeInf,
+  selectedEmployee: EmployeeInf;
   employeeList: EmployeeInf[];
+  msjSuccess : string;
+  msjError : string;
+  loadingForm: boolean;
+  loadingPasswordForm : boolean;
   getEmployeesFn(): void;
   setSelectedEmployeeFn(employee:EmployeeInf): void;
   createEmployeeFn(employee : any): void;

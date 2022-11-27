@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
 import { Modal, Button } from "@nextui-org/react";
-import EmployeeInf from "../../interface/EmployeeInf";
-import customAxios from "../../config/axios";
+import {EmployeeInf} from "../../../interface/EmployeeInf";
+import customAxios from "../../../config/axios";
 import { Loading } from "@nextui-org/react";
 import { useRouter } from "next/router";
 import logoutCss from "./Logout.module.css";
-import { authContext } from "../../context/login/authContext";
+import { authContext } from "../../../context/login/authContext";
 
 const Logout = () => {
   

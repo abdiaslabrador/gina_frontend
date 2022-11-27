@@ -9,22 +9,29 @@ import { GET_USER,
   LOGIN_SUCCESS,
   LOGIN_ERROR,
   LOG_OUT,
-  LOGIN_ERROR_SERVER,
+  LOADING_FORM,
+  UPDATE_USER,
+  UPDATE_MSJ_SUCCESS,
+  LOADING_FORM_PASSWORD,
+  UPDATE_USER_PASSWORD
 } from "./authTypes";
 import {authContext} from './authContext';
-
+import {errorServerContext} from '../error/errorServerContext';
+import {EmployeeInf} from '../../interface/EmployeeInf'
 interface props {
   children: JSX.Element | JSX.Element[];
 }
 
 const AuthProvider = ({ children }: props) => {
-
+  const {saveErrorFromServerFn} = useContext(errorServerContext);
   const router = useRouter();
 
   const initialState = {
-    user: null,
+    user: {} as EmployeeInf,
     message: "",
     authenticated: false,
+    loadingForm: false,
+    loadingPasswordForm: false,
   };
 
   const [state, dispatch] = useReducer(authReducer, initialState);
@@ -51,11 +58,13 @@ const AuthProvider = ({ children }: props) => {
 
   const userAuthenticated = async () => {
     try {
+      
       const resp = await customAxios.get("/auth");
       dispatch({
         type: GET_USER,
         user: resp.data,
       });
+      saveErrorFromServerFn(false);
     } catch (error: any) {
       console.log(error);
       let message = error.response.data?.msg || error.message;
@@ -68,10 +77,8 @@ const AuthProvider = ({ children }: props) => {
         });
         router.push("/login");
       } else {
-        dispatch({
-          type: LOGIN_ERROR_SERVER,
-          message: message,
-        });
+        saveErrorFromServerFn(true);
+        
       }
     }
   };
@@ -96,14 +103,84 @@ const AuthProvider = ({ children }: props) => {
     }
   };
 
+  async function updateEmployeeFn(cuerrentUser : EmployeeInf){
+    try {
+      dispatch({ type: LOADING_FORM, loadingForm: true })
+      await customAxios.post("employee/update", {
+        id: cuerrentUser.id,
+        email: cuerrentUser.email,
+        name: cuerrentUser.name,
+        last_name: cuerrentUser.last_name,
+        ci_rif: cuerrentUser.ci_rif,
+        phone_number: cuerrentUser.phone_number,
+        direction: cuerrentUser.direction,
+        birthday: cuerrentUser.birthday,
+        active: cuerrentUser.active,
+        secretary: cuerrentUser.secretary,
+        superuser: cuerrentUser.superuser,
+      });
+      dispatch({
+        type: UPDATE_USER,
+        user: cuerrentUser,
+        message: "Empleado actualizado exitosamente",
+        loadingForm: false,
+      })
+      setTimeout(() => dispatch({type:UPDATE_MSJ_SUCCESS, message:""}), 8000);
+      saveErrorFromServerFn(false);
+
+    } catch (error : any) {
+      dispatch({ type: LOADING_FORM, loadingForm: false })
+      console.log(error);
+
+      if (error.response?.status == "403") { //usuario con el token inválido. NOTA: ya el token se elimina desde el backend
+        await logOut();
+
+      }else {
+        saveErrorFromServerFn(true);
+      }
+    }
+  }
+
+  async function updateEmployeePasswordFn(userId : number, password: string){
+    try {
+      dispatch({ type: LOADING_FORM_PASSWORD, loadingPasswordForm: true })
+      await customAxios.post("employee/updatepassword", {
+        id: userId,
+        password: password,
+      });
+      dispatch({
+        type: UPDATE_USER_PASSWORD,
+        message: "Contraseña cambiada exitosamente",
+        loadingPasswordForm: false,
+      })
+      setTimeout(() => dispatch({type:UPDATE_MSJ_SUCCESS, message:""}), 8000);
+      saveErrorFromServerFn(false);
+
+    } catch (error : any) {
+      dispatch({ type: LOADING_FORM_PASSWORD, loadingPasswordForm: false })
+      console.log(error);
+
+      if (error.response?.status == "403") { //usuario con el token inválido. NOTA: ya el token se elimina desde el backend
+        await logOut();
+
+      }else {
+        saveErrorFromServerFn(true);
+      }
+    }
+  }
+
   return (
     <authContext.Provider
       value={{
         user: state.user,
         message: state.message,
+        loadingForm: state.loadingForm,
+        loadingPasswordForm: state.loadingPasswordForm,
         singIn,
         userAuthenticated,
         logOut,
+        updateEmployeeFn,
+        updateEmployeePasswordFn
       }}
     >
       {children}

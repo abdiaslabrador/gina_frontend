@@ -1,7 +1,7 @@
 import {
     UPDATE_ERROR,
   } from "./errorServerType";
-  import EmployeeInf from "../../interface/EmployeeInf";
+  import {EmployeeInf} from "../../interface/EmployeeInf";
   
   type Action =
     | {

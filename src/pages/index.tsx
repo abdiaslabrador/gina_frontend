@@ -5,7 +5,7 @@ import { NextPage, GetServerSidePropsContext } from "next";
 import { getCookie } from "cookies-next";
 // import customAxios from "../config/axios";
 import ServerError from "../components/error/500";
-// import EmployeeInf from "../interface/EmployeeInf";
+// import {EmployeeInf} from "../interface/EmployeeInf";
 import { authContext } from "../context/login/authContext";
 import cajaCss from "../styles/Caja.module.css";
 import WithLayout from "../components/layout/HocLayoutHeader";

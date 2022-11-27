@@ -1,15 +1,14 @@
 import React, {useContext} from "react";
 import { Modal, Button } from "@nextui-org/react";
-import EmployeeInf from "../../interface/EmployeeInf";
+import {EmployeeInf} from "../../../interface/EmployeeInf";
 import deleteEmployeeCss from "./DeleteEmployee.module.css";
-import customAxios from "../../config/axios";
+import customAxios from "../../../config/axios";
 import { Loading } from "@nextui-org/react";
-import { employeeContext } from "../../context/employee/employeeContext";
+import { employeeContext } from "../../../context/employee/employeeContext";
 
 const DeleteEmployee = () => {
-  const { selectedEmployee, deleteEmployeeFn } = useContext(employeeContext);
+  const { loadingForm, selectedEmployee, deleteEmployeeFn } = useContext(employeeContext);
   const [visible, setVisible] = React.useState(false);
-  const [loading, setLoading] = React.useState(false);
   const [mensaje, setMensaje] = React.useState(
     "¿Estas seguro de eliminar el empleado?"
   );
@@ -23,9 +22,7 @@ const DeleteEmployee = () => {
 
   const eliminarEmployee = async () => {
     try {
-      setLoading(true);
       await deleteEmployeeFn(selectedEmployee.id)
-      setLoading(false);
       setVisible(false);
     } catch (error: any) {
       console.log(error);
@@ -55,8 +52,9 @@ const DeleteEmployee = () => {
       </button>
 
       <Modal
-        // closeButton
+        closeButton={!loadingForm}
         preventClose
+        animated={false}
         aria-labelledby="modal-title"
         open={visible}
         onClose={closeHandler}
@@ -64,9 +62,13 @@ const DeleteEmployee = () => {
         {/* <Modal.Header>
             
         </Modal.Header> */}
-        <Modal.Body>{loading ? <Loading /> : <div>{mensaje}</div>}</Modal.Body>
+        <Modal.Body>{loadingForm ?
+        ( <Loading /> )
+        : 
+        (<div>{mensaje}</div>)
+        }</Modal.Body>
         <Modal.Footer>
-          {loading ? (
+          {loadingForm ? (
             <Button
               disabled
               auto
@@ -82,7 +84,7 @@ const DeleteEmployee = () => {
             </Button>
           )}
 
-          {loading ? (
+          {loadingForm ? (
             <Button auto onClick={closeHandler} disabled>
               No
             </Button> //sin disable

@@ -6,7 +6,7 @@ const WithLayout = (ExternalComponent: React.FunctionComponent) => {
   const NewComponent = (props: any) => {
     return (
       <div>
-        <header className={headerCss.header}>
+        <header className={headerCss["nav"]}>
           <nav>
             <ul className={headerCss["nav__list"]}>
               <li
@@ -36,7 +36,7 @@ const WithLayout = (ExternalComponent: React.FunctionComponent) => {
               <li
                 className={headerCss["nav__list-gear"]}
                 onClick={() => {
-                  Router.push("/settings");
+                  Router.push("/configuracion");
                 }}
               >
                 <i className="fa-solid fa-gear"></i>

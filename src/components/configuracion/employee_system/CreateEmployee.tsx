@@ -1,28 +1,43 @@
 import React, {useContext} from "react";
 import { Modal, Loading } from "@nextui-org/react";
 import createEmployeeCss from "./CreateEmployee.module.css";
-import customAxios from "../../config/axios";
+import customAxios from "../../../config/axios";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { employeeContext } from "../../context/employee/employeeContext";
-import EmployeeInf from "../../interface/EmployeeInf";
+import { employeeContext } from "../../../context/employee/employeeContext";
+import { EmployeeInf } from "../../../interface/EmployeeInf";
 
 
 interface props {
   setEmployeeList: Function;
 }
 const CreateEmployee = () => {
-  const { createEmployeeFn } = useContext(employeeContext);
-  
+  const { msjSuccess, msjError, loadingForm, createEmployeeFn } = useContext(employeeContext);
   const [visible, setVisible] = React.useState(false);
-  const [loading, setLoading] = React.useState(false);
-  const [mensajeSuccess, setMensajeSuccess] = React.useState("");
-  const [mensajeError, setMensajeError] = React.useState("");
 
   const handler = () => setVisible(true);
 
   const closeHandler = () => {
     setVisible(false);
     console.log("closed");
+  };
+
+  const formHandler = async (values: any, resetForm: any) => {
+    
+        const employee  = {
+          email: values.email.trim(),
+          name: values.name.trim(),
+          last_name: values.last_name.trim(),
+          ci_rif: values.ci_rif.trim(),
+          phone_number: values.phone_number.trim(),
+          direction: values.direction.trim(),
+          birthday: values.birthday,
+          active: values.active,
+          secretary: values.secretary,
+          superuser: values.superuser,
+          password: values.password1
+        };
+        await createEmployeeFn(employee);
+        resetForm({ values: "" });
   };
 
   const personalInfoInitialValues = {
@@ -147,36 +162,7 @@ const CreateEmployee = () => {
     return error;
   }
 
-  const formHandler = async (values: any, resetForm: any) => {
-    try {
-        setLoading(true);
-        const employee  = {
-          email: values.email.trim(),
-          name: values.name.trim(),
-          last_name: values.last_name.trim(),
-          ci_rif: values.ci_rif.trim(),
-          phone_number: values.phone_number.trim(),
-          direction: values.direction.trim(),
-          birthday: values.birthday,
-          active: values.active,
-          secretary: values.secretary,
-          superuser: values.superuser,
-          password: values.password1
-        };
-        await createEmployeeFn(employee);
-        setLoading(false);
-        resetForm({ values: "" });
-        setMensajeSuccess("Usuario guardado exitosamente");
-        setTimeout(() => setMensajeSuccess(""), 8000);
-    } catch (error: any) {
-        console.log(error);
-        let errorMessage = error.response.data?.msg || error.message;
-        setMensajeError(errorMessage);
-        setTimeout(() => setMensajeError(""), 8000);
-        setLoading(false);
-        resetForm({ values: "" });
-    }
-  };
+  
 
   return (
     <div>
@@ -191,7 +177,7 @@ const CreateEmployee = () => {
         animated={false}
         width="600px"
         css={{ height: "600px", backgroundColor: "#302F2F" }}
-        closeButton
+        closeButton={!loadingForm}
         preventClose
         aria-labelledby="modal-title"
         open={visible}
@@ -234,7 +220,7 @@ const CreateEmployee = () => {
                         type="email"
                         name="email"
                         placeholder="Correo electrónico"
-                        disabled={loading}
+                        disabled={loadingForm}
                       />
 
                       <ErrorMessage
@@ -253,7 +239,7 @@ const CreateEmployee = () => {
                         type="text"
                         name="name"
                         placeholder="Escriba el nombre"
-                        disabled={loading}
+                        disabled={loadingForm}
                       />
 
                       <ErrorMessage
@@ -273,7 +259,7 @@ const CreateEmployee = () => {
                           type="text"
                           name="last_name"
                           placeholder="Escriba el apellido"
-                          disabled={loading}
+                          disabled={loadingForm}
                         />
                       </div>
                       <ErrorMessage
@@ -293,7 +279,7 @@ const CreateEmployee = () => {
                         type="text"
                         name="ci_rif"
                         placeholder="Escriba la cédula"
-                        disabled={loading}
+                        disabled={loadingForm}
                       />
 
                       <ErrorMessage
@@ -313,7 +299,7 @@ const CreateEmployee = () => {
                         type="date"
                         name="birthday"
                         placeholder="Escriba el teléfono"
-                        disabled={loading}
+                        disabled={loadingForm}
                       />
                       <ErrorMessage
                         className={createEmployeeCss["square__form-error"]}
@@ -330,7 +316,7 @@ const CreateEmployee = () => {
                         type="text"
                         name="phone_number"
                         placeholder="Escriba el telefono"
-                        disabled={loading}
+                        disabled={loadingForm}
                       />
                     </div>
 
@@ -347,7 +333,7 @@ const CreateEmployee = () => {
                           style={{ resize: "none" }}
                           rows={5}
                           cols={23}
-                          disabled={loading}
+                          disabled={loadingForm}
                         />
                       </div>
                     </div>
@@ -360,7 +346,7 @@ const CreateEmployee = () => {
                         type="checkbox"
                         name="active"
                         placeholder="Escriba el teléfono"
-                        disabled={loading}
+                        disabled={loadingForm}
                       />
                     </div>
 
@@ -372,7 +358,7 @@ const CreateEmployee = () => {
                         type="checkbox"
                         name="secretary"
                         placeholder="Escriba el teléfono"
-                        disabled={loading}
+                        disabled={loadingForm}
                       />
                     </div>
 
@@ -384,7 +370,7 @@ const CreateEmployee = () => {
                         type="checkbox"
                         name="superuser"
                         placeholder="Escriba el teléfono"
-                        disabled={loading}
+                        disabled={loadingForm}
                       />
                     </div>
 
@@ -398,7 +384,7 @@ const CreateEmployee = () => {
                         type="password"
                         name="password1"
                         placeholder="Contraseña"
-                        disabled={loading}
+                        disabled={loadingForm}
                       />
                       <ErrorMessage
                         className={createEmployeeCss["square__form-error"]}
@@ -418,7 +404,7 @@ const CreateEmployee = () => {
                         type="password"
                         name="password2"
                         placeholder="Repita contraseña"
-                        disabled={loading}
+                        disabled={loadingForm}
                       />
                       <ErrorMessage
                         className={createEmployeeCss["square__form-error"]}
@@ -428,7 +414,7 @@ const CreateEmployee = () => {
                     </div>
 
                     <div className={createEmployeeCss["button_group"]}>
-                    {loading ? (
+                    {loadingForm ? (
                       <div className={createEmployeeCss["button_form__button"]}>
                         <Loading
                           type="spinner"
@@ -451,8 +437,8 @@ const CreateEmployee = () => {
             }
           </div>
         </Modal.Body>
-        <div className={createEmployeeCss["msj_success"]}>{mensajeSuccess}</div>
-        <div className={createEmployeeCss["msj_error"]}>{mensajeError}</div>
+        <div className={createEmployeeCss["msj_success"]}>{msjSuccess}</div>
+        <div className={createEmployeeCss["msj_error"]}>{msjError}</div>
       </Modal>
     </div>
   );

@@ -1,10 +1,10 @@
-.header {
+.nav {
     width: 100%;
-    height: --navbar-height;
+    height: var(--navbar-height);
     background-color: black;
     font-size: 0.7rem;
     color: white;
-
+    position: fixed; 
 }
 
 .nav__list {

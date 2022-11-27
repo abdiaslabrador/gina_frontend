@@ -1,0 +1,21 @@
+/*sidebar*/
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    color:white;
+    border-right: 1px solid white;
+    
+}
+
+.sidebar__item {
+    text-align: left;
+    padding: 0.5rem 0.5rem;
+}
+
+.sidebar__item:hover {
+    background-color: #222121;
+}
+
+.sidebar__item:active {
+    transform: scale(0.98);
+}

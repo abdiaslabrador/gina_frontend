@@ -1,6 +1,7 @@
 .container {
   width: 100%;
-  height: calc(100vh - var(--navbar-height));
+  height: 100vh;
+  padding-top: var(--navbar-height);
   color: white;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);

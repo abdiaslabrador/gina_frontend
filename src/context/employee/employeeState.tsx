@@ -3,36 +3,41 @@ import { useRouter } from "next/router";
 import { useReducer } from "react";
 import employeeReducer from "./employeeReducer";
 import customAxios from "../../config/axios";
-// import {authContext} from './authContext';
 import {employeeContext} from './employeeContext';
 import {errorServerContext} from '../error/errorServerContext';
-import EmployeeInf from "../../interface/EmployeeInf";
+import {EmployeeInf} from "../../interface/EmployeeInf";
 import {authContext} from '../login/authContext';
 
 import {
     GET_EMPLOYEES,
+    CREATE_EMPLOYEE,
     SET_SELECTED_EMPLOYEE,
     DELETE_EMPLOYEE,
     UPDATE_EMPLOYEE,
     UPDATE_EMPLOYEE_PASSWORD,
-    EMPLOYEES_ERROR
+    EMPLOYEES_ERROR,
+    LOADING_FORM,
+    UPDATE_MSJ_SUCCESS,
+    UPDATE_MSJ_ERROR,
+    LOADING_FORM_PASSWORD
   } from "./employeeType";
 
 interface props {
   children: JSX.Element | JSX.Element[];
 }
 
-const EmployeeSettingsProvider = ({ children }: props) => {
+const EmployeeSystemProvider = ({ children }: props) => {
   const { saveErrorFromServerFn } = useContext(errorServerContext);
-  const { logOut } = useContext(authContext);
-  
+  const { user, logOut } = useContext(authContext);
   const router = useRouter();
 
   const initialState = {
     selectedEmployee : {} as EmployeeInf,
     employeeList : [],
-    mensajeSuccess : null,
-    mensajeError : null,
+    msjSuccess : "",
+    msjError : "",
+    loadingForm: false,
+    loadingPasswordForm: false
     // loadingDataSentence: ''
   };
 
@@ -40,15 +45,17 @@ const EmployeeSettingsProvider = ({ children }: props) => {
 
   async function getEmployeesFn() {
       try {
-        const response = await customAxios.get("/employee/all");
+        const response = await customAxios.post("/employee/all",{
+          id : user.id
+        });
         dispatch({
           type: GET_EMPLOYEES,
           employeeList: response.data
         })
         saveErrorFromServerFn(false);
       } catch (error : any) {
-        console.log(error);
         let message = error.response.data?.msg || error.message;
+        console.log(error);
         if (error.response?.status == "403") { //usuario con el token inválido. NOTA: ya el token se elimina desde el backend
           dispatch({
             type: EMPLOYEES_ERROR,
@@ -64,6 +71,7 @@ const EmployeeSettingsProvider = ({ children }: props) => {
 
   async function createEmployeeFn(employee: any){
     try {
+      dispatch({ type: LOADING_FORM, loadingForm: true })
       await customAxios.post("employee/create", {
         email: employee.email,
         name: employee.name,
@@ -77,9 +85,39 @@ const EmployeeSettingsProvider = ({ children }: props) => {
         superuser: employee.superuser,
         password: employee.password,
       });
-      await getEmployeesFn()
-    } catch (error) {
-      console.log(error);
+      const response = await customAxios.post("/employee/all",{
+        id : user.id
+      });
+        dispatch({
+          type: CREATE_EMPLOYEE,
+          employeeList: response.data,
+          msjSuccess: "Usuario guardado exitosamente",
+          msjError: "",
+          loadingForm: false,
+        })
+        setTimeout(() => dispatch({type:UPDATE_MSJ_SUCCESS, msjSuccess:""}), 8000);
+        saveErrorFromServerFn(false);
+
+    } catch (error : any ) {
+      let message = error.response.data?.msg || error.message;
+      dispatch({type: LOADING_FORM, loadingForm: false });
+      console.log(error );
+
+        if(error.response?.status == "400"){
+          dispatch({type:UPDATE_MSJ_ERROR, msjError:message})
+          setTimeout(() => dispatch({type:UPDATE_MSJ_ERROR, msjError:""}), 8000);
+          
+        }else if (error.response?.status == "403") { //usuario con el token inválido. NOTA: ya el token se elimina desde el backend
+          dispatch({
+            type: EMPLOYEES_ERROR,
+            employeeList: [],
+            selectedEmployee: {} as EmployeeInf
+            })
+          await logOut();
+
+        }else {
+          saveErrorFromServerFn(true);
+        }
     }
   }
 
@@ -92,25 +130,73 @@ const EmployeeSettingsProvider = ({ children }: props) => {
 
   async function deleteEmployeeFn(employeId : number){
     try {
-      const resp = await customAxios.post("/employee/delete", {
-        id: employeId,
-      });
+      dispatch({ type: LOADING_FORM, loadingForm: true })
+      const resp = await customAxios.post("/employee/delete", {id: employeId});
       dispatch({
         type: DELETE_EMPLOYEE,
         employeeList: resp.data,
-        selectedEmployee: ({} as EmployeeInf)
+        selectedEmployee: ({} as EmployeeInf),
+        loadingForm: false
       })
       saveErrorFromServerFn(false);
 
-    } catch (error) {
+    } catch (error:any) {
       console.log(error);
-      saveErrorFromServerFn(true);
+        if(error.response?.status == "404"){//el usuario no está
+          try {
+            const resp = await customAxios.post("/employee/all",{id : user.id});
+            dispatch({
+              type: EMPLOYEES_ERROR,
+              employeeList: resp.data,
+              selectedEmployee: {} as EmployeeInf
+              })
+            dispatch({type: LOADING_FORM, loadingForm: false });
 
+          } catch (error :any) {
+            if (error.response?.status == "403") { //usuario con el token inválido. NOTA: ya el token se elimina desde el backend
+              dispatch({
+                type: EMPLOYEES_ERROR,
+                employeeList: [],
+                selectedEmployee: {} as EmployeeInf
+                })
+              dispatch({type: LOADING_FORM, loadingForm: false });
+              await logOut();
+    
+            }else {
+              dispatch({
+                type: EMPLOYEES_ERROR,
+                employeeList: [],
+                selectedEmployee: {} as EmployeeInf
+                })
+              dispatch({type: LOADING_FORM, loadingForm: false });
+              saveErrorFromServerFn(true);
+            }
+          }
+
+        }else if (error.response?.status == "403") { //usuario con el token inválido. NOTA: ya el token se elimina desde el backend
+          dispatch({
+            type: EMPLOYEES_ERROR,
+            employeeList: [],
+            selectedEmployee: {} as EmployeeInf
+            })
+          dispatch({type: LOADING_FORM, loadingForm: false });
+          await logOut();
+
+        }else {
+          dispatch({
+            type: EMPLOYEES_ERROR,
+            employeeList: [],
+            selectedEmployee: {} as EmployeeInf
+            })
+          dispatch({type: LOADING_FORM, loadingForm: false });
+          saveErrorFromServerFn(true);
+        }
     }
   }
 
   async function updateEmployeeFn(employee : EmployeeInf){
     try {
+      dispatch({ type: LOADING_FORM, loadingForm: true })
       await customAxios.post("employee/update", {
         id: employee.id,
         email: employee.email,
@@ -124,31 +210,154 @@ const EmployeeSettingsProvider = ({ children }: props) => {
         secretary: employee.secretary,
         superuser: employee.superuser,
       });
-      const resp = await customAxios.get("employee/all");
+      const resp = await customAxios.post("/employee/all",{
+        id : user.id
+      });
       dispatch({
         type: UPDATE_EMPLOYEE,
         employeeList: resp.data,
-        selectedEmployee: employee
+        selectedEmployee: employee,
+        msjSuccess: "Empleado actualizado exitosamente",
+        msjError: "",
+        loadingForm: false,
       })
-    } catch (error) {
+      setTimeout(() => dispatch({type:UPDATE_MSJ_SUCCESS, msjSuccess:""}), 8000);
+      saveErrorFromServerFn(false);
+
+    } catch (error : any) {
+      let message = error.response.data?.msg || error.message;
       console.log(error);
+
+      if(error.response?.status == "404"){//el usuario se intenta actualizar pero no está en la base de datos
+        dispatch({type:UPDATE_MSJ_ERROR, msjError:message})
+        setTimeout(() => dispatch({type:UPDATE_MSJ_ERROR, msjError:""}), 8000);
+
+        try {
+          const resp = await customAxios.post("/employee/all",{id : user.id});
+          dispatch({
+            type: EMPLOYEES_ERROR,
+            employeeList: resp.data,
+            selectedEmployee: {} as EmployeeInf
+            })
+          dispatch({type: LOADING_FORM, loadingForm: false });
+
+        } catch (error :any) {
+          if (error.response?.status == "403") { //usuario con el token inválido. NOTA: ya el token se elimina desde el backend
+            dispatch({
+              type: EMPLOYEES_ERROR,
+              employeeList: [],
+              selectedEmployee: {} as EmployeeInf
+              })
+            dispatch({type: LOADING_FORM, loadingForm: false });
+            await logOut();
+  
+          }else {
+            dispatch({
+              type: EMPLOYEES_ERROR,
+              employeeList: [],
+              selectedEmployee: {} as EmployeeInf
+              })
+            dispatch({type: LOADING_FORM, loadingForm: false });
+            saveErrorFromServerFn(true);
+          }
+        }
+
+      }else if (error.response?.status == "403") { //usuario con el token inválido. NOTA: ya el token se elimina desde el backend
+        dispatch({
+          type: EMPLOYEES_ERROR,
+          employeeList: [],
+          selectedEmployee: {} as EmployeeInf
+          })
+        dispatch({ type: LOADING_FORM, loadingForm: false })
+        await logOut();
+      }else {
+        dispatch({
+          type: EMPLOYEES_ERROR,
+          employeeList: [],
+          selectedEmployee: {} as EmployeeInf
+          })
+        dispatch({ type: LOADING_FORM, loadingForm: false })
+        saveErrorFromServerFn(true);
+      }
     }
   }
 
   async function updateEmployeePasswordFn(employeeId : number, password: string){
     try {
+      dispatch({ type: LOADING_FORM_PASSWORD, loadingPasswordForm: true })
       await customAxios.post("employee/updatepassword", {
         id: employeeId,
         password: password,
       });
-      const resp = await customAxios.get("employee/all");
+      const resp = await customAxios.post("/employee/all",{
+        id : user.id
+      });
       dispatch({
         type: UPDATE_EMPLOYEE_PASSWORD,
         employeeList: resp.data,
+        msjSuccess: "Contraseña cambiada exitosamente",
+        msjError: "",
+        loadingPasswordForm: false,
       })
-    } catch (error) {
+      setTimeout(() => dispatch({type:UPDATE_MSJ_SUCCESS, msjSuccess:""}), 8000);
+      saveErrorFromServerFn(false);
+    } catch (error : any) {
+      let message = error.response.data?.msg || error.message;
       console.log(error);
+
+      if(error.response?.status == "404"){//el usuario se intenta actualizar pero no está en la base de datos
+        dispatch({type:UPDATE_MSJ_ERROR, msjError:message})
+        setTimeout(() => dispatch({type:UPDATE_MSJ_ERROR, msjError:""}), 8000);
+
+        try {
+          const resp = await customAxios.post("/employee/all",{id : user.id});
+          dispatch({
+            type: EMPLOYEES_ERROR,
+            employeeList: resp.data,
+            selectedEmployee: {} as EmployeeInf
+            })
+          dispatch({type: LOADING_FORM_PASSWORD, loadingPasswordForm: false });
+
+        } catch (error :any) {
+          if (error.response?.status == "403") { //usuario con el token inválido. NOTA: ya el token se elimina desde el backend
+            dispatch({
+              type: EMPLOYEES_ERROR,
+              employeeList: [],
+              selectedEmployee: {} as EmployeeInf
+              })
+            dispatch({type: LOADING_FORM_PASSWORD, loadingPasswordForm: false });
+            await logOut();
+  
+          }else {
+            dispatch({
+              type: EMPLOYEES_ERROR,
+              employeeList: [],
+              selectedEmployee: {} as EmployeeInf
+              })
+            dispatch({type: LOADING_FORM_PASSWORD, loadingPasswordForm: false });
+            saveErrorFromServerFn(true);
+          }
+        }
+
+      }else if (error.response?.status == "403") { //usuario con el token inválido. NOTA: ya el token se elimina desde el backend
+        dispatch({
+          type: EMPLOYEES_ERROR,
+          employeeList: [],
+          selectedEmployee: {} as EmployeeInf
+          })
+        dispatch({ type: LOADING_FORM_PASSWORD, loadingPasswordForm: false })
+        await logOut();
+      }else {
+        dispatch({
+          type: EMPLOYEES_ERROR,
+          employeeList: [],
+          selectedEmployee: {} as EmployeeInf
+          })
+        dispatch({ type: LOADING_FORM_PASSWORD, loadingPasswordForm: false })
+        saveErrorFromServerFn(true);
+      }
     }
+    
   }
 
   return (
@@ -156,6 +365,10 @@ const EmployeeSettingsProvider = ({ children }: props) => {
       value={{
         selectedEmployee: state.selectedEmployee,
         employeeList: state.employeeList,
+        msjSuccess : state.msjSuccess,
+        msjError : state.msjError,
+        loadingForm: state.loadingForm,
+        loadingPasswordForm: state.loadingPasswordForm,
         getEmployeesFn,
         setSelectedEmployeeFn,
         createEmployeeFn,
@@ -169,4 +382,4 @@ const EmployeeSettingsProvider = ({ children }: props) => {
   );
 };
 
-export default EmployeeSettingsProvider;
+export default EmployeeSystemProvider;

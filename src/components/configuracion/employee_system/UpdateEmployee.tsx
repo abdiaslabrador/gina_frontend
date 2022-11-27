@@ -1,20 +1,18 @@
 import React, {useContext} from "react";
-import { Modal, Loading, Button, StyledButtonIcon } from "@nextui-org/react";
+import { Modal, Loading, } from "@nextui-org/react";
 import UpdateEmployeeCss from "./UpdateEmployee.module.css";
-import customAxios from "../../config/axios";
-import EmployeeInf from "../../interface/EmployeeInf";
+import customAxios from "../../../config/axios";
+import {EmployeeInf} from "../../../interface/EmployeeInf";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import moment from "moment";
-import { employeeContext } from "../../context/employee/employeeContext";
+import { employeeContext } from "../../../context/employee/employeeContext";
 
 const UpdateEmployee = () => {
 
-  const { selectedEmployee, updateEmployeeFn, updateEmployeePasswordFn } = useContext(employeeContext);
+  const { msjSuccess, msjError, loadingForm, loadingPasswordForm, selectedEmployee, updateEmployeeFn, updateEmployeePasswordFn } = useContext(employeeContext);
   const [visible, setVisible] = React.useState(false);
   const [loadingPersonalInfo, setLoadingPersonalInfo] = React.useState(false);
-  const [loadingPassword, setLoadingPassword] = React.useState(false);
   const [mensajeSuccess, setMensajeSuccess] = React.useState("");
-  const [mensajeError, setMensajeError] = React.useState("");
 
   const handler = () => setVisible(true);
   
@@ -150,8 +148,7 @@ const UpdateEmployee = () => {
   }
 
   const pesonalInfoHandler = async (values: any) => {
-    try {
-      setLoadingPersonalInfo(true);
+      
       const employee : EmployeeInf = {
           id: selectedEmployee.id,
           email: values.email.trim(),
@@ -166,33 +163,13 @@ const UpdateEmployee = () => {
           superuser: values.superuser,
         };
       await updateEmployeeFn(employee);
-     
-      setLoadingPersonalInfo(false);
-      setMensajeSuccess("Empleado actualizado exitosamente");
-      setTimeout(() => setMensajeSuccess(""), 8000);
-    } catch (error: any) {
-      console.log(error);
-      let errorMessage = error.response.data?.msg || error.message;
-      setMensajeError(errorMessage);
-      setTimeout(() => setMensajeError(""), 8000);
-      setLoadingPersonalInfo(false);
-    }
+
   };
 
   const passwordHandler = async (values: any) => {
-    try {
-      setLoadingPassword(true);
+    
       await updateEmployeePasswordFn(selectedEmployee.id, values.password1);
-      setLoadingPassword(false);
-      setMensajeSuccess("Contraseña cambiada exitosamente");
-      setTimeout(() => setMensajeSuccess(""), 8000);
-    } catch (error: any) {
-      console.log(error);
-      let errorMessage = error.response.data?.msg || error.message;
-      setMensajeError(errorMessage);
-      setTimeout(() => setMensajeError(""), 8000);
-      setLoadingPassword(false);
-    }
+      
   };
 
   return (
@@ -209,7 +186,7 @@ const UpdateEmployee = () => {
         animated={false}
         width="600px"
         css={{ height: "600px", backgroundColor: "#302F2F" }}
-        closeButton
+        closeButton={!loadingForm}
         preventClose
         aria-labelledby="modal-title"
         open={visible}
@@ -247,7 +224,7 @@ const UpdateEmployee = () => {
                       type="email"
                       name="email"
                       placeholder="Correo electrónico"
-                      disabled={loadingPersonalInfo}
+                      disabled={loadingForm}
                     />
 
                     <ErrorMessage
@@ -266,7 +243,7 @@ const UpdateEmployee = () => {
                       type="text"
                       name="name"
                       placeholder="Escriba el nombre"
-                      disabled={loadingPassword}
+                      disabled={loadingForm}
                     />
 
                     <ErrorMessage
@@ -286,7 +263,7 @@ const UpdateEmployee = () => {
                         type="text"
                         name="last_name"
                         placeholder="Escriba el apellido"
-                        disabled={loadingPersonalInfo}
+                        disabled={loadingForm}
                       />
                     </div>
                     <ErrorMessage
@@ -306,7 +283,7 @@ const UpdateEmployee = () => {
                       type="text"
                       name="ci_rif"
                       placeholder="Escriba la cédula"
-                      disabled={loadingPersonalInfo}
+                      disabled={loadingForm}
                     />
 
                     <ErrorMessage
@@ -326,7 +303,7 @@ const UpdateEmployee = () => {
                       type="date"
                       name="birthday"
                       placeholder="Escriba el teléfono"
-                      disabled={loadingPersonalInfo}
+                      disabled={loadingForm}
                     />
                     <ErrorMessage
                       className={UpdateEmployeeCss["square__form-error"]}
@@ -343,7 +320,7 @@ const UpdateEmployee = () => {
                       type="text"
                       name="phone_number"
                       placeholder="Escriba el telefono"
-                      disabled={loadingPersonalInfo}
+                      disabled={loadingForm}
                     />
                   </div>
 
@@ -360,7 +337,7 @@ const UpdateEmployee = () => {
                         style={{ resize: "none" }}
                         rows={5}
                         cols={23}
-                        disabled={loadingPersonalInfo}
+                        disabled={loadingForm}
                       />
                     </div>
                   </div>
@@ -373,7 +350,7 @@ const UpdateEmployee = () => {
                       type="checkbox"
                       name="active"
                       placeholder="Escriba el teléfono"
-                      disabled={loadingPersonalInfo}
+                      disabled={loadingForm}
                     />
                   </div>
 
@@ -385,7 +362,7 @@ const UpdateEmployee = () => {
                       type="checkbox"
                       name="secretary"
                       placeholder="Escriba el teléfono"
-                      disabled={loadingPersonalInfo}
+                      disabled={loadingForm}
                     />
                   </div>
 
@@ -397,12 +374,12 @@ const UpdateEmployee = () => {
                       type="checkbox"
                       name="superuser"
                       placeholder="Escriba el teléfono"
-                      disabled={loadingPersonalInfo}
+                      disabled={loadingForm}
                     />
                   </div>
 
                   <div className={UpdateEmployeeCss["button_group"]}>
-                    {loadingPersonalInfo ? (
+                    {loadingForm ? (
                       <div className={UpdateEmployeeCss["button_form__button"]}>
                         <Loading
                           type="spinner"
@@ -429,6 +406,8 @@ const UpdateEmployee = () => {
               <Formik
                 initialValues={personalPasswordInitialValues}
                 onSubmit={passwordHandler}
+                validateOnChange={false}
+                validateOnBlur={false}
               >
                 {({ values }) => (
                   <Form>
@@ -442,7 +421,7 @@ const UpdateEmployee = () => {
                         type="password"
                         name="password1"
                         placeholder="Contraseña"
-                        disabled={loadingPassword}
+                        disabled={loadingPasswordForm}
                       />
                       <ErrorMessage
                         className={UpdateEmployeeCss["square__form-error"]}
@@ -462,7 +441,7 @@ const UpdateEmployee = () => {
                         type="password"
                         name="password2"
                         placeholder="Repita contraseña"
-                        disabled={loadingPassword}
+                        disabled={loadingPasswordForm}
                       />
                       <ErrorMessage
                         className={UpdateEmployeeCss["square__form-error"]}
@@ -472,7 +451,7 @@ const UpdateEmployee = () => {
                     </div>
 
                     <div className={UpdateEmployeeCss["button_group"]}>
-                      {loadingPassword ? (
+                      {loadingPasswordForm ? (
                         <div
                           className={UpdateEmployeeCss["button_form__button"]}
                         >
@@ -497,8 +476,8 @@ const UpdateEmployee = () => {
             }
           </div>
         </Modal.Body>
-        <div className={UpdateEmployeeCss["msj_success"]}>{mensajeSuccess}</div>
-        <div className={UpdateEmployeeCss["msj_error"]}>{mensajeError}</div>
+        <div className={UpdateEmployeeCss["msj_success"]}>{msjSuccess}</div>
+        <div className={UpdateEmployeeCss["msj_error"]}>{msjError}</div>
       </Modal>
     </div>
   );
