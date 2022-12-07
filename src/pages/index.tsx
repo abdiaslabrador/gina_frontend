@@ -10,6 +10,10 @@ import { authContext } from "../context/login/authContext";
 import cajaCss from "../styles/Caja.module.css";
 import WithLayout from "../components/layout/HocLayoutHeader";
 import {errorServerContext} from '../context/error/errorServerContext';
+import CurrencyProvider from '../context/register_box/currency/currencyState';
+import Client from "../components/register_box/client/Client";
+import Currency from "../components/register_box/currency/Currency";
+import Inventory from "../components/register_box/inventory/Inventory";
 
 const Caja: NextPage = () => {
   const { userAuthenticated } = useContext(authContext);
@@ -98,7 +102,7 @@ const Caja: NextPage = () => {
             </div>
           </div>
           <div className={cajaCss["buttom_form"]}>
-            <div className={cajaCss["buttom_form__buttom"]}>Buscar usuario</div>
+            <div className={cajaCss["button_form__button"]}>Buscar usuario</div>
             <div className={cajaCss["buttom_form__discount"]}>
               <label>Descuento: </label>
               <input className={cajaCss["buttom_form__box"]} />
@@ -126,18 +130,15 @@ const Caja: NextPage = () => {
             <div className={cajaCss["options__items"]}>
               <i className="fa-solid fa-cash-register"></i>
             </div>
-            <div className={cajaCss["options__items"]}>
-              <i className="fa-solid fa-boxes-stacked"></i>
-            </div>
-            <div className={cajaCss["options__items"]}>
-              <i className="fa-solid fa-user"></i>
-            </div>
+            <Inventory/>
+            <Client/>
             {/* <div className={cajaCss["options__items"]}>
               <i className="fa-solid fa-book"></i>
             </div> */}
-            <div className={cajaCss["options__items"]}>
-              <i className="fa-solid fa-gears"></i>
-            </div>
+            <CurrencyProvider>
+              <Currency/>
+            </CurrencyProvider>
+            
           </div>
         </div>
       ) : (

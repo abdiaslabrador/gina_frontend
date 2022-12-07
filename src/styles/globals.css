@@ -13,8 +13,12 @@ html {
   --cl-headers: #164F4F;
   --cl-bckgd-form: #CFD6D4;
   --cl-white: #FFFFFF;
+  --cl-fn-title: #FFFFFF;
   --cl-bckgd-pages: #302F2F;
   --cl-bckgd-table-items: #1B1A1A;
+  --cl-table-items: #504F4F;
+  --cl-bottom: #302F2F;
+  --cl-bottom-hover: #222121;
   --navbar-height: 12px;
 }
 
@@ -47,4 +51,20 @@ input:focus {
 ::-webkit-scrollbar-thumb:vertical {
   background: #000;
   /* border-radius: 10px; */
+}
+
+/* botones */
+.button_form__button {
+  padding: 0 40px;
+  border: white 1px solid;
+  background-color: var(--cl-bottom);
+  color: white;
+}
+
+.button_form__button--efect:hover {
+  background-color: var(--cl-bottom-hover);
+}
+
+.button_form__button--efect:active {
+  transform: scale(0.98);
 }

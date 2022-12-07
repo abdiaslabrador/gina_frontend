@@ -155,17 +155,17 @@
   font-size: 0.75rem;
 }
 
-.buttom_form__buttom {
+.button_form__button {
   padding: 0 40px;
   border: 1px solid;
   justify-self: flex-start;
 }
 
-.buttom_form__buttom:hover {
+.button_form__button:hover {
   background-color: #222121;
 }
 
-.buttom_form__buttom:active {
+.button_form__button:active {
   transform: scale(0.98);
 }
 
@@ -274,7 +274,7 @@
     grid-template-columns: 1fr;
   }
 
-  .buttom_form__buttom {
+  .button_form__button {
     margin: 10px 0px;
   }
 

@@ -1,7 +1,7 @@
 import {  Loading, } from "@nextui-org/react";
 import moment from "moment";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import React, { useEffect, useContext, useState } from "react";
+import React, { useEffect, useContext, useState, Fragment } from "react";
 import Head from "next/head";
 import WithLayout from "../../components/layout/HocLayoutHeader";
 import { NextPage, GetServerSidePropsContext } from "next";
@@ -10,11 +10,11 @@ import { authContext } from "../../context/login/authContext";
 import customAxios from "../../config/axios";
 import employeProfileCss from "./EmployeeProfile.module.css";
 import {EmployeeInf} from "../../interface/EmployeeInf";
-import Sidebar from "../../components/configuracion/sidebar/Sidebar";
+import Sidebar from "../../components/configuration/sidebar/Sidebar";
 import ServerError from "../../components/error/500";
-import { employeeContext } from "../../context/employee/employeeContext";
+import { employeeContext } from "../../context/configuration/employee/employeeContext";
 import { errorServerContext } from '../../context/error/errorServerContext';
-
+import comunModalCss from "../../styles/modal.module.css";
 
 const EmployeeProfile: NextPage = () => {
   const { user, message, loadingForm, loadingPasswordForm, userAuthenticated, updateEmployeeFn, updateEmployeePasswordFn } = useContext(authContext);
@@ -30,34 +30,10 @@ const EmployeeProfile: NextPage = () => {
   },[])
 
   useEffect(()=>{
-    if(Object.values(user).length > 0){
+    if(user){
         setShowForm(true);
     }
   },[user])
-
-  
-
-  const personalInfoInitialValues = {
-    name: user.name,
-
-    last_name: user.last_name,
-
-    ci_rif: user.ci_rif,
-
-    birthday: moment(user.birthday).format("YYYY-MM-DD"),
-
-    phone_number: user.phone_number,
-
-    direction: user.direction,
-
-    email: user.email,
-
-    active: user.active,
-
-    secretary: user.secretary,
-
-    superuser: user.superuser,
-  };
 
   const personalPasswordInitialValues = {
     password1: "",
@@ -75,7 +51,7 @@ const EmployeeProfile: NextPage = () => {
     }
     try {
       const resp = await customAxios.post("employee/getbyemailupdate", {
-        look_email: value,
+        look_email: value.toLowerCase().trim(),
         email: user.email,
       });
       if (resp?.data) {
@@ -116,7 +92,7 @@ const EmployeeProfile: NextPage = () => {
     }
     try {
       const resp = await customAxios.post("employee/getbyciupdate", {
-        look_ci_rif: value,
+        look_ci_rif: value.toLowerCase().trim(),
         ci_rif: user.ci_rif,
       });
       if (resp?.data) {
@@ -167,12 +143,12 @@ const EmployeeProfile: NextPage = () => {
       
       const employee : EmployeeInf = {
           id: user.id,
-          email: values.email.trim(),
-          name: values.name.trim(),
-          last_name: values.last_name.trim(),
-          ci_rif: values.ci_rif.trim(),
-          phone_number: values.phone_number.trim(),
-          direction: values.direction.trim(),
+          email: values.email.toLowerCase().trim(),
+          name: values.name.toLowerCase().trim(),
+          last_name: values.last_name.toLowerCase().trim(),
+          ci_rif: values.ci_rif.toLowerCase().trim(),
+          phone_number: values.phone_number.toLowerCase().trim(),
+          direction: values.direction.toLowerCase().trim(),
           birthday: values.birthday,
           active: values.active,
           secretary: values.secretary,
@@ -192,27 +168,27 @@ const EmployeeProfile: NextPage = () => {
 
 
   return (
-    <div>
+    <Fragment>
       {!errorFromServer ? (
         <div className={employeProfileCss["container"]}>
         <Sidebar/>
         <div className={employeProfileCss["main"]}>
-          {(showForm)?
+          {(showForm && user)?
           (
-            <div>
+            <Fragment>
               <h1 className={employeProfileCss["title"]}>Datos personales</h1>
               
               {(message)? <div className={employeProfileCss["msj_success"]}>{message}</div> : null}
               <div className={employeProfileCss["personalInfo_container"]}>
                 {<Formik
-                    initialValues={personalInfoInitialValues}
+                    initialValues={user}
                     onSubmit={pesonalInfoHandler}
                     validateOnChange={false}
                     validateOnBlur={false}
                   >
                     <Form>
-                      <div className={employeProfileCss["form_group"]}>
-                        <div className={employeProfileCss["form_group__label"]}>
+                      <div className={comunModalCss["form_group"]}>
+                        <div className={comunModalCss["form_group__label"]}>
                           <label>Email*:</label>
                         </div>
 
@@ -225,14 +201,14 @@ const EmployeeProfile: NextPage = () => {
                         />
 
                         <ErrorMessage
-                          className={employeProfileCss["square__form-error"]}
+                          className={comunModalCss["square__form-error"]}
                           component="div"
                           name="email"
                         />
                       </div>
 
-                      <div className={employeProfileCss["form_group"]}>
-                        <div className={employeProfileCss["form_group__label"]}>
+                      <div className={comunModalCss["form_group"]}>
+                        <div className={comunModalCss["form_group__label"]}>
                           <label>Nombre*:</label>
                         </div>
                         <Field
@@ -244,17 +220,16 @@ const EmployeeProfile: NextPage = () => {
                         />
 
                         <ErrorMessage
-                          className={employeProfileCss["square__form-error"]}
+                          className={comunModalCss["square__form-error"]}
                           component="div"
                           name="name"
                         />
                       </div>
 
-                      <div className={employeProfileCss["form_group"]}>
-                        <div className={employeProfileCss["form_group__label"]}>
+                      <div className={comunModalCss["form_group"]}>
+                        <div className={comunModalCss["form_group__label"]}>
                           <label>Apellido*:</label>
                         </div>
-                        <div className={employeProfileCss["form_group__input"]}>
                           <Field
                             validate={validateLastName}
                             type="text"
@@ -262,16 +237,15 @@ const EmployeeProfile: NextPage = () => {
                             placeholder="Escriba el apellido"
                             disabled={loadingForm}
                           />
-                        </div>
                         <ErrorMessage
-                          className={employeProfileCss["square__form-error"]}
+                          className={comunModalCss["square__form-error"]}
                           component="div"
                           name="last_name"
                         />
                       </div>
 
-                      <div className={employeProfileCss["form_group"]}>
-                        <div className={employeProfileCss["form_group__label"]}>
+                      <div className={comunModalCss["form_group"]}>
+                        <div className={comunModalCss["form_group__label"]}>
                           <label>CI*:</label>
                         </div>
 
@@ -284,14 +258,14 @@ const EmployeeProfile: NextPage = () => {
                         />
 
                         <ErrorMessage
-                          className={employeProfileCss["square__form-error"]}
+                          className={comunModalCss["square__form-error"]}
                           component="div"
                           name="ci_rif"
                         />
                       </div>
 
-                      <div className={employeProfileCss["form_group"]}>
-                        <div className={employeProfileCss["form_group__label"]}>
+                      <div className={comunModalCss["form_group"]}>
+                        <div className={comunModalCss["form_group__label"]}>
                           <label>Fecha de nacimiento*:</label>
                         </div>
 
@@ -303,14 +277,14 @@ const EmployeeProfile: NextPage = () => {
                           disabled={loadingForm}
                         />
                         <ErrorMessage
-                          className={employeProfileCss["square__form-error"]}
+                          className={comunModalCss["square__form-error"]}
                           component="div"
                           name="birthday"
                         />
                       </div>
 
-                      <div className={employeProfileCss["form_group"]}>
-                        <div className={employeProfileCss["form_group__label"]}>
+                      <div className={comunModalCss["form_group"]}>
+                        <div className={comunModalCss["form_group__label"]}>
                           <label>Tlf:</label>
                         </div>
                         <Field
@@ -321,11 +295,10 @@ const EmployeeProfile: NextPage = () => {
                         />
                       </div>
 
-                      <div className={employeProfileCss["form_group"]}>
-                        <div className={employeProfileCss["form_group__label"]}>
+                      <div className={comunModalCss["form_group"]}>
+                        <div className={comunModalCss["form_group__label"]}>
                           <div>Dirección:</div>
                         </div>
-                        <div className={employeProfileCss["form_group__input"]}>
                           <Field
                             as="textarea"
                             type="text"
@@ -336,11 +309,12 @@ const EmployeeProfile: NextPage = () => {
                             cols={23}
                             disabled={loadingForm}
                           />
-                        </div>
                       </div>
 
-                      <div className={employeProfileCss["form_group"]}>
-                        <div className={employeProfileCss["form_group__label"]}>
+                      { (user.superuser) ? 
+                      (<Fragment>
+                        <div className={comunModalCss["form_group"]}>
+                        <div className={comunModalCss["form_group__label"]}>
                           <label>Activo:</label>
                         </div>
                         <Field
@@ -351,8 +325,8 @@ const EmployeeProfile: NextPage = () => {
                         />
                       </div>
 
-                      <div className={employeProfileCss["form_group"]}>
-                        <div className={employeProfileCss["form_group__label"]}>
+                      <div className={comunModalCss["form_group"]}>
+                        <div className={comunModalCss["form_group__label"]}>
                           <label>Secretario:</label>
                         </div>
                         <Field
@@ -363,8 +337,8 @@ const EmployeeProfile: NextPage = () => {
                         />
                       </div>
 
-                      <div className={employeProfileCss["form_group"]}>
-                        <div className={employeProfileCss["form_group__label"]}>
+                      <div className={comunModalCss["form_group"]}>
+                        <div className={comunModalCss["form_group__label"]}>
                           <label>Superusuario:</label>
                         </div>
                         <Field
@@ -374,10 +348,13 @@ const EmployeeProfile: NextPage = () => {
                           disabled={loadingForm}
                         />
                       </div>
+                    </Fragment>) :
+                       null
+                      }
 
                       <div className={employeProfileCss["button_group"]}>
                         {loadingForm ? (
-                          <div className={employeProfileCss["button_form__button"]}>
+                          <div className="button_form__button">
                             <Loading
                               type="spinner"
                               color="currentColor"
@@ -387,9 +364,9 @@ const EmployeeProfile: NextPage = () => {
                         ) : (
                           <button
                             type="submit"
-                            className={`${employeProfileCss["button_form__button"]} ${employeProfileCss["button_form__button--efect"]}`}
+                            className="button_form__button button_form__button--efect"
                           >
-                            Enviar
+                            Actualizar
                           </button>
                         )}
                       </div>
@@ -405,8 +382,8 @@ const EmployeeProfile: NextPage = () => {
               >
                 {({ values }) => (
                   <Form>
-                    <div className={employeProfileCss["form_group"]}>
-                      <div className={employeProfileCss["form_group__label"]}>
+                    <div className={comunModalCss["form_group"]}>
+                      <div className={comunModalCss["form_group__label"]}>
                         <label>Contraseña*:</label>
                       </div>
 
@@ -418,14 +395,14 @@ const EmployeeProfile: NextPage = () => {
                         disabled={loadingPasswordForm}
                       />
                       <ErrorMessage
-                        className={employeProfileCss["square__form-error"]}
+                        className={comunModalCss["square__form-error"]}
                         component="div"
                         name="password1"
                       />
                     </div>
 
-                    <div className={employeProfileCss["form_group"]}>
-                      <div className={employeProfileCss["form_group__label"]}>
+                    <div className={comunModalCss["form_group"]}>
+                      <div className={comunModalCss["form_group__label"]}>
                         <label>Repita contraseña*:</label>
                       </div>
                       <Field
@@ -438,7 +415,7 @@ const EmployeeProfile: NextPage = () => {
                         disabled={loadingPasswordForm}
                       />
                       <ErrorMessage
-                        className={employeProfileCss["square__form-error"]}
+                        className={comunModalCss["square__form-error"]}
                         component="div"
                         name="password2"
                       />
@@ -447,7 +424,7 @@ const EmployeeProfile: NextPage = () => {
                     <div className={employeProfileCss["button_group"]}>
                       {loadingPasswordForm ? (
                         <div
-                          className={employeProfileCss["button_form__button"]}
+                          className="button_form__button"
                         >
                           <Loading
                             type="spinner"
@@ -458,7 +435,7 @@ const EmployeeProfile: NextPage = () => {
                       ) : (
                         <button
                           type="submit"
-                          className={`${employeProfileCss["button_form__button"]} ${employeProfileCss["button_form__button--efect"]}`}
+                          className="button_form__button button_form__button--efect"
                         >
                           Cambiar contraseña
                         </button>
@@ -468,7 +445,7 @@ const EmployeeProfile: NextPage = () => {
                 )}
               </Formik>}
               </div>
-            </div>
+            </Fragment>
           )
           :
           (
@@ -486,7 +463,7 @@ const EmployeeProfile: NextPage = () => {
         <ServerError />
       </div>) 
       }
-    </div>
+    </Fragment>
   );
 };
 

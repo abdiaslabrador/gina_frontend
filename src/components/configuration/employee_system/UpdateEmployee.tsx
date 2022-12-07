@@ -1,11 +1,12 @@
 import React, {useContext} from "react";
 import { Modal, Loading, } from "@nextui-org/react";
-import UpdateEmployeeCss from "./UpdateEmployee.module.css";
+import updateEmployeeCss from "./UpdateEmployee.module.css";
 import customAxios from "../../../config/axios";
+import comunModalCss from "../../../styles/modal.module.css";
 import {EmployeeInf} from "../../../interface/EmployeeInf";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import moment from "moment";
-import { employeeContext } from "../../../context/employee/employeeContext";
+import { employeeContext } from "../../../context/configuration/employee/employeeContext";
 
 const UpdateEmployee = () => {
 
@@ -59,7 +60,7 @@ const UpdateEmployee = () => {
     }
     try {
       const resp = await customAxios.post("employee/getbyemailupdate", {
-        look_email: value,
+        look_email: value.toLowerCase().trim(),
         email: selectedEmployee.email,
       });
       if (resp?.data) {
@@ -100,7 +101,7 @@ const UpdateEmployee = () => {
     }
     try {
       const resp = await customAxios.post("employee/getbyciupdate", {
-        look_ci_rif: value,
+        look_ci_rif: value.toLowerCase().trim(),
         ci_rif: selectedEmployee.ci_rif,
       });
       if (resp?.data) {
@@ -151,12 +152,12 @@ const UpdateEmployee = () => {
       
       const employee : EmployeeInf = {
           id: selectedEmployee.id,
-          email: values.email.trim(),
-          name: values.name.trim(),
-          last_name: values.last_name.trim(),
-          ci_rif: values.ci_rif.trim(),
-          phone_number: values.phone_number.trim(),
-          direction: values.direction.trim(),
+          email: values.email.toLowerCase().trim(),
+          name: values.name.toLowerCase().trim(),
+          last_name: values.last_name.toLowerCase().trim(),
+          ci_rif: values.ci_rif.toLowerCase().trim(),
+          phone_number: values.phone_number.toLowerCase().trim(),
+          direction: values.direction.toLowerCase().trim(),
           birthday: values.birthday,
           active: values.active,
           secretary: values.secretary,
@@ -166,16 +167,16 @@ const UpdateEmployee = () => {
 
   };
 
-  const passwordHandler = async (values: any) => {
+  const passwordHandler = async (values: any, resetForm: any) => {
     
       await updateEmployeePasswordFn(selectedEmployee.id, values.password1);
-      
+      resetForm({ values: "" });
   };
-
+  
   return (
     <div>
       <button
-        className={`${UpdateEmployeeCss["button_form__button"]} ${UpdateEmployeeCss["button_form__button--efect"]}`}
+        className="button_form__button button_form__button--efect"
         onClick={handler}
         disabled={selectedEmployee.id ? false : true}
       >
@@ -197,25 +198,27 @@ const UpdateEmployee = () => {
             flexDirection: "column",
           }}
         >
-          <div className={UpdateEmployeeCss["header_container"]}>
-            <div className={UpdateEmployeeCss["header_title"]}>
-              Creando un empleado
+          <div className={comunModalCss["header_container"]}>
+            <div className={comunModalCss["header_title"]}>
+              Actualizando un empleado
             </div>
-            <div className={UpdateEmployeeCss["header_subtitle"]}>
+            <div className={comunModalCss["header_subtitle"]}>
               (*) Atributos requeridos
             </div>
           </div>
         </Modal.Header>
         <Modal.Body>
-          <div className={UpdateEmployeeCss["personalInfo_container"]}>
+          <div className={updateEmployeeCss["personalInfo_container"]}>
             {
               <Formik
                 initialValues={personalInfoInitialValues}
                 onSubmit={pesonalInfoHandler}
+                validateOnChange={false}
+                validateOnBlur={false}
               >
                 <Form>
-                  <div className={UpdateEmployeeCss["form_group"]}>
-                    <div className={UpdateEmployeeCss["form_group__label"]}>
+                  <div className={comunModalCss["form_group"]}>
+                    <div className={comunModalCss["form_group__label"]}>
                       <label>Email*:</label>
                     </div>
 
@@ -228,14 +231,14 @@ const UpdateEmployee = () => {
                     />
 
                     <ErrorMessage
-                      className={UpdateEmployeeCss["square__form-error"]}
+                      className={comunModalCss["square__form-error"]}
                       component="div"
                       name="email"
                     />
                   </div>
 
-                  <div className={UpdateEmployeeCss["form_group"]}>
-                    <div className={UpdateEmployeeCss["form_group__label"]}>
+                  <div className={comunModalCss["form_group"]}>
+                    <div className={comunModalCss["form_group__label"]}>
                       <label>Nombre*:</label>
                     </div>
                     <Field
@@ -247,17 +250,16 @@ const UpdateEmployee = () => {
                     />
 
                     <ErrorMessage
-                      className={UpdateEmployeeCss["square__form-error"]}
+                      className={comunModalCss["square__form-error"]}
                       component="div"
                       name="name"
                     />
                   </div>
 
-                  <div className={UpdateEmployeeCss["form_group"]}>
-                    <div className={UpdateEmployeeCss["form_group__label"]}>
+                  <div className={comunModalCss["form_group"]}>
+                    <div className={comunModalCss["form_group__label"]}>
                       <label>Apellido*:</label>
                     </div>
-                    <div className={UpdateEmployeeCss["form_group__input"]}>
                       <Field
                         validate={validateLastName}
                         type="text"
@@ -265,16 +267,15 @@ const UpdateEmployee = () => {
                         placeholder="Escriba el apellido"
                         disabled={loadingForm}
                       />
-                    </div>
                     <ErrorMessage
-                      className={UpdateEmployeeCss["square__form-error"]}
+                      className={comunModalCss["square__form-error"]}
                       component="div"
                       name="last_name"
                     />
                   </div>
 
-                  <div className={UpdateEmployeeCss["form_group"]}>
-                    <div className={UpdateEmployeeCss["form_group__label"]}>
+                  <div className={comunModalCss["form_group"]}>
+                    <div className={comunModalCss["form_group__label"]}>
                       <label>CI*:</label>
                     </div>
 
@@ -287,14 +288,14 @@ const UpdateEmployee = () => {
                     />
 
                     <ErrorMessage
-                      className={UpdateEmployeeCss["square__form-error"]}
+                      className={comunModalCss["square__form-error"]}
                       component="div"
                       name="ci_rif"
                     />
                   </div>
 
-                  <div className={UpdateEmployeeCss["form_group"]}>
-                    <div className={UpdateEmployeeCss["form_group__label"]}>
+                  <div className={comunModalCss["form_group"]}>
+                    <div className={comunModalCss["form_group__label"]}>
                       <label>Fecha de nacimiento*:</label>
                     </div>
 
@@ -306,14 +307,14 @@ const UpdateEmployee = () => {
                       disabled={loadingForm}
                     />
                     <ErrorMessage
-                      className={UpdateEmployeeCss["square__form-error"]}
+                      className={comunModalCss["square__form-error"]}
                       component="div"
                       name="birthday"
                     />
                   </div>
 
-                  <div className={UpdateEmployeeCss["form_group"]}>
-                    <div className={UpdateEmployeeCss["form_group__label"]}>
+                  <div className={comunModalCss["form_group"]}>
+                    <div className={comunModalCss["form_group__label"]}>
                       <label>Tlf:</label>
                     </div>
                     <Field
@@ -324,11 +325,10 @@ const UpdateEmployee = () => {
                     />
                   </div>
 
-                  <div className={UpdateEmployeeCss["form_group"]}>
-                    <div className={UpdateEmployeeCss["form_group__label"]}>
+                  <div className={comunModalCss["form_group"]}>
+                    <div className={comunModalCss["form_group__label"]}>
                       <div>Dirección:</div>
                     </div>
-                    <div className={UpdateEmployeeCss["form_group__input"]}>
                       <Field
                         as="textarea"
                         type="text"
@@ -339,11 +339,10 @@ const UpdateEmployee = () => {
                         cols={23}
                         disabled={loadingForm}
                       />
-                    </div>
                   </div>
 
-                  <div className={UpdateEmployeeCss["form_group"]}>
-                    <div className={UpdateEmployeeCss["form_group__label"]}>
+                  <div className={comunModalCss["form_group"]}>
+                    <div className={comunModalCss["form_group__label"]}>
                       <label>Activo:</label>
                     </div>
                     <Field
@@ -354,8 +353,8 @@ const UpdateEmployee = () => {
                     />
                   </div>
 
-                  <div className={UpdateEmployeeCss["form_group"]}>
-                    <div className={UpdateEmployeeCss["form_group__label"]}>
+                  <div className={comunModalCss["form_group"]}>
+                    <div className={comunModalCss["form_group__label"]}>
                       <label>Secretario:</label>
                     </div>
                     <Field
@@ -366,8 +365,8 @@ const UpdateEmployee = () => {
                     />
                   </div>
 
-                  <div className={UpdateEmployeeCss["form_group"]}>
-                    <div className={UpdateEmployeeCss["form_group__label"]}>
+                  <div className={comunModalCss["form_group"]}>
+                    <div className={comunModalCss["form_group__label"]}>
                       <label>Superusuario:</label>
                     </div>
                     <Field
@@ -378,9 +377,9 @@ const UpdateEmployee = () => {
                     />
                   </div>
 
-                  <div className={UpdateEmployeeCss["button_group"]}>
+                  <div className={comunModalCss["button_group"]}>
                     {loadingForm ? (
-                      <div className={UpdateEmployeeCss["button_form__button"]}>
+                      <div className="button_form__button">
                         <Loading
                           type="spinner"
                           color="currentColor"
@@ -390,9 +389,9 @@ const UpdateEmployee = () => {
                     ) : (
                       <button
                         type="submit"
-                        className={`${UpdateEmployeeCss["button_form__button"]} ${UpdateEmployeeCss["button_form__button--efect"]}`}
+                        className="button_form__button button_form__button--efect"
                       >
-                        Enviar
+                        Actualizar
                       </button>
                     )}
                   </div>
@@ -401,18 +400,17 @@ const UpdateEmployee = () => {
             }
           </div>
 
-          <div className={UpdateEmployeeCss["password_container"]}>
+          <div className={updateEmployeeCss["password_container"]}>
             {
               <Formik
                 initialValues={personalPasswordInitialValues}
-                onSubmit={passwordHandler}
-                validateOnChange={false}
-                validateOnBlur={false}
+                onSubmit={(values, { resetForm }) =>
+                passwordHandler(values, resetForm)}
               >
                 {({ values }) => (
                   <Form>
-                    <div className={UpdateEmployeeCss["form_group"]}>
-                      <div className={UpdateEmployeeCss["form_group__label"]}>
+                    <div className={comunModalCss["form_group"]}>
+                      <div className={comunModalCss["form_group__label"]}>
                         <label>Contraseña*:</label>
                       </div>
 
@@ -424,14 +422,14 @@ const UpdateEmployee = () => {
                         disabled={loadingPasswordForm}
                       />
                       <ErrorMessage
-                        className={UpdateEmployeeCss["square__form-error"]}
+                        className={comunModalCss["square__form-error"]}
                         component="div"
                         name="password1"
                       />
                     </div>
 
-                    <div className={UpdateEmployeeCss["form_group"]}>
-                      <div className={UpdateEmployeeCss["form_group__label"]}>
+                    <div className={comunModalCss["form_group"]}>
+                      <div className={comunModalCss["form_group__label"]}>
                         <label>Repita contraseña*:</label>
                       </div>
                       <Field
@@ -444,16 +442,16 @@ const UpdateEmployee = () => {
                         disabled={loadingPasswordForm}
                       />
                       <ErrorMessage
-                        className={UpdateEmployeeCss["square__form-error"]}
+                        className={comunModalCss["square__form-error"]}
                         component="div"
                         name="password2"
                       />
                     </div>
 
-                    <div className={UpdateEmployeeCss["button_group"]}>
+                    <div className={comunModalCss["button_group"]}>
                       {loadingPasswordForm ? (
                         <div
-                          className={UpdateEmployeeCss["button_form__button"]}
+                          className="button_form__button"
                         >
                           <Loading
                             type="spinner"
@@ -464,7 +462,7 @@ const UpdateEmployee = () => {
                       ) : (
                         <button
                           type="submit"
-                          className={`${UpdateEmployeeCss["button_form__button"]} ${UpdateEmployeeCss["button_form__button--efect"]}`}
+                          className="button_form__button button_form__button--efect"
                         >
                           Cambiar contraseña
                         </button>
@@ -476,8 +474,12 @@ const UpdateEmployee = () => {
             }
           </div>
         </Modal.Body>
-        <div className={UpdateEmployeeCss["msj_success"]}>{msjSuccess}</div>
-        <div className={UpdateEmployeeCss["msj_error"]}>{msjError}</div>
+        <Modal.Footer>
+           <div className={comunModalCss["footer_container"]}>
+            {( msjSuccess )?(<div className={comunModalCss["msj_success"]}>{msjSuccess}</div>): null}
+            {( msjError )?(<div className={comunModalCss["msj_error"]}>{msjError}</div>):null}
+           </div>
+        </Modal.Footer>
       </Modal>
     </div>
   );

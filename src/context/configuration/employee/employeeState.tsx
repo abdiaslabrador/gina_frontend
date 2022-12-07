@@ -2,11 +2,11 @@ import React, {useContext} from "react";
 import { useRouter } from "next/router";
 import { useReducer } from "react";
 import employeeReducer from "./employeeReducer";
-import customAxios from "../../config/axios";
+import customAxios from "../../../config/axios";
 import {employeeContext} from './employeeContext';
-import {errorServerContext} from '../error/errorServerContext';
-import {EmployeeInf} from "../../interface/EmployeeInf";
-import {authContext} from '../login/authContext';
+import {errorServerContext} from '../../error/errorServerContext';
+import {EmployeeInf} from "../../../interface/EmployeeInf";
+import {authContext} from '../../login/authContext';
 
 import {
     GET_EMPLOYEES,
@@ -17,6 +17,7 @@ import {
     UPDATE_EMPLOYEE_PASSWORD,
     EMPLOYEES_ERROR,
     LOADING_FORM,
+    LOADING_EMPLOYEE,
     UPDATE_MSJ_SUCCESS,
     UPDATE_MSJ_ERROR,
     LOADING_FORM_PASSWORD
@@ -37,6 +38,7 @@ const EmployeeSystemProvider = ({ children }: props) => {
     msjSuccess : "",
     msjError : "",
     loadingForm: false,
+    loadingEmployee: false,
     loadingPasswordForm: false
     // loadingDataSentence: ''
   };
@@ -45,16 +47,17 @@ const EmployeeSystemProvider = ({ children }: props) => {
 
   async function getEmployeesFn() {
       try {
-        const response = await customAxios.post("/employee/all",{
-          id : user.id
-        });
+        dispatch({ type: LOADING_EMPLOYEE, loadingEmployee: true })
+        const response = await customAxios.get("/employee/all");
         dispatch({
           type: GET_EMPLOYEES,
-          employeeList: response.data
+          employeeList: response.data,
+          loadingEmployee: false
         })
         saveErrorFromServerFn(false);
       } catch (error : any) {
         let message = error.response.data?.msg || error.message;
+        dispatch({ type: LOADING_EMPLOYEE, loadingEmployee: false })
         console.log(error);
         if (error.response?.status == "403") { //usuario con el token inválido. NOTA: ya el token se elimina desde el backend
           dispatch({
@@ -85,9 +88,7 @@ const EmployeeSystemProvider = ({ children }: props) => {
         superuser: employee.superuser,
         password: employee.password,
       });
-      const response = await customAxios.post("/employee/all",{
-        id : user.id
-      });
+      const response = await customAxios.get("/employee/all");
         dispatch({
           type: CREATE_EMPLOYEE,
           employeeList: response.data,
@@ -144,7 +145,7 @@ const EmployeeSystemProvider = ({ children }: props) => {
       console.log(error);
         if(error.response?.status == "404"){//el usuario no está
           try {
-            const resp = await customAxios.post("/employee/all",{id : user.id});
+            const resp = await customAxios.get("/employee/all");
             dispatch({
               type: EMPLOYEES_ERROR,
               employeeList: resp.data,
@@ -210,9 +211,7 @@ const EmployeeSystemProvider = ({ children }: props) => {
         secretary: employee.secretary,
         superuser: employee.superuser,
       });
-      const resp = await customAxios.post("/employee/all",{
-        id : user.id
-      });
+      const resp = await customAxios.get("/employee/all");
       dispatch({
         type: UPDATE_EMPLOYEE,
         employeeList: resp.data,
@@ -233,7 +232,7 @@ const EmployeeSystemProvider = ({ children }: props) => {
         setTimeout(() => dispatch({type:UPDATE_MSJ_ERROR, msjError:""}), 8000);
 
         try {
-          const resp = await customAxios.post("/employee/all",{id : user.id});
+          const resp = await customAxios.get("/employee/all");
           dispatch({
             type: EMPLOYEES_ERROR,
             employeeList: resp.data,
@@ -289,9 +288,7 @@ const EmployeeSystemProvider = ({ children }: props) => {
         id: employeeId,
         password: password,
       });
-      const resp = await customAxios.post("/employee/all",{
-        id : user.id
-      });
+      const resp = await customAxios.get("/employee/all");
       dispatch({
         type: UPDATE_EMPLOYEE_PASSWORD,
         employeeList: resp.data,
@@ -310,7 +307,7 @@ const EmployeeSystemProvider = ({ children }: props) => {
         setTimeout(() => dispatch({type:UPDATE_MSJ_ERROR, msjError:""}), 8000);
 
         try {
-          const resp = await customAxios.post("/employee/all",{id : user.id});
+          const resp = await customAxios.get("/employee/all");
           dispatch({
             type: EMPLOYEES_ERROR,
             employeeList: resp.data,
@@ -369,6 +366,7 @@ const EmployeeSystemProvider = ({ children }: props) => {
         msjError : state.msjError,
         loadingForm: state.loadingForm,
         loadingPasswordForm: state.loadingPasswordForm,
+        loadingEmployee: state.loadingEmployee,
         getEmployeesFn,
         setSelectedEmployeeFn,
         createEmployeeFn,

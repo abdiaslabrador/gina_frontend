@@ -15,13 +15,14 @@ export interface EmployeeInf {
   updateA?: Date;
 }
 
-export interface employeeContextInf {
+export interface EmployeeContextInf {
   selectedEmployee: EmployeeInf;
   employeeList: EmployeeInf[];
   msjSuccess : string;
   msjError : string;
   loadingForm: boolean;
   loadingPasswordForm : boolean;
+  loadingEmployee: boolean;
   getEmployeesFn(): void;
   setSelectedEmployeeFn(employee:EmployeeInf): void;
   createEmployeeFn(employee : any): void;

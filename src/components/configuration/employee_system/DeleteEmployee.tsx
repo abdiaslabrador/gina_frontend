@@ -4,7 +4,7 @@ import {EmployeeInf} from "../../../interface/EmployeeInf";
 import deleteEmployeeCss from "./DeleteEmployee.module.css";
 import customAxios from "../../../config/axios";
 import { Loading } from "@nextui-org/react";
-import { employeeContext } from "../../../context/employee/employeeContext";
+import { employeeContext } from "../../../context/configuration/employee/employeeContext";
 
 const DeleteEmployee = () => {
   const { loadingForm, selectedEmployee, deleteEmployeeFn } = useContext(employeeContext);
@@ -44,7 +44,7 @@ const DeleteEmployee = () => {
   return (
     <div>
       <button
-        className={deleteEmployeeCss["buttom_form__buttom"]}
+        className="button_form__button button_form__button--efect"
         onClick={handler}
         disabled={selectedEmployee.id ? false : true}
       >
@@ -74,7 +74,6 @@ const DeleteEmployee = () => {
               auto
               flat
               color="error"
-              onClick={() => eliminarEmployee()}
             >
               Si
             </Button> //con disable

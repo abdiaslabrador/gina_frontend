@@ -7,17 +7,19 @@ import {
     UPDATE_EMPLOYEE_PASSWORD,
     EMPLOYEES_ERROR,
     LOADING_FORM,
+    LOADING_EMPLOYEE,
     UPDATE_MSJ_SUCCESS,
     UPDATE_MSJ_ERROR,
     LOADING_FORM_PASSWORD
   } from "./employeeType";
-  import {EmployeeInf} from "../../interface/EmployeeInf";
+  import {EmployeeInf} from "../../../interface/EmployeeInf";
   
   type Action =
   
     | {
         type: "GET_EMPLOYEES";
         employeeList: EmployeeInf[];
+        loadingEmployee: boolean,
       }
     | {
         type: "CREATE_EMPLOYEE";
@@ -56,6 +58,10 @@ import {
       loadingForm: boolean;
       }
     | {
+      type: "LOADING_EMPLOYEE";
+      loadingEmployee: boolean;
+      }
+    | {
       type: "LOADING_FORM_PASSWORD";
       loadingPasswordForm: boolean;
       }
@@ -80,7 +86,8 @@ import {
       case GET_EMPLOYEES:
         return {
           ...state,
-          employeeList: action.employeeList
+          employeeList: action.employeeList,
+          loadingEmployee: action.loadingEmployee,
         };
         case CREATE_EMPLOYEE:
         return {
@@ -132,6 +139,12 @@ import {
             ...state,
             loadingForm: action.loadingForm,
           };
+          case LOADING_EMPLOYEE:
+          return {
+            ...state,
+            loadingEmployee: action.loadingEmployee,
+          };
+          
           case LOADING_FORM_PASSWORD:
           return {
             ...state,

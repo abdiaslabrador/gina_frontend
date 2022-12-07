@@ -1,3 +1,4 @@
+/* titles and headers */
 .header_container {
     display: flex;
     flex-direction: column;
@@ -13,6 +14,13 @@
     font-size: 12px;
 }
 
+/* contents */
+.body_container {
+    padding-right: 50px;
+    padding-left: 50px;
+}
+
+/*forms*/
 .form_group {
     display: grid;
     margin-bottom: 30px;
@@ -21,17 +29,15 @@
 
 .form_group__label {
     color: white;
-    /* flex: 0 1 30%; */
     text-align: end;
     padding-right: 50px;
 
 }
 
+/*form errors*/
 .square__form-error {
-    /* height: 25px; */
     width: 100%;
     font-weight: bold;
-    /* margin-bottom: 16.5px; */
     color: black;
     background-color: var(--cl-error);
     padding-left: 6%;
@@ -39,52 +45,31 @@
     grid-column-start: 2;
     grid-column-end: 3;
     text-align: center;
-    /* padding-left:30px; */
 }
 
-.button_group {
-    display: flex;
+
+/*mensajes exito o error*/
+.footer_container{
+    display:flex;
+    flex-direction: column;
     justify-content: center;
-}
-
-.button_form__button {
-    padding: 0 40px;
-    border: white 1px solid;
-    background-color: #302F2F;
-    color: white;
-}
-
-.button_form__button--efect:hover {
-    background-color: #222121;
-}
-
-.button_form__button--efect:active {
-    transform: scale(0.98);
-}
-
-.body_container {
-    padding-right: 50px;
-    padding-left: 50px;
-}
-
-.footer_container {
-    position: sticky;
-    bottom: 0px;
-    background-color: var(--cl-bckgd-pages);
-    padding: 0.75rem 100px;
-
-
+    flex: 0 1 100%;
 }
 
 .msj_success {
     background-color: var(--cl-headers);
     color: white;
-    flex: 1 1 auto;
-    margin-bottom: 0px;
+    height: 20px;
 }
 
 .msj_error {
     background-color: var(--cl-error);
     color: white;
-    flex: 1 1 auto;
+    height: 20px;
+}
+
+/*botón*/
+.button_group {
+    display: flex;
+    justify-content: center;
 }

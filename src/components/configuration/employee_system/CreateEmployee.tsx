@@ -1,9 +1,10 @@
 import React, {useContext} from "react";
 import { Modal, Loading } from "@nextui-org/react";
 import createEmployeeCss from "./CreateEmployee.module.css";
+import comunModalCss from "../../../styles/modal.module.css";
 import customAxios from "../../../config/axios";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { employeeContext } from "../../../context/employee/employeeContext";
+import { employeeContext } from "../../../context/configuration/employee/employeeContext";
 import { EmployeeInf } from "../../../interface/EmployeeInf";
 
 
@@ -24,12 +25,12 @@ const CreateEmployee = () => {
   const formHandler = async (values: any, resetForm: any) => {
     
         const employee  = {
-          email: values.email.trim(),
-          name: values.name.trim(),
-          last_name: values.last_name.trim(),
-          ci_rif: values.ci_rif.trim(),
-          phone_number: values.phone_number.trim(),
-          direction: values.direction.trim(),
+          email: values.email.toLowerCase().trim(),
+          name: values.name.toLowerCase().trim(),
+          last_name: values.last_name.toLowerCase().trim(),
+          ci_rif: values.ci_rif.toLowerCase().trim(),
+          phone_number: values.phone_number.toLowerCase().trim(),
+          direction: values.direction.toLowerCase().trim(),
           birthday: values.birthday,
           active: values.active,
           secretary: values.secretary,
@@ -76,7 +77,7 @@ const CreateEmployee = () => {
     }
     try {
       const resp = await customAxios.post("employee/getbyemail", {
-        email: value,
+        email: value.toLowerCase().trim(),
       });
       if (resp?.data) {
         error = "Correo ya existe";
@@ -116,7 +117,7 @@ const CreateEmployee = () => {
     }
     try {
       const resp = await customAxios.post("employee/getbyci", {
-        ci_rif: value,
+        ci_rif: value.toLowerCase().trim(),
       });
       if (resp?.data) {
         error = "Usuario ya existe";
@@ -167,7 +168,7 @@ const CreateEmployee = () => {
   return (
     <div>
       <button
-        className={`${createEmployeeCss["button_form__button"]} ${createEmployeeCss["button_form__button--efect"]}`}
+        className="button_form__button button_form__button--efect"
         onClick={handler}
       >
         Crear
@@ -188,17 +189,17 @@ const CreateEmployee = () => {
             flexDirection: "column",
           }}
         >
-          <div className={createEmployeeCss["header_container"]}>
-            <div className={createEmployeeCss["header_title"]}>
+          <div className={comunModalCss["header_container"]}>
+            <div className={comunModalCss["header_title"]}>
               Creando un empleado
             </div>
-            <div className={createEmployeeCss["header_subtitle"]}>
+            <div className={comunModalCss["header_subtitle"]}>
               (*) Atributos requeridos
             </div>
           </div>
         </Modal.Header>
         <Modal.Body>
-          <div className={createEmployeeCss["body_container"]}>
+          <div className={comunModalCss["body_container"]}>
             {
               <Formik
                 initialValues={personalInfoInitialValues}
@@ -210,8 +211,8 @@ const CreateEmployee = () => {
               >
                 {({ values }) => (
                   <Form>
-                    <div className={createEmployeeCss["form_group"]}>
-                      <div className={createEmployeeCss["form_group__label"]}>
+                    <div className={comunModalCss["form_group"]}>
+                      <div className={comunModalCss["form_group__label"]}>
                         <label>Email*:</label>
                       </div>
 
@@ -224,14 +225,14 @@ const CreateEmployee = () => {
                       />
 
                       <ErrorMessage
-                        className={createEmployeeCss["square__form-error"]}
+                        className={comunModalCss["square__form-error"]}
                         component="div"
                         name="email"
                       />
                     </div>
 
-                    <div className={createEmployeeCss["form_group"]}>
-                      <div className={createEmployeeCss["form_group__label"]}>
+                    <div className={comunModalCss["form_group"]}>
+                      <div className={comunModalCss["form_group__label"]}>
                         <label>Nombre*:</label>
                       </div>
                       <Field
@@ -243,17 +244,16 @@ const CreateEmployee = () => {
                       />
 
                       <ErrorMessage
-                        className={createEmployeeCss["square__form-error"]}
+                        className={comunModalCss["square__form-error"]}
                         component="div"
                         name="name"
                       />
                     </div>
 
-                    <div className={createEmployeeCss["form_group"]}>
-                      <div className={createEmployeeCss["form_group__label"]}>
+                    <div className={comunModalCss["form_group"]}>
+                      <div className={comunModalCss["form_group__label"]}>
                         <label>Apellido*:</label>
                       </div>
-                      <div className={createEmployeeCss["form_group__input"]}>
                         <Field
                           validate={validateLastName}
                           type="text"
@@ -261,16 +261,15 @@ const CreateEmployee = () => {
                           placeholder="Escriba el apellido"
                           disabled={loadingForm}
                         />
-                      </div>
                       <ErrorMessage
-                        className={createEmployeeCss["square__form-error"]}
+                        className={comunModalCss["square__form-error"]}
                         component="div"
                         name="last_name"
                       />
                     </div>
 
-                    <div className={createEmployeeCss["form_group"]}>
-                      <div className={createEmployeeCss["form_group__label"]}>
+                    <div className={comunModalCss["form_group"]}>
+                      <div className={comunModalCss["form_group__label"]}>
                         <label>CI*:</label>
                       </div>
 
@@ -283,14 +282,14 @@ const CreateEmployee = () => {
                       />
 
                       <ErrorMessage
-                        className={createEmployeeCss["square__form-error"]}
+                        className={comunModalCss["square__form-error"]}
                         component="div"
                         name="ci_rif"
                       />
                     </div>
 
-                    <div className={createEmployeeCss["form_group"]}>
-                      <div className={createEmployeeCss["form_group__label"]}>
+                    <div className={comunModalCss["form_group"]}>
+                      <div className={comunModalCss["form_group__label"]}>
                         <label>Fecha de nacimiento*:</label>
                       </div>
 
@@ -302,14 +301,14 @@ const CreateEmployee = () => {
                         disabled={loadingForm}
                       />
                       <ErrorMessage
-                        className={createEmployeeCss["square__form-error"]}
+                        className={comunModalCss["square__form-error"]}
                         component="div"
                         name="birthday"
                       />
                     </div>
 
-                    <div className={createEmployeeCss["form_group"]}>
-                      <div className={createEmployeeCss["form_group__label"]}>
+                    <div className={comunModalCss["form_group"]}>
+                      <div className={comunModalCss["form_group__label"]}>
                         <label>Tlf:</label>
                       </div>
                       <Field
@@ -320,11 +319,10 @@ const CreateEmployee = () => {
                       />
                     </div>
 
-                    <div className={createEmployeeCss["form_group"]}>
-                      <div className={createEmployeeCss["form_group__label"]}>
+                    <div className={comunModalCss["form_group"]}>
+                      <div className={comunModalCss["form_group__label"]}>
                         <div>Dirección:</div>
                       </div>
-                      <div className={createEmployeeCss["form_group__input"]}>
                         <Field
                           as="textarea"
                           type="text"
@@ -335,11 +333,10 @@ const CreateEmployee = () => {
                           cols={23}
                           disabled={loadingForm}
                         />
-                      </div>
                     </div>
 
-                    <div className={createEmployeeCss["form_group"]}>
-                      <div className={createEmployeeCss["form_group__label"]}>
+                    <div className={comunModalCss["form_group"]}>
+                      <div className={comunModalCss["form_group__label"]}>
                         <label>Activo:</label>
                       </div>
                       <Field
@@ -350,8 +347,8 @@ const CreateEmployee = () => {
                       />
                     </div>
 
-                    <div className={createEmployeeCss["form_group"]}>
-                      <div className={createEmployeeCss["form_group__label"]}>
+                    <div className={comunModalCss["form_group"]}>
+                      <div className={comunModalCss["form_group__label"]}>
                         <label>Secretario:</label>
                       </div>
                       <Field
@@ -362,8 +359,8 @@ const CreateEmployee = () => {
                       />
                     </div>
 
-                    <div className={createEmployeeCss["form_group"]}>
-                      <div className={createEmployeeCss["form_group__label"]}>
+                    <div className={comunModalCss["form_group"]}>
+                      <div className={comunModalCss["form_group__label"]}>
                         <label>Superusuario:</label>
                       </div>
                       <Field
@@ -374,8 +371,8 @@ const CreateEmployee = () => {
                       />
                     </div>
 
-                    <div className={createEmployeeCss["form_group"]}>
-                      <div className={createEmployeeCss["form_group__label"]}>
+                    <div className={comunModalCss["form_group"]}>
+                      <div className={comunModalCss["form_group__label"]}>
                         <label>Contraseña*:</label>
                       </div>
 
@@ -387,14 +384,14 @@ const CreateEmployee = () => {
                         disabled={loadingForm}
                       />
                       <ErrorMessage
-                        className={createEmployeeCss["square__form-error"]}
+                        className={comunModalCss["square__form-error"]}
                         component="div"
                         name="password1"
                       />
                     </div>
 
-                    <div className={createEmployeeCss["form_group"]}>
-                      <div className={createEmployeeCss["form_group__label"]}>
+                    <div className={comunModalCss["form_group"]}>
+                      <div className={comunModalCss["form_group__label"]}>
                         <label>Repita contraseña*:</label>
                       </div>
                       <Field
@@ -407,15 +404,15 @@ const CreateEmployee = () => {
                         disabled={loadingForm}
                       />
                       <ErrorMessage
-                        className={createEmployeeCss["square__form-error"]}
+                        className={comunModalCss["square__form-error"]}
                         component="div"
                         name="password2"
                       />
                     </div>
 
-                    <div className={createEmployeeCss["button_group"]}>
+                    <div className={comunModalCss["button_group"]}>
                     {loadingForm ? (
-                      <div className={createEmployeeCss["button_form__button"]}>
+                      <div className="button_form__button">
                         <Loading
                           type="spinner"
                           color="currentColor"
@@ -425,9 +422,9 @@ const CreateEmployee = () => {
                     ) : (
                       <button
                         type="submit"
-                        className={`${createEmployeeCss["button_form__button"]} ${createEmployeeCss["button_form__button--efect"]}`}
+                        className="button_form__button button_form__button--efect"
                       >
-                        Enviar
+                        Crear
                       </button>
                     )}
                   </div>
@@ -437,8 +434,12 @@ const CreateEmployee = () => {
             }
           </div>
         </Modal.Body>
-        <div className={createEmployeeCss["msj_success"]}>{msjSuccess}</div>
-        <div className={createEmployeeCss["msj_error"]}>{msjError}</div>
+        <Modal.Footer>
+           <div className={comunModalCss["footer_container"]}>
+            {( msjSuccess )?(<div className={comunModalCss["msj_success"]}>{msjSuccess}</div>): null}
+            {( msjError )?(<div className={comunModalCss["msj_error"]}>{msjError}</div>):null}
+           </div>
+        </Modal.Footer>
       </Modal>
     </div>
   );

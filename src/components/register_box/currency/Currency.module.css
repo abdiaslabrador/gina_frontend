@@ -1,0 +1,21 @@
+/*titulo*/
+.title{
+    color:white;
+    margin-bottom: 10px;
+  }
+
+.capitalize-label{
+text-transform: capitalize;
+}
+
+.personalInfo_container {
+    margin-bottom: 50px;
+}
+
+.password_container {
+    padding-bottom: 50px;
+}
+
+ 
+
+  

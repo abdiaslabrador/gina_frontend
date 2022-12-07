@@ -1,3 +1,4 @@
+import moment from "moment";
 import React, {useContext} from "react";
 import { useRouter } from "next/router";
 import { createContext, useReducer } from "react";
@@ -27,7 +28,8 @@ const AuthProvider = ({ children }: props) => {
   const router = useRouter();
 
   const initialState = {
-    user: {} as EmployeeInf,
+    // user: {} as EmployeeInf,
+    user: null,
     message: "",
     authenticated: false,
     loadingForm: false,
@@ -62,7 +64,7 @@ const AuthProvider = ({ children }: props) => {
       const resp = await customAxios.get("/auth");
       dispatch({
         type: GET_USER,
-        user: resp.data,
+        user: {...resp.data, birthday : moment(resp.data.birthday).format("YYYY-MM-DD")},
       });
       saveErrorFromServerFn(false);
     } catch (error: any) {
@@ -122,7 +124,7 @@ const AuthProvider = ({ children }: props) => {
       dispatch({
         type: UPDATE_USER,
         user: cuerrentUser,
-        message: "Empleado actualizado exitosamente",
+        message: "Datos actualizados",
         loadingForm: false,
       })
       setTimeout(() => dispatch({type:UPDATE_MSJ_SUCCESS, message:""}), 8000);

@@ -6,17 +6,18 @@ import { getCookie } from "cookies-next";
 import { authContext } from "../../context/login/authContext";
 import customAxios from "../../config/axios";
 import employeesCss from "./Employees.module.css";
-import Sidebar from "../../components/configuracion/sidebar/Sidebar";
-import EmployeeSystem from "../../components/configuracion/employee_system/EmployeeSystem";
-
+import Sidebar from "../../components/configuration/sidebar/Sidebar";
+import EmployeeSystem from "../../components/configuration/employee_system/EmployeeSystem";
+import { useRouter } from "next/router";
 import ServerError from "../../components/error/500";
 import { errorServerContext } from '../../context/error/errorServerContext';
-import EmployeeSystemProvider    from "../../context/employee/employeeState";
+import EmployeeSystemProvider    from "../../context/configuration/employee/employeeState";
 
 
 const Employees: NextPage = () => {
   const { user, userAuthenticated } = useContext(authContext);
   const { errorFromServer } = useContext(errorServerContext);
+  const router = useRouter();
 
 
   useEffect(()=>{
@@ -25,6 +26,14 @@ const Employees: NextPage = () => {
     }
     checkAuth();
   },[])
+  
+  useEffect(()=>{
+    if(user){
+      if(user.superuser == false){
+        router.push("/configuracion")
+      }
+    }
+  },[user])
 
   return (
     <div>

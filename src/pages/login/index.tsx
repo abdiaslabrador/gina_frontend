@@ -28,7 +28,7 @@ const Login: NextPage = () => {
 
   const formHandler = async (values: any) => {
     const { email, password } = values;
-    await singIn(email, password);
+    await singIn(email.toLowerCase().trim(), password);
   };
 
   return (

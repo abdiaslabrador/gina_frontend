@@ -14,7 +14,7 @@ import {EmployeeInf} from "../../interface/EmployeeInf";
 type Action =
   | {
       type: "GET_USER";
-      user?: EmployeeInf;
+      user: EmployeeInf | null;
       authenticated?: boolean;
       message?: string;
     }
@@ -29,20 +29,20 @@ type Action =
     }
   | {
       type: "LOGIN_ERROR";
-      user?: EmployeeInf;
+      user?: EmployeeInf | null;
       authenticated?: boolean;
-      message?: string;
+      message: string;
     }
   | {
       type: "LOGIN_ERROR_SERVER";
-      user?: EmployeeInf;
+      user?: EmployeeInf | null;
       authenticated?: boolean;
       message?: string;
       
     }
   | {
       type: "LOG_OUT";
-      user?: EmployeeInf;
+      user?: EmployeeInf | null;
       authenticated?: boolean;
       message?: string;
       
@@ -62,7 +62,7 @@ type Action =
       }
     | {
       type:"UPDATE_USER";
-      user: EmployeeInf;
+      user: EmployeeInf | null;
       message?: string;
       loadingForm: boolean,
       };
@@ -85,16 +85,16 @@ const authReducer = (state: any = {}, action: Action) => {
     case LOGIN_ERROR:
       return {
         ...state,
-        user: {} as EmployeeInf,
-        authenticated: null,
+        user: null,
+        authenticated: false,
         message: action.message,
       };
     case LOG_OUT:
       return {
         ...state,
-        user: {} as EmployeeInf,
-        authenticated: null,
-        message: action.message,
+        user: null,
+        authenticated: false,
+        message: "",
       };
     case LOADING_FORM:
       return {
