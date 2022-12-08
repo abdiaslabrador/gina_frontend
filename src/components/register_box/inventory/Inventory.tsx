@@ -5,6 +5,7 @@ import cajaCss from "../../../styles/Caja.module.css";
 import customAxios from "../../../config/axios";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { currencyContext } from "../../../context/register_box/currency/currencyContext";
+import SearchFormProduct from "./SearchFormProduct";
 
 interface initialValues {
   id: number,
@@ -50,7 +51,7 @@ const Inventory = () => {
 
       <Modal
         animated={false}
-        width="600px"
+        width="800px"
         css={{ height: "600px", backgroundColor: "#302F2F" }}
         // closeButton={!loadingForm}
         closeButton
@@ -63,7 +64,7 @@ const Inventory = () => {
             <h3 className={inventoryCss["title"]}>Inventario</h3>
         </Modal.Header>
         <Modal.Body>
-            from inventory
+            <SearchFormProduct/>
           {/* {(!loadingCurrency && currency) ? (
           <div className={currencyCss["body_container"]}>
             {

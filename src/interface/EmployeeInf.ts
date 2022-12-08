@@ -28,6 +28,5 @@ export interface EmployeeContextInf {
   createEmployeeFn(employee : any): void;
   deleteEmployeeFn(employeeId: number):void;
   updateEmployeeFn(employee:EmployeeInf):void;
-  updateEmployeeFn(employee:EmployeeInf):void;
   updateEmployeePasswordFn(employeeId : number, password: string):void;
 }

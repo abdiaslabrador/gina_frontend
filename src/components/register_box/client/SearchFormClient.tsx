@@ -36,7 +36,7 @@ async function validateCi(value: any) {
   }
   try {
     const resp = await customAxios.post("client/getbyci", {
-      ci_rif: value,
+      ci_rif: value.toLowerCase().trim(),
     });
     
   } catch (errorPetition: any) {

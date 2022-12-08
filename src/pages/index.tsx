@@ -11,6 +11,7 @@ import cajaCss from "../styles/Caja.module.css";
 import WithLayout from "../components/layout/HocLayoutHeader";
 import {errorServerContext} from '../context/error/errorServerContext';
 import CurrencyProvider from '../context/register_box/currency/currencyState';
+import ProductProvider from '../context/register_box/product/productState';
 import Client from "../components/register_box/client/Client";
 import Currency from "../components/register_box/currency/Currency";
 import Inventory from "../components/register_box/inventory/Inventory";
@@ -130,12 +131,15 @@ const Caja: NextPage = () => {
             <div className={cajaCss["options__items"]}>
               <i className="fa-solid fa-cash-register"></i>
             </div>
-            <Inventory/>
+           <CurrencyProvider>
+            <ProductProvider>
+                <Inventory/>
+            </ProductProvider> 
+
             <Client/>
             {/* <div className={cajaCss["options__items"]}>
               <i className="fa-solid fa-book"></i>
             </div> */}
-            <CurrencyProvider>
               <Currency/>
             </CurrencyProvider>
             
