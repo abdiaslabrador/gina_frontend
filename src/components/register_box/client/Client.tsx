@@ -1,6 +1,6 @@
 import React, {Fragment, useContext, useEffect, useState} from "react";
 import { Modal, Loading } from "@nextui-org/react";
-import cajaCss from "../../../styles/Caja.module.css";
+import cajaCss from "../register_box/Caja.module.css";
 import clientCss from './Client.module.css'
 import { useRouter } from "next/router";
 import { authContext } from "../../../context/login/authContext";
@@ -9,16 +9,12 @@ import ClientTable from "./ClientTable";
 import ClientProvider from "../../../context/register_box/client/clientState";
 
 const Client = () => {
-  const router = useRouter();
-  const [ showEmployeeSystem, setshowEmployeeSystem ] = useState(false);
-
   const [visible, setVisible] = React.useState(false);
 
   const handler = () => setVisible(true);
 
   const closeHandler = () => {
     setVisible(false);
-    console.log("closed");
   };
 
   return (

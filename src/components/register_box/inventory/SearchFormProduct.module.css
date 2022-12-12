@@ -1,18 +1,25 @@
 .container{
-    margin-bottom: 50px;
+    display: flex;
+    margin-bottom: 20px;
 }
 
-
+.currency{
+    flex: 1 1 50%;
+    color: white;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+}
+.search{
+    flex: 1 1 50%;
+}
 .form_select {
-    /* display: grid; */
     margin-bottom: 5px;
-    /* grid-template-columns:  max-content; */
-    /* grid-template-rows:  min-content min-content; */
+    width: 50%;
 }
 .form_group {
     display: grid;
-    /* margin-bottom: 30px; */
-    grid-template-columns: 28% min-content;
+    grid-template-columns: 55% min-content;
 }
 
 .square__form-error {

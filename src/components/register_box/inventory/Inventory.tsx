@@ -1,44 +1,31 @@
 import React, {Fragment, useState, useContext, useEffect} from "react";
 import { Modal, Loading } from "@nextui-org/react";
 import inventoryCss from "./Inventory.module.css";
-import cajaCss from "../../../styles/Caja.module.css";
+import cajaCss from "../register_box/Caja.module.css";
 import customAxios from "../../../config/axios";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { currencyContext } from "../../../context/register_box/currency/currencyContext";
+import { productContext } from "../../../context/register_box/product/productContext";
 import SearchFormProduct from "./SearchFormProduct";
+import ProductTable from "./ProductTable";
+import { currencyContext } from "../../../context/register_box/currency/currencyContext";
 
 interface initialValues {
   id: number,
   today_currency: number;
 }
 const Inventory = () => {
-//   const { currency, msjSuccess, msjError, loadingForm, loadingCurrency,  getCurrencyFn, updateCurrencyFn } = useContext(currencyContext);
+  const { cleanProductsFn } = useContext(productContext);
   const [visible, setVisible] = React.useState(false);
+  const { currency, } = useContext( currencyContext );
   
   const handler = async () => { 
     setVisible(true);
   }
 
   const closeHandler = () => {
+    cleanProductsFn();
     setVisible(false);
   };
-
-//   const formHandler = async (values: any) => {
-//         await updateCurrencyFn(values);
-//   };
-
-//   async function validateTasa(value: string) {
-//     let error;
-//     console.log(value)
-//     if (!value) {
-//       error = "Campo requerido";
-//     }
-//     if(!/^[0-9]+([.][0-9]{1,2})?$/i.test(value)){
-//       error = "Tasa mal escrita";
-//     }
-      
-//     return error;
-//   }
 
   return (
     <Fragment>
@@ -53,7 +40,6 @@ const Inventory = () => {
         animated={false}
         width="800px"
         css={{ height: "600px", backgroundColor: "#302F2F" }}
-        // closeButton={!loadingForm}
         closeButton
         preventClose
         aria-labelledby="modal-title"
@@ -65,73 +51,7 @@ const Inventory = () => {
         </Modal.Header>
         <Modal.Body>
             <SearchFormProduct/>
-          {/* {(!loadingCurrency && currency) ? (
-          <div className={currencyCss["body_container"]}>
-            {
-              <Formik
-                initialValues={currency}
-                onSubmit={formHandler}
-              >
-                {({ values }) => (
-                  <Form>
-                    <div className={currencyCss["form_group"]}>
-                      <div className={currencyCss["form_group__label"]}>
-                        <label>{currency.name}</label>
-                      </div>
-                      
-                      <Field
-                        validate={validateTasa}
-                        type="text"
-                        name="today_currency"
-                        placeholder="Ejm: 11.5 o 11"
-                        disabled={loadingForm}
-                      />
-
-                      <ErrorMessage
-                        className={currencyCss["square__form-error"]}
-                        component="div"
-                        name="today_currency"
-                      />
-                    </div>
-
-                                        
-                    <div className={currencyCss["button_group"]}>
-                    {loadingForm ? (
-                      <div className={currencyCss["button_form__button"]}>
-                        <Loading
-                          type="spinner"
-                          color="currentColor"
-                          size="sm"
-                        />
-                      </div>
-                    ) : (
-                      <button
-                        type="submit"
-                        className={`${currencyCss["button_form__button"]} ${currencyCss["button_form__button--efect"]}`}
-                      >
-                        Actualizar
-                      </button>
-                    )}
-                  </div>
-                  </Form>
-                )}
-              </Formik>
-            }
-          </div>):
-          null
-          }
-          {(loadingCurrency && !currency)?(
-            <Loading
-                type="spinner"
-                color="white"
-                size="xl"
-            />            
-          ):
-          null}
-          {(!loadingCurrency && !currency)?(
-            <h1 className={currencyCss["title"]}>No hay tipo de divisas</h1>      
-          ):
-          null} */}
+            <ProductTable/>
         </Modal.Body>
         <Modal.Footer>
            {/* <div className={comunModalCss["footer_container"]}>

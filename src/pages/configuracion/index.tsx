@@ -320,7 +320,6 @@ const EmployeeProfile: NextPage = () => {
                         <Field
                           type="checkbox"
                           name="active"
-                          placeholder="Escriba el teléfono"
                           disabled={loadingForm}
                         />
                       </div>
@@ -332,7 +331,6 @@ const EmployeeProfile: NextPage = () => {
                         <Field
                           type="checkbox"
                           name="secretary"
-                          placeholder="Escriba el teléfono"
                           disabled={loadingForm}
                         />
                       </div>
@@ -344,7 +342,6 @@ const EmployeeProfile: NextPage = () => {
                         <Field
                           type="checkbox"
                           name="superuser"
-                          placeholder="Escriba el teléfono"
                           disabled={loadingForm}
                         />
                       </div>

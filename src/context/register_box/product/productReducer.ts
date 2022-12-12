@@ -1,14 +1,15 @@
 import {
    GET_PRODUCTS, 
-   CREATE_PRODUCT,
-   DELETE_PRODUCT,
-   UPDATE_PRODUCT,
    SET_SELECTED_PRODUCT,
+   SET_SELECTED_SELECT,
    LOADING_FORM,
    LOADING_PRODUCT,
+   LOADING_PRODUCT_PRICES,
    UPDATE_MSJ_SUCCESS,
    UPDATE_MSJ_ERROR,
-   PRODUCTS_ERROR
+   PRODUCTS_ERROR,
+   PRODUCTS_CLEAN_STATE,
+   SET_SELECTED_SEARCHFORM,
   } from "./productType";
   import {ProductInf} from "../../../interface/productInf";
   
@@ -19,141 +20,131 @@ import {
         productList: ProductInf[];
         loadingProduct: boolean,
       }
-    // | {
-    //     type: "CREATE_EMPLOYEE";
-    //     productList: ProductInf[];
-    //     msjSuccess : string,
-    //     msjError : string,
-    //     loadingForm : boolean,
-    //   }
-    // | {
-    //   type: "DELETE_EMPLOYEE";
-    //   productList: ProductInf[];
-    //   selectedProduct: ProductInf;
-    //   loadingForm: false;
-    //   }
-    // | {
-    //   type: "UPDATE_EMPLOYEE";
-    //   productList: ProductInf[];
-    //   selectedProduct: ProductInf;
-    //   msjSuccess : string,
-    //   msjError : string,
-    //   loadingForm : boolean,
-    //   }
-    // | {
-    //   type: "UPDATE_EMPLOYEE_PASSWORD";
-    //   productList: ProductInf[],
-    //   msjSuccess: string,
-    //   msjError: string,
-    //   loadingPasswordForm: boolean,
-    //   }
-    // | {
-    //   type: "SET_SELECTED_EMPLOYEE";
-    //   selectedProduct: ProductInf;
-    //   }
-    // | {
-    //   type: "LOADING_FORM";
-    //   loadingForm: boolean;
-    //   }
+    | {
+      type: "UPDATE_PRODUCT";
+      selectedProduct: ProductInf;
+      msjSuccess : string,
+      msjError : string,
+      loadingForm : boolean,
+      }
+        | {
+      type: "SET_SELECTED_PRODUCT";
+      selectedProduct: ProductInf;
+      }
+    | {
+      type: "SET_SELECTED_SELECT";
+      selectOption: string;
+      }      
+    | {
+      type: "LOADING_FORM";
+      loadingForm: boolean;
+      }
     | {
       type: "LOADING_PRODUCT";
       loadingProduct: boolean;
       }
-    // | {
-    //   type: "LOADING_FORM_PASSWORD";
-    //   loadingPasswordForm: boolean;
-    //   }
+    | {
+      type: "LOADING_PRODUCT_PRICES";
+      loadingProductPrices: boolean;
+      }
+    | {
+      type: "SET_SELECTED_SEARCHFORM";
+      searchFormValue: string | number;
+      }
     | {
         type: "PRODUCTS_ERROR";
-        productList: ProductInf[];
-        selectedProduct: ProductInf;
+        productList?: ProductInf[];
+        selectedProduct?: ProductInf;
       }
-    // | {
-    //   type: "UPDATE_MSJ_SUCCESS";
-    //   msjSuccess : string,
-      
-    // }
-    // | {
-    //   type: "UPDATE_MSJ_ERROR";
-    //   msjError : string,
-    // }
+    | {
+        type: "PRODUCTS_CLEAN_STATE";
+        selectedProduct? : ProductInf;
+        productList? : ProductInf[];
+        selectOption?: string;
+        msjSuccess? : string;
+        msjError? : string;
+        loadingForm?: boolean;
+        loadingProduct?: boolean;
+      }
+    | {
+      type: "UPDATE_MSJ_SUCCESS";
+      msjSuccess : string,
+    }
+    | {
+      type: "UPDATE_MSJ_ERROR";
+      msjError : string,
+    }
     ;
     
     
   const productReducer = (state: any = {}, action: Action) => {
     switch (action.type) {
+      
+      
       case GET_PRODUCTS:
         return {
           ...state,
           productList: action.productList,
           loadingProduct: action.loadingProduct,
         };
-        // case CREATE_EMPLOYEE:
-        // return {
-        //   ...state,
-        //   productList: action.productList,
-        //   msjSuccess : action.msjSuccess,
-        //   msjError : action.msjError,
-        //     loadingForm: action.loadingForm,
-
-        // };
-        // case SET_SELECTED_EMPLOYEE:
-        //   return {
-        //     ...state,
-        //     selectedProduct: action.selectedProduct
-        //   };
-        // case DELETE_EMPLOYEE:
-        //   return {
-        //     ...state,
-        //     productList: action.productList,
-        //     selectedProduct: action.selectedProduct,
-        //     loadingForm: false
-        //   };
-        //   case UPDATE_EMPLOYEE:
-        //   return {
-        //     ...state,
-        //     productList: action.productList,
-        //     selectedProduct: action.selectedProduct,
-        //     msjSuccess: action.msjSuccess,
-        //     msjError: action.msjError,
-        //     loadingForm: action.loadingForm,
-        //   };
-        //   case UPDATE_EMPLOYEE_PASSWORD:
-        //   return {
-        //     ...state,
-        //     type: UPDATE_EMPLOYEE_PASSWORD,
-        //     productList: action.productList,
-        //     msjSuccess: action.msjSuccess,
-        //     msjError: action.msjError,
-        //     loadingPasswordForm: action.loadingPasswordForm,
-        //   };
+        case SET_SELECTED_PRODUCT:
+          return {
+            ...state,
+            selectedProduct: action.selectedProduct
+          };
+          case SET_SELECTED_SELECT:
+          return {
+            ...state,
+            selectOption: action.selectOption
+          };
           case PRODUCTS_ERROR:
           return {
             ...state,
-            productList: action.productList,
-            selectedProduct: action.selectedProduct
+            productList: [],
+            selectedProduct: {} as ProductInf
           };
-        //   case LOADING_FORM:
-        //   return {
-        //     ...state,
-        //     loadingForm: action.loadingForm,
-        //   };
+          case LOADING_FORM:
+          return {
+            ...state,
+            loadingForm: action.loadingForm,
+          };
           case LOADING_PRODUCT:
           return {
             ...state,
             loadingProduct: action.loadingProduct,
           };
-          
-        //   case UPDATE_MSJ_SUCCESS:
-        //     return {
-        //       ...state,
-        //       msjSuccess: action.msjSuccess,
-        //     };
-        //   case UPDATE_MSJ_ERROR:
-        //     return {
-        //       ...state,
-        //       msjError: action.msjError,
-        //     };
+          case LOADING_PRODUCT_PRICES:
+          return {
+            ...state,
+            loadingProductPrices: action.loadingProductPrices,
+          };
+          case UPDATE_MSJ_SUCCESS:
+            return {
+              ...state,
+              msjSuccess: action.msjSuccess,
+            };
+          case UPDATE_MSJ_ERROR:
+            return {
+              ...state,
+              msjError: action.msjError,
+            };
+          case PRODUCTS_CLEAN_STATE:
+            return {
+              ...state,
+              selectedProduct : {} as ProductInf,
+              productList : [],
+              searchFormValue: "",
+              selectOption: "",
+              msjSuccess : "",
+              msjError : "",
+              loadingForm: false,
+              loadingProduct: false,
+            };
+          case SET_SELECTED_SEARCHFORM:
+            return {
+              ...state,
+              searchFormValue: action.searchFormValue
+            };
 
       default:
         return state;

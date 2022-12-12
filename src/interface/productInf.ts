@@ -13,19 +13,21 @@ export interface ProductInf {
   
   export interface ProductContextInf {
     selectedProduct: ProductInf;
+    selectOption: string;
     productList: ProductInf[];
+    searchFormValue : string | number;
     msjSuccess : string;
     msjError : string;
     loadingForm: boolean;
     loadingProduct: boolean;
-    // setSelectedProductFn(employee:ProductInf): void;
-    // createProductFn(employee : any): void;
-    // deleteProductFn(employeeId: number):void;
-    // updateProductFn(employee:ProductInf):void;
-    searchProductByCodeFn(code:string):void;
-    searchProductByDescriptionFn(description:string):void;
-    searchProductByCantFn(cant:number):void
-    // searchProductByDescriptionFn(description:string):void;
-    // searchProductByCantFn(cant:number):void;
+    loadingProductPrices: boolean;
+    setSelectedProductFn(employee:ProductInf): void;
+    createProductFn(employee : any): void;
+    deleteProductFn(employeeId: number):void;
+    setSelectOptionFn(optionSelected : string):void;
+    updateProductFn(employee: any):void;
+    searchProductByFn(searchValue : string | number):void;
+    cleanProductsFn():void;
+    updateProductPricesFn():void;
   }
   

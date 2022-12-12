@@ -1,7 +1,7 @@
 import React, {Fragment, useState, useContext, useEffect} from "react";
 import { Modal, Loading } from "@nextui-org/react";
 import currencyCss from "./Currency.module.css";
-import cajaCss from "../../../styles/Caja.module.css";
+import cajaCss from "../register_box/Caja.module.css";
 import customAxios from "../../../config/axios";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { currencyContext } from "../../../context/register_box/currency/currencyContext";
@@ -12,12 +12,11 @@ interface initialValues {
   today_currency: number;
 }
 const Currency = () => {
-  const { currency, msjSuccess, msjError, loadingForm, loadingCurrency,  getCurrencyFn, updateCurrencyFn } = useContext(currencyContext);
+  const { currency, msjSuccess, msjError, loadingForm, loadingCurrency, updateCurrencyFn } = useContext(currencyContext);
   const [visible, setVisible] = React.useState(false);
   
   const handler = async () => { 
     setVisible(true);
-    await getCurrencyFn();
   }
 
   const closeHandler = () => {
@@ -28,15 +27,14 @@ const Currency = () => {
         await updateCurrencyFn(values);
   };
 
-  async function validateTasa(value: string) {
+  function validateTasa(value: any) {
     let error;
-    console.log(value)
-    if (!value) {
+    if (value === "") {
       error = "Campo requerido";
     }
-    if(!/^[0-9]+([.][0-9]{1,2})?$/i.test(value)){
-      error = "Tasa mal escrita";
-    }
+    // if(!/^[0-9]+([.][0-9]{1,2})?$/i.test(value)){
+    //   error = "Tasa mal escrita";
+    // }
       
     return error;
   }
@@ -78,7 +76,9 @@ const Currency = () => {
                       </div>
                       <Field
                         validate={validateTasa}
-                        type="text"
+                        type="number"
+                        min="0.01"
+                        step="0.01"
                         name="today_currency"
                         placeholder="Ejm: 11.5 o 11"
                         disabled={loadingForm}

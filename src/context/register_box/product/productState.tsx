@@ -4,21 +4,22 @@ import { useReducer } from "react";
 import customAxios from "../../../config/axios";
 import {errorServerContext} from '../../error/errorServerContext';
 import {authContext} from '../../login/authContext';
-
 import {ProductInf} from "../../../interface/productInf";
 import productReducer from "./productReducer";
 import {productContext} from './productContext';
 import {
   GET_PRODUCTS, 
-  CREATE_PRODUCT,
-  DELETE_PRODUCT,
   UPDATE_PRODUCT,
   SET_SELECTED_PRODUCT,
+  SET_SELECTED_SELECT,
   LOADING_FORM,
   LOADING_PRODUCT,
   UPDATE_MSJ_SUCCESS,
   UPDATE_MSJ_ERROR,
-  PRODUCTS_ERROR
+  PRODUCTS_ERROR,
+  PRODUCTS_CLEAN_STATE,
+  SET_SELECTED_SEARCHFORM,
+  LOADING_PRODUCT_PRICES
  } from "./productType";
 
 interface props {
@@ -32,37 +33,55 @@ const ProductProvider = ({ children }: props) => {
 
   const initialState = {
     selectedProduct : {} as ProductInf,
-    proyectList : [],
+    productList : [],
+    selectOption: "",
+    searchFormValue: "",
     msjSuccess : "",
     msjError : "",
     loadingForm: false,
-    loadingProyect: false,
+    loadingProduct: false,
+    loadingProductPrices: false,
   };
 
   const [state, dispatch] = useReducer(productReducer, initialState);
 
-  async function searchProductByCodeFn(code: string) {
+  function cleanProductsFn(){//para cuando se cierra el modal se limpia el state
+    dispatch({type: PRODUCTS_CLEAN_STATE})
+  }
+  
+  function setSelectOptionFn(optionSelected : string){
+    dispatch({type: SET_SELECTED_SELECT, selectOption: optionSelected})
+  }
+  
+  function setSearchFormValueFn(searchValue : string | number){
+    dispatch({type: SET_SELECTED_SEARCHFORM, searchFormValue: searchValue})
+  }
+  function setSelectedProductFn(product: ProductInf) {
+    dispatch({
+      type: SET_SELECTED_PRODUCT,
+      selectedProduct: product
+    })
+  }
+
+    async function searchProductByFn(searchValue : string | number) { //nuevo metodo
+      setSearchFormValueFn(searchValue);
       try {
         dispatch({ type: LOADING_PRODUCT, loadingProduct: true })
-        const response = await customAxios.post("/product/getbycode",{
-          code: code
+        const response = await customAxios.post("/product/searchby",{
+          selectValue: searchValue,
+          selectOption : state.selectOption
         });
         dispatch({
           type: GET_PRODUCTS,
           productList: response.data,
-          loadingProduct: false
+          loadingProduct: false,
         })
         saveErrorFromServerFn(false);
       } catch (error : any) {
         let message = error.response.data?.msg || error.message;
         dispatch({ type: LOADING_PRODUCT, loadingProduct: false })
-        console.log(error);
+        dispatch({type: PRODUCTS_ERROR,})
         if (error.response?.status == "403") { //usuario con el token inválido. NOTA: ya el token se elimina desde el backend
-          dispatch({
-            type: PRODUCTS_ERROR,
-            productList: [],
-            selectedProduct: {} as ProductInf
-            })
           await logOut();
         } else {
           saveErrorFromServerFn(true);
@@ -70,365 +89,166 @@ const ProductProvider = ({ children }: props) => {
       }
   }
 
-  async function searchProductByDescriptionFn(description: string) {
+  async function createProductFn(product: any){
     try {
-      dispatch({ type: LOADING_PRODUCT, loadingProduct: true })
-      const response = await customAxios.post("/product/getbydescription",{
-        description: description
+      dispatch({ type: LOADING_FORM, loadingForm: true })
+      await customAxios.post("product/create", {
+        description: product.description.trim().toLowerCase(),
+        cant: product.cant,
+        price: product.price,
+        price_ref: product.price_ref,
+        admit_update_currency: product.admit_update_currency,
+        enable_cant: product.enable_cant
       });
-      dispatch({
-        type: GET_PRODUCTS,
-        productList: response.data,
-        loadingProduct: false
-      })
+      dispatch({ type: LOADING_FORM, loadingForm: false })
+      dispatch({type:UPDATE_MSJ_SUCCESS, msjSuccess:"Producto creado exitosamente"});
+      setTimeout(() => dispatch({type:UPDATE_MSJ_SUCCESS, msjSuccess:""}), 8000);
       saveErrorFromServerFn(false);
+
+    } catch (error : any ) {
+      let message = error.response.data?.msg || error.message;
+      dispatch({type: LOADING_FORM, loadingForm: false });
+      dispatch({type: PRODUCTS_ERROR,})
+      console.log(error );
+
+      if (error.response?.status == "403") { //usuario con el token inválido. NOTA: ya el token se elimina desde el backend
+          await logOut();
+
+        }else {
+          saveErrorFromServerFn(true);
+        }
+    }
+  }
+
+  async function deleteProductFn(employeId : number){
+    try {
+      dispatch({ type: LOADING_FORM, loadingForm: true })
+      const resp = await customAxios.post("/product/delete", {id: employeId});
+      await searchProductByFn(state.searchFormValue);
+      setSelectedProductFn({} as ProductInf); //esto es nuevo, al pedir toda la lista se reinica la selección
+      dispatch({ type: LOADING_FORM, loadingForm: false })
+      saveErrorFromServerFn(false);
+
+    } catch (error:any) {
+      console.log(error);
+      
+        if (error.response?.status == "404") { 
+          await searchProductByFn(state.searchFormValue);
+          setSelectedProductFn({} as ProductInf); //esto es nuevo, al pedir toda la lista se reinica la selección
+          dispatch({ type: LOADING_FORM, loadingForm: false })
+
+        }else if (error.response?.status == "403") { //usuario con el token inválido. NOTA: ya el token se elimina desde el backend
+          dispatch({type: LOADING_FORM, loadingForm: false });
+          dispatch({type: PRODUCTS_ERROR})
+          await logOut();
+
+        }else {
+          dispatch({ type: LOADING_FORM, loadingForm: false })
+          dispatch({type: PRODUCTS_ERROR})
+          saveErrorFromServerFn(true);
+        }
+    }
+  }
+
+  async function updateProductFn(product : any){
+    try {
+      dispatch({ type: LOADING_FORM, loadingForm: true })
+      await customAxios.post("product/update", {
+        id: product.id,
+        code: product.code,
+        description: product.description.trim().toLowerCase(),
+        cant: product.cant,
+        price: product.price,
+        price_ref: product.price_ref,
+        enable_cant: product.enable_cant,
+        admit_update_currency: product.admit_update_currency,
+      });
+      await searchProductByFn(state.searchFormValue);
+      dispatch({
+        type: UPDATE_PRODUCT,
+        selectedProduct: product,
+        msjSuccess: "Producto actualizado exitosamente",
+        msjError: "",
+        loadingForm: false,
+      })
+      setTimeout(() => dispatch({type:UPDATE_MSJ_SUCCESS, msjSuccess:""}), 8000);
+      saveErrorFromServerFn(false);
+
     } catch (error : any) {
       let message = error.response.data?.msg || error.message;
-      dispatch({ type: LOADING_PRODUCT, loadingProduct: false })
       console.log(error);
-      if (error.response?.status == "403") { //usuario con el token inválido. NOTA: ya el token se elimina desde el backend
-        dispatch({
-          type: PRODUCTS_ERROR,
-          productList: [],
-          selectedProduct: {} as ProductInf
-          })
+
+      if(error.response?.status == "404"){//lo que se intenta actualizar pero no está en la base de datos
+        await searchProductByFn(state.searchFormValue);
+        setSelectedProductFn({} as ProductInf); //esto es nuevo, al pedir toda la lista se reinica la selección
+        dispatch({ type: LOADING_FORM, loadingForm: false })
+        dispatch({type:UPDATE_MSJ_ERROR, msjError:message})
+        setTimeout(() => dispatch({type:UPDATE_MSJ_ERROR, msjError:""}), 8000);
+
+      }else if (error.response?.status == "403") { //usuario con el token inválido. NOTA: ya el token se elimina desde el backend
+        dispatch({type: PRODUCTS_ERROR})
+        dispatch({ type: LOADING_FORM, loadingForm: false })
         await logOut();
-      } else {
+
+      }else {
+        dispatch({type: PRODUCTS_ERROR})
+        dispatch({ type: LOADING_FORM, loadingForm: false })
         saveErrorFromServerFn(true);
       }
     }
-}
+  }
 
-  async function searchProductByCantFn(cant: number) {
+  async function updateProductPricesFn(){
     try {
-      dispatch({ type: LOADING_PRODUCT, loadingProduct: true })
-      const response = await customAxios.post("/product/getbyrange",{
-        cant: cant
-      });
-      dispatch({
-        type: GET_PRODUCTS,
-        productList: response.data,
-        loadingProduct: false
-      })
+      dispatch({ type: LOADING_PRODUCT_PRICES, loadingProductPrices: true })
+      const resp = await customAxios.get("/product/updateprices");
+      dispatch({ type: LOADING_PRODUCT_PRICES, loadingProductPrices: false })
+      cleanProductsFn();
       saveErrorFromServerFn(false);
-    } catch (error : any) {
-      let message = error.response.data?.msg || error.message;
-      dispatch({ type: LOADING_PRODUCT, loadingProduct: false })
+
+    } catch (error:any) {
       console.log(error);
-      if (error.response?.status == "403") { //usuario con el token inválido. NOTA: ya el token se elimina desde el backend
-        dispatch({
-          type: PRODUCTS_ERROR,
-          productList: [],
-          selectedProduct: {} as ProductInf
-          })
-        await logOut();
-      } else {
-        saveErrorFromServerFn(true);
-      }
+      
+        if (error.response?.status == "404") { 
+          await searchProductByFn(state.searchFormValue);
+          setSelectedProductFn({} as ProductInf); //esto es nuevo, al pedir toda la lista se reinica la selección
+          dispatch({ type: LOADING_FORM, loadingForm: false })
+
+        }else if (error.response?.status == "403") { //usuario con el token inválido. NOTA: ya el token se elimina desde el backend
+          dispatch({type: LOADING_FORM, loadingForm: false });
+          dispatch({type: PRODUCTS_ERROR})
+          await logOut();
+
+        }else {
+          dispatch({ type: LOADING_FORM, loadingForm: false })
+          dispatch({type: PRODUCTS_ERROR})
+          saveErrorFromServerFn(true);
+        }
     }
-}
-  // async function createEmployeeFn(product: any){
-  //   try {
-  //     dispatch({ type: LOADING_FORM, loadingForm: true })
-  //     await customAxios.post("product/create", {
-  //       email: product.email,
-  //       name: product.name,
-  //       last_name: product.last_name,
-  //       ci_rif: product.ci_rif,
-  //       phone_number: product.phone_number,
-  //       direction: product.direction,
-  //       birthday: product.birthday,
-  //       active: product.active,
-  //       secretary: product.secretary,
-  //       superuser: product.superuser,
-  //       password: product.password,
-  //     });
-  //     const response = await customAxios.get("/product/all");
-  //       dispatch({
-  //         type: CREATE_EMPLOYEE,
-  //         productList: response.data,
-  //         msjSuccess: "Usuario guardado exitosamente",
-  //         msjError: "",
-  //         loadingForm: false,
-  //       })
-  //       setTimeout(() => dispatch({type:UPDATE_MSJ_SUCCESS, msjSuccess:""}), 8000);
-  //       saveErrorFromServerFn(false);
-
-  //   } catch (error : any ) {
-  //     let message = error.response.data?.msg || error.message;
-  //     dispatch({type: LOADING_FORM, loadingForm: false });
-  //     console.log(error );
-
-  //       if(error.response?.status == "400"){
-  //         dispatch({type:UPDATE_MSJ_ERROR, msjError:message})
-  //         setTimeout(() => dispatch({type:UPDATE_MSJ_ERROR, msjError:""}), 8000);
-          
-  //       }else if (error.response?.status == "403") { //usuario con el token inválido. NOTA: ya el token se elimina desde el backend
-  //         dispatch({
-  //           type: EMPLOYEES_ERROR,
-  //           productList: [],
-  //           selectedEmployee: {} as EmployeeInf
-  //           })
-  //         await logOut();
-
-  //       }else {
-  //         saveErrorFromServerFn(true);
-  //       }
-  //   }
-  // }
-
-  // function setSelectedEmployeeFn(product: EmployeeInf) {
-  //     dispatch({
-  //       type: SET_SELECTED_EMPLOYEE,
-  //       selectedEmployee: product
-  //     })
-  // }
-
-  // async function deleteEmployeeFn(employeId : number){
-  //   try {
-  //     dispatch({ type: LOADING_FORM, loadingForm: true })
-  //     const resp = await customAxios.post("/product/delete", {id: employeId});
-  //     dispatch({
-  //       type: DELETE_EMPLOYEE,
-  //       productList: resp.data,
-  //       selectedEmployee: ({} as EmployeeInf),
-  //       loadingForm: false
-  //     })
-  //     saveErrorFromServerFn(false);
-
-  //   } catch (error:any) {
-  //     console.log(error);
-  //       if(error.response?.status == "404"){//el usuario no está
-  //         try {
-  //           const resp = await customAxios.get("/product/all");
-  //           dispatch({
-  //             type: EMPLOYEES_ERROR,
-  //             productList: resp.data,
-  //             selectedEmployee: {} as EmployeeInf
-  //             })
-  //           dispatch({type: LOADING_FORM, loadingForm: false });
-
-  //         } catch (error :any) {
-  //           if (error.response?.status == "403") { //usuario con el token inválido. NOTA: ya el token se elimina desde el backend
-  //             dispatch({
-  //               type: EMPLOYEES_ERROR,
-  //               productList: [],
-  //               selectedEmployee: {} as EmployeeInf
-  //               })
-  //             dispatch({type: LOADING_FORM, loadingForm: false });
-  //             await logOut();
     
-  //           }else {
-  //             dispatch({
-  //               type: EMPLOYEES_ERROR,
-  //               productList: [],
-  //               selectedEmployee: {} as EmployeeInf
-  //               })
-  //             dispatch({type: LOADING_FORM, loadingForm: false });
-  //             saveErrorFromServerFn(true);
-  //           }
-  //         }
-
-  //       }else if (error.response?.status == "403") { //usuario con el token inválido. NOTA: ya el token se elimina desde el backend
-  //         dispatch({
-  //           type: EMPLOYEES_ERROR,
-  //           productList: [],
-  //           selectedEmployee: {} as EmployeeInf
-  //           })
-  //         dispatch({type: LOADING_FORM, loadingForm: false });
-  //         await logOut();
-
-  //       }else {
-  //         dispatch({
-  //           type: EMPLOYEES_ERROR,
-  //           productList: [],
-  //           selectedEmployee: {} as EmployeeInf
-  //           })
-  //         dispatch({type: LOADING_FORM, loadingForm: false });
-  //         saveErrorFromServerFn(true);
-  //       }
-  //   }
-  // }
-
-  // async function updateEmployeeFn(product : EmployeeInf){
-  //   try {
-  //     dispatch({ type: LOADING_FORM, loadingForm: true })
-  //     await customAxios.post("product/update", {
-  //       id: product.id,
-  //       email: product.email,
-  //       name: product.name,
-  //       last_name: product.last_name,
-  //       ci_rif: product.ci_rif,
-  //       phone_number: product.phone_number,
-  //       direction: product.direction,
-  //       birthday: product.birthday,
-  //       active: product.active,
-  //       secretary: product.secretary,
-  //       superuser: product.superuser,
-  //     });
-  //     const resp = await customAxios.get("/product/all");
-  //     dispatch({
-  //       type: UPDATE_EMPLOYEE,
-  //       productList: resp.data,
-  //       selectedEmployee: product,
-  //       msjSuccess: "Empleado actualizado exitosamente",
-  //       msjError: "",
-  //       loadingForm: false,
-  //     })
-  //     setTimeout(() => dispatch({type:UPDATE_MSJ_SUCCESS, msjSuccess:""}), 8000);
-  //     saveErrorFromServerFn(false);
-
-  //   } catch (error : any) {
-  //     let message = error.response.data?.msg || error.message;
-  //     console.log(error);
-
-  //     if(error.response?.status == "404"){//el usuario se intenta actualizar pero no está en la base de datos
-  //       dispatch({type:UPDATE_MSJ_ERROR, msjError:message})
-  //       setTimeout(() => dispatch({type:UPDATE_MSJ_ERROR, msjError:""}), 8000);
-
-  //       try {
-  //         const resp = await customAxios.get("/product/all");
-  //         dispatch({
-  //           type: EMPLOYEES_ERROR,
-  //           productList: resp.data,
-  //           selectedEmployee: {} as EmployeeInf
-  //           })
-  //         dispatch({type: LOADING_FORM, loadingForm: false });
-
-  //       } catch (error :any) {
-  //         if (error.response?.status == "403") { //usuario con el token inválido. NOTA: ya el token se elimina desde el backend
-  //           dispatch({
-  //             type: EMPLOYEES_ERROR,
-  //             productList: [],
-  //             selectedEmployee: {} as EmployeeInf
-  //             })
-  //           dispatch({type: LOADING_FORM, loadingForm: false });
-  //           await logOut();
-  
-  //         }else {
-  //           dispatch({
-  //             type: EMPLOYEES_ERROR,
-  //             productList: [],
-  //             selectedEmployee: {} as EmployeeInf
-  //             })
-  //           dispatch({type: LOADING_FORM, loadingForm: false });
-  //           saveErrorFromServerFn(true);
-  //         }
-  //       }
-
-  //     }else if (error.response?.status == "403") { //usuario con el token inválido. NOTA: ya el token se elimina desde el backend
-  //       dispatch({
-  //         type: EMPLOYEES_ERROR,
-  //         productList: [],
-  //         selectedEmployee: {} as EmployeeInf
-  //         })
-  //       dispatch({ type: LOADING_FORM, loadingForm: false })
-  //       await logOut();
-  //     }else {
-  //       dispatch({
-  //         type: EMPLOYEES_ERROR,
-  //         productList: [],
-  //         selectedEmployee: {} as EmployeeInf
-  //         })
-  //       dispatch({ type: LOADING_FORM, loadingForm: false })
-  //       saveErrorFromServerFn(true);
-  //     }
-  //   }
-  // }
-
-  // async function updateEmployeePasswordFn(productId : number, password: string){
-  //   try {
-  //     dispatch({ type: LOADING_FORM_PASSWORD, loadingPasswordForm: true })
-  //     await customAxios.post("product/updatepassword", {
-  //       id: productId,
-  //       password: password,
-  //     });
-  //     const resp = await customAxios.get("/product/all");
-  //     dispatch({
-  //       type: UPDATE_EMPLOYEE_PASSWORD,
-  //       productList: resp.data,
-  //       msjSuccess: "Contraseña cambiada exitosamente",
-  //       msjError: "",
-  //       loadingPasswordForm: false,
-  //     })
-  //     setTimeout(() => dispatch({type:UPDATE_MSJ_SUCCESS, msjSuccess:""}), 8000);
-  //     saveErrorFromServerFn(false);
-  //   } catch (error : any) {
-  //     let message = error.response.data?.msg || error.message;
-  //     console.log(error);
-
-  //     if(error.response?.status == "404"){//el usuario se intenta actualizar pero no está en la base de datos
-  //       dispatch({type:UPDATE_MSJ_ERROR, msjError:message})
-  //       setTimeout(() => dispatch({type:UPDATE_MSJ_ERROR, msjError:""}), 8000);
-
-  //       try {
-  //         const resp = await customAxios.get("/product/all");
-  //         dispatch({
-  //           type: EMPLOYEES_ERROR,
-  //           productList: resp.data,
-  //           selectedEmployee: {} as EmployeeInf
-  //           })
-  //         dispatch({type: LOADING_FORM_PASSWORD, loadingPasswordForm: false });
-
-  //       } catch (error :any) {
-  //         if (error.response?.status == "403") { //usuario con el token inválido. NOTA: ya el token se elimina desde el backend
-  //           dispatch({
-  //             type: EMPLOYEES_ERROR,
-  //             productList: [],
-  //             selectedEmployee: {} as EmployeeInf
-  //             })
-  //           dispatch({type: LOADING_FORM_PASSWORD, loadingPasswordForm: false });
-  //           await logOut();
-  
-  //         }else {
-  //           dispatch({
-  //             type: EMPLOYEES_ERROR,
-  //             productList: [],
-  //             selectedEmployee: {} as EmployeeInf
-  //             })
-  //           dispatch({type: LOADING_FORM_PASSWORD, loadingPasswordForm: false });
-  //           saveErrorFromServerFn(true);
-  //         }
-  //       }
-
-  //     }else if (error.response?.status == "403") { //usuario con el token inválido. NOTA: ya el token se elimina desde el backend
-  //       dispatch({
-  //         type: EMPLOYEES_ERROR,
-  //         productList: [],
-  //         selectedEmployee: {} as EmployeeInf
-  //         })
-  //       dispatch({ type: LOADING_FORM_PASSWORD, loadingPasswordForm: false })
-  //       await logOut();
-  //     }else {
-  //       dispatch({
-  //         type: EMPLOYEES_ERROR,
-  //         productList: [],
-  //         selectedEmployee: {} as EmployeeInf
-  //         })
-  //       dispatch({ type: LOADING_FORM_PASSWORD, loadingPasswordForm: false })
-  //       saveErrorFromServerFn(true);
-  //     }
-  //   }
-    
-  // }
+        
+  }
 
   return (
     <productContext.Provider
       value={{
         selectedProduct: state.selectedProduct,
+        selectOption: state.selectOption,
         productList: state.productList,
+        searchFormValue: state.searchFormValue,
         msjSuccess : state.msjSuccess,
         msjError : state.msjError,
         loadingForm: state.loadingForm,
         loadingProduct: state.loadingProduct,
-        searchProductByCodeFn,
-        searchProductByDescriptionFn,
-        searchProductByCantFn,
-        // setSelectedProductFn,
-        // createProductFn,
-        // deleteProductFn,
-        // updateProductFn,
-        // updateProductPasswordFn,
+        loadingProductPrices: state.loadingProductPrices,
+        cleanProductsFn,
+        setSelectedProductFn,
+        setSelectOptionFn,
+        searchProductByFn,
+        createProductFn,
+        updateProductFn,
+        deleteProductFn,
+        updateProductPricesFn
       }}
     >
       {children}
