@@ -1,19 +1,13 @@
 import React, { Fragment, useEffect, useContext } from "react";
 import Head from "next/head";
-import Router from "next/router";
 import { NextPage, GetServerSidePropsContext } from "next";
 import { getCookie } from "cookies-next";
-// import customAxios from "../config/axios";
 import ServerError from "../components/error/500";
-// import {EmployeeInf} from "../interface/EmployeeInf";
 import { authContext } from "../context/login/authContext";
 import WithLayout from "../components/layout/HocLayoutHeader";
 import {errorServerContext} from '../context/error/errorServerContext';
 import CurrencyProvider from '../context/register_box/currency/currencyState';
-import ProductProvider from '../context/register_box/product/productState';
-import Client from "../components/register_box/client/Client";
-import Currency from "../components/register_box/currency/Currency";
-import Inventory from "../components/register_box/inventory/Inventory";
+import RegisterBoxProvider from '../context/register_box/register_box/registerBoxState';
 import RegisterBox from "../components/register_box/register_box/RegisterBox";
 
 const Caja: NextPage = () => {
@@ -34,7 +28,9 @@ const Caja: NextPage = () => {
       </Head>
       {!errorFromServer ? (
         <CurrencyProvider>
-        <RegisterBox/>
+          <RegisterBoxProvider>
+            <RegisterBox/>
+          </RegisterBoxProvider>
         </CurrencyProvider>
       ) : (
         <div>

@@ -1,5 +1,4 @@
 import {  Loading, } from "@nextui-org/react";
-import moment from "moment";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import React, { useEffect, useContext, useState, Fragment } from "react";
 import Head from "next/head";
@@ -12,7 +11,6 @@ import employeProfileCss from "./EmployeeProfile.module.css";
 import {EmployeeInf} from "../../interface/EmployeeInf";
 import Sidebar from "../../components/configuration/sidebar/Sidebar";
 import ServerError from "../../components/error/500";
-import { employeeContext } from "../../context/configuration/employee/employeeContext";
 import { errorServerContext } from '../../context/error/errorServerContext';
 import comunModalCss from "../../styles/modal.module.css";
 
@@ -169,6 +167,9 @@ const EmployeeProfile: NextPage = () => {
 
   return (
     <Fragment>
+      <Head>
+        <title>Información personal</title>
+      </Head>
       {!errorFromServer ? (
         <div className={employeProfileCss["container"]}>
         <Sidebar/>

@@ -1,8 +1,5 @@
 import React, {useContext} from "react";
 import { Modal, Button } from "@nextui-org/react";
-import { ClientInf } from "../../../interface/clientInf";
-import deleteClientCss from "./DeleteClient.module.css";
-import customAxios from "../../../config/axios";
 import { Loading } from "@nextui-org/react";
 import {clientContext} from "../../../context/register_box/client/clientContext";
 

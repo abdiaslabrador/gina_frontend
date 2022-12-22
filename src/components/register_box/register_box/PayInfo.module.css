@@ -1,0 +1,5 @@
+.pay_info_loading {
+    grid-area: pay_info;
+    padding: 3.5px 15px;
+    display: flex;
+}

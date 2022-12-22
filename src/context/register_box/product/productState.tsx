@@ -9,17 +9,16 @@ import productReducer from "./productReducer";
 import {productContext} from './productContext';
 import {
   GET_PRODUCTS, 
-  UPDATE_PRODUCT,
   SET_SELECTED_PRODUCT,
   SET_SELECTED_SELECT,
+  SET_SELECTED_SEARCHFORM,
   LOADING_FORM,
   LOADING_PRODUCT,
   UPDATE_MSJ_SUCCESS,
   UPDATE_MSJ_ERROR,
-  PRODUCTS_ERROR,
+  UPDATE_PRODUCT,
   PRODUCTS_CLEAN_STATE,
-  SET_SELECTED_SEARCHFORM,
-  LOADING_PRODUCT_PRICES
+  PRODUCTS_ERROR,
  } from "./productType";
 
 interface props {
@@ -28,6 +27,7 @@ interface props {
 
 const ProductProvider = ({ children }: props) => {
   const { saveErrorFromServerFn } = useContext(errorServerContext);
+
   const { user, logOut } = useContext(authContext);
   const router = useRouter();
 
@@ -45,17 +45,18 @@ const ProductProvider = ({ children }: props) => {
 
   const [state, dispatch] = useReducer(productReducer, initialState);
 
-  function cleanProductsFn(){//para cuando se cierra el modal se limpia el state
+  function cleanProductFn(){//para cuando se cierra el modal se limpia el state
     dispatch({type: PRODUCTS_CLEAN_STATE})
   }
   
   function setSelectOptionFn(optionSelected : string){
     dispatch({type: SET_SELECTED_SELECT, selectOption: optionSelected})
   }
-  
+
   function setSearchFormValueFn(searchValue : string | number){
     dispatch({type: SET_SELECTED_SEARCHFORM, searchFormValue: searchValue})
   }
+
   function setSelectedProductFn(product: ProductInf) {
     dispatch({
       type: SET_SELECTED_PRODUCT,
@@ -63,90 +64,29 @@ const ProductProvider = ({ children }: props) => {
     })
   }
 
-    async function searchProductByFn(searchValue : string | number) { //nuevo metodo
-      setSearchFormValueFn(searchValue);
-      try {
-        dispatch({ type: LOADING_PRODUCT, loadingProduct: true })
-        const response = await customAxios.post("/product/searchby",{
-          selectValue: searchValue,
-          selectOption : state.selectOption
-        });
-        dispatch({
-          type: GET_PRODUCTS,
-          productList: response.data,
-          loadingProduct: false,
-        })
-        saveErrorFromServerFn(false);
-      } catch (error : any) {
-        let message = error.response.data?.msg || error.message;
-        dispatch({ type: LOADING_PRODUCT, loadingProduct: false })
-        dispatch({type: PRODUCTS_ERROR,})
-        if (error.response?.status == "403") { //usuario con el token inválido. NOTA: ya el token se elimina desde el backend
-          await logOut();
-        } else {
-          saveErrorFromServerFn(true);
-        }
-      }
-  }
-
-  async function createProductFn(product: any){
+  async function searchProductByFn(searchValue : string | number) { //nuevo metodo
+    setSearchFormValueFn(searchValue);
     try {
-      dispatch({ type: LOADING_FORM, loadingForm: true })
-      await customAxios.post("product/create", {
-        description: product.description.trim().toLowerCase(),
-        cant: product.cant,
-        price: product.price,
-        price_ref: product.price_ref,
-        admit_update_currency: product.admit_update_currency,
-        enable_cant: product.enable_cant
+      dispatch({ type: LOADING_PRODUCT, loadingProduct: true })
+      const response = await customAxios.post("/product/searchby",{
+        selectValue: searchValue,
+        selectOption : state.selectOption
       });
-      dispatch({ type: LOADING_FORM, loadingForm: false })
-      dispatch({type:UPDATE_MSJ_SUCCESS, msjSuccess:"Producto creado exitosamente"});
-      setTimeout(() => dispatch({type:UPDATE_MSJ_SUCCESS, msjSuccess:""}), 8000);
+      dispatch({
+        type: GET_PRODUCTS,
+        productList: response.data,
+        loadingProduct: false,
+      })
       saveErrorFromServerFn(false);
-
-    } catch (error : any ) {
+    } catch (error : any) {
       let message = error.response.data?.msg || error.message;
-      dispatch({type: LOADING_FORM, loadingForm: false });
+      dispatch({ type: LOADING_PRODUCT, loadingProduct: false })
       dispatch({type: PRODUCTS_ERROR,})
-      console.log(error );
-
       if (error.response?.status == "403") { //usuario con el token inválido. NOTA: ya el token se elimina desde el backend
-          await logOut();
-
-        }else {
-          saveErrorFromServerFn(true);
-        }
-    }
-  }
-
-  async function deleteProductFn(employeId : number){
-    try {
-      dispatch({ type: LOADING_FORM, loadingForm: true })
-      const resp = await customAxios.post("/product/delete", {id: employeId});
-      await searchProductByFn(state.searchFormValue);
-      setSelectedProductFn({} as ProductInf); //esto es nuevo, al pedir toda la lista se reinica la selección
-      dispatch({ type: LOADING_FORM, loadingForm: false })
-      saveErrorFromServerFn(false);
-
-    } catch (error:any) {
-      console.log(error);
-      
-        if (error.response?.status == "404") { 
-          await searchProductByFn(state.searchFormValue);
-          setSelectedProductFn({} as ProductInf); //esto es nuevo, al pedir toda la lista se reinica la selección
-          dispatch({ type: LOADING_FORM, loadingForm: false })
-
-        }else if (error.response?.status == "403") { //usuario con el token inválido. NOTA: ya el token se elimina desde el backend
-          dispatch({type: LOADING_FORM, loadingForm: false });
-          dispatch({type: PRODUCTS_ERROR})
-          await logOut();
-
-        }else {
-          dispatch({ type: LOADING_FORM, loadingForm: false })
-          dispatch({type: PRODUCTS_ERROR})
-          saveErrorFromServerFn(true);
-        }
+        await logOut();
+      } else {
+        saveErrorFromServerFn(true);
+      }
     }
   }
 
@@ -198,37 +138,6 @@ const ProductProvider = ({ children }: props) => {
     }
   }
 
-  async function updateProductPricesFn(){
-    try {
-      dispatch({ type: LOADING_PRODUCT_PRICES, loadingProductPrices: true })
-      const resp = await customAxios.get("/product/updateprices");
-      dispatch({ type: LOADING_PRODUCT_PRICES, loadingProductPrices: false })
-      cleanProductsFn();
-      saveErrorFromServerFn(false);
-
-    } catch (error:any) {
-      console.log(error);
-      
-        if (error.response?.status == "404") { 
-          await searchProductByFn(state.searchFormValue);
-          setSelectedProductFn({} as ProductInf); //esto es nuevo, al pedir toda la lista se reinica la selección
-          dispatch({ type: LOADING_FORM, loadingForm: false })
-
-        }else if (error.response?.status == "403") { //usuario con el token inválido. NOTA: ya el token se elimina desde el backend
-          dispatch({type: LOADING_FORM, loadingForm: false });
-          dispatch({type: PRODUCTS_ERROR})
-          await logOut();
-
-        }else {
-          dispatch({ type: LOADING_FORM, loadingForm: false })
-          dispatch({type: PRODUCTS_ERROR})
-          saveErrorFromServerFn(true);
-        }
-    }
-    
-        
-  }
-
   return (
     <productContext.Provider
       value={{
@@ -240,15 +149,11 @@ const ProductProvider = ({ children }: props) => {
         msjError : state.msjError,
         loadingForm: state.loadingForm,
         loadingProduct: state.loadingProduct,
-        loadingProductPrices: state.loadingProductPrices,
-        cleanProductsFn,
+        cleanProductFn,
         setSelectedProductFn,
         setSelectOptionFn,
         searchProductByFn,
-        createProductFn,
         updateProductFn,
-        deleteProductFn,
-        updateProductPricesFn
       }}
     >
       {children}

@@ -5,12 +5,10 @@ import { ClientInf } from "../../../interface/clientInf";
 import DeleteClient from "./DeleteClient";
 import CreateClient from "./CreateClient";
 import UpdateClient from "./UpdateClient";
-// import { authContext } from "../../../context/login/authContext";
 import { clientContext } from "../../../context/register_box/client/clientContext";
 
 const ClientTable = () => {
     const {  selectedClient, clientList, loadingForm, setSelectedClientFn } = useContext(clientContext);
-    // const [loadingDataSentence, setLoadingDataSentence] = useState<string>("Cargando datos...");
 
     function objectSelection(client: ClientInf): void {
       setSelectedClientFn(client);
@@ -19,8 +17,6 @@ const ClientTable = () => {
 
   return (
     <Fragment>
-          
-              
                 <div className={clientTableCss["create_modify_bottom"]}>
                   <CreateClient/>
                   <UpdateClient/>

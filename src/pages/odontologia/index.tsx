@@ -1,14 +1,13 @@
 import React, { useEffect, useContext } from "react";
 import Head from "next/head";
 import WithLayout from "../../components/layout/HocLayoutHeader";
-
 import { NextPage, GetServerSidePropsContext } from "next";
 import { getCookie } from "cookies-next";
 import { authContext } from "../../context/login/authContext";
 ("../interface/user");
 
 const Odontologia: NextPage = () => {
-  const { userAuthenticated, errorFromServer } = useContext(authContext);
+  const { userAuthenticated } = useContext(authContext);
 
   useEffect(() => {
     async function authCheck() {

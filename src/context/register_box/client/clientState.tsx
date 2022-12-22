@@ -38,14 +38,24 @@ const ClientProvider = ({ children }: props) => {
   };
 
   const [state, dispatch] = useReducer(clientReducer, initialState);
-  
+
+  function setSelectedClientFn(client: ClientInf) {
+    dispatch({
+      type: SET_SELECTED_CLIENT,
+      selectedClient: client
+    })
+  }
+
+  function cleanClientsFn(){
+        dispatch({type: CLIENTS_ERROR});
+  }
+
   async function searchClientByCiFn(ci_rif:string){
       try {
         dispatch({type: LOADING_FORM, loadingForm: true });
         const response = await customAxios.post("/client/getbyci",{
           ci_rif : ci_rif
         });
-        console.log(response.data)
         dispatch({
           type: GET_CLIENT,
           clientList: [response.data],
@@ -68,33 +78,6 @@ const ClientProvider = ({ children }: props) => {
         }
       }
   }
-
-  function cleanClientsFn(){
-      dispatch({type: CLIENTS_ERROR});
-    }
-  // async function getClientsFn() {
-  //     try {
-  //       const response = await customAxios.get("/employee/all");
-  //       dispatch({
-  //         type: GET_EMPLOYEES,
-  //         clientList: response.data
-  //       })
-  //       saveErrorFromServerFn(false);
-  //     } catch (error : any) {
-  //       let message = error.response.data?.msg || error.message;
-  //       console.log(error);
-  //       if (error.response?.status == "403") { //usuario con el token inválido. NOTA: ya el token se elimina desde el backend
-  //         dispatch({
-  //           type: EMPLOYEES_ERROR,
-  //           employeeList: [],
-  //           selectedClient: {} as ClientInf
-  //           })
-  //         await logOut();
-  //       } else {
-  //         saveErrorFromServerFn(true);
-  //       }
-  //     }
-  // }
 
   async function createClientFn(client : any){
     try {
@@ -133,13 +116,6 @@ const ClientProvider = ({ children }: props) => {
           saveErrorFromServerFn(true);
         }
     }
-  }
-
-  function setSelectedClientFn(client: ClientInf) {
-      dispatch({
-        type: SET_SELECTED_CLIENT,
-        selectedClient: client
-      })
   }
 
   async function deleteClientFn(clientId : number){
@@ -229,7 +205,6 @@ const ClientProvider = ({ children }: props) => {
         setSelectedClientFn,
         deleteClientFn,
         updateClientFn,
-        // getClientsFn,
       }}
     >
       {children}

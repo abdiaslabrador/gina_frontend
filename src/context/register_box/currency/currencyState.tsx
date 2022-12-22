@@ -1,9 +1,7 @@
 import React, {useContext} from "react";
-import { useRouter } from "next/router";
 import { useReducer } from "react";
 import customAxios from "../../../config/axios";
 import currencyReducer from "./currencyReducer";
-import {CurrencyInf} from "../../../interface/currencyInf";
 import {currencyContext} from './currencyContext';
 import {authContext} from '../../login/authContext';
 import {errorServerContext} from '../../error/errorServerContext';
@@ -32,7 +30,7 @@ const CurrencyProvider = ({ children }: props) => {
     msjSuccess : "",
     msjError : "",
     loadingForm: false,
-    loadingCurrency: false,
+    loadingCurrency: true,
   };
 
   const [state, dispatch] = useReducer(currencyReducer, initialState);

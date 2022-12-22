@@ -17,7 +17,6 @@ const UpdateClient = () => {
   
   const closeHandler = () => {
     setVisible(false);
-    // console.log("closed");
   };
 
   const personalInfoInitialValues = {

@@ -1,11 +1,8 @@
 import moment from "moment";
-import React, {useContext} from "react";
+import React, {useContext, useReducer} from "react";
 import { useRouter } from "next/router";
-import { createContext, useReducer } from "react";
-
 import customAxios from "../../config/axios";
 import authReducer from "./authReducer";
-import { authContextInf } from "../../interface/auth";
 import { GET_USER, 
   LOGIN_SUCCESS,
   LOGIN_ERROR,
@@ -28,7 +25,6 @@ const AuthProvider = ({ children }: props) => {
   const router = useRouter();
 
   const initialState = {
-    // user: {} as EmployeeInf,
     user: null,
     message: "",
     authenticated: false,

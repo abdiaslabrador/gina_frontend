@@ -1,4 +1,4 @@
-import React, {Fragment, useContext, useEffect, useState} from "react";
+import React, {Fragment, useContext} from "react";
 import searchFormClientCss from './SearchFormClient.module.css'
 import { useRouter } from "next/router";
 import { Formik, Form, Field, ErrorMessage } from "formik";
@@ -21,7 +21,7 @@ const SearchFormClient = () => {
     let error;
 
     if (!value.trim()) {
-      error = "Campo requerido";
+      return error = "Campo requerido";
     }
     try {
       const resp = await customAxios.post("client/getbyci", {

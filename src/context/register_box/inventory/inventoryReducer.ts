@@ -1,16 +1,17 @@
 import {
-   GET_PRODUCTS,
+   GET_PRODUCTS, 
    SET_SELECTED_PRODUCT,
    SET_SELECTED_SELECT,
    SET_SELECTED_SEARCHFORM,
    LOADING_FORM,
    LOADING_PRODUCT,
+   LOADING_PRODUCT_PRICES,
    UPDATE_MSJ_SUCCESS,
    UPDATE_MSJ_ERROR,
    UPDATE_PRODUCT,
-   PRODUCTS_CLEAN_STATE,
+   INVENTORY_CLEAN_STATE,
    PRODUCTS_ERROR,
-  } from "./productType";
+  } from "./inventoryType";
   import {ProductInf} from "../../../interface/productInf";
   
   type Action =
@@ -19,7 +20,7 @@ import {
         type: "GET_PRODUCTS";
         productList: ProductInf[];
         loadingProduct: boolean,
-      }    
+      }
     | {
       type: "UPDATE_PRODUCT";
       selectedProduct: ProductInf;
@@ -44,6 +45,10 @@ import {
       loadingProduct: boolean;
       }
     | {
+      type: "LOADING_PRODUCT_PRICES";
+      loadingProductPrices: boolean;
+      }
+    | {
       type: "SET_SELECTED_SEARCHFORM";
       searchFormValue: string | number;
       }
@@ -53,7 +58,7 @@ import {
         selectedProduct?: ProductInf;
       }
     | {
-        type: "PRODUCTS_CLEAN_STATE";
+        type: "INVENTORY_CLEAN_STATE";
         selectedProduct? : ProductInf;
         productList? : ProductInf[];
         selectOption?: string;
@@ -73,7 +78,7 @@ import {
     ;
     
     
-  const productReducer = (state: any = {}, action: Action) => {
+  const inventoryReducer = (state: any = {}, action: Action) => {
     switch (action.type) {
       
       
@@ -109,6 +114,11 @@ import {
             ...state,
             loadingProduct: action.loadingProduct,
           };
+          case LOADING_PRODUCT_PRICES:
+          return {
+            ...state,
+            loadingProductPrices: action.loadingProductPrices,
+          };
           case UPDATE_MSJ_SUCCESS:
             return {
               ...state,
@@ -127,7 +137,7 @@ import {
               msjError : action.msjError,
               loadingForm : action.loadingForm,
             };
-          case PRODUCTS_CLEAN_STATE:
+          case INVENTORY_CLEAN_STATE:
             return {
               ...state,
               selectedProduct : {} as ProductInf,
@@ -150,5 +160,5 @@ import {
     }
   };
   
-  export default productReducer;
+  export default inventoryReducer;
   

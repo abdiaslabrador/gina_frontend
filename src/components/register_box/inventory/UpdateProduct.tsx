@@ -4,11 +4,11 @@ import comunModalCss from "../../../styles/modal.module.css";
 import customAxios from "../../../config/axios";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { currencyContext } from "../../../context/register_box/currency/currencyContext";
-import { productContext } from "../../../context/register_box/product/productContext";
+import { inventoryContext } from "../../../context/register_box/inventory/inventoryContext";
 
 const UpdateProduct = () => {
   const { currency, loadingCurrency } = useContext( currencyContext );
-  const { msjSuccess, msjError, loadingForm, selectedProduct, updateProductFn } = useContext(productContext);
+  const { msjSuccess, msjError, loadingForm, selectedProduct, updateProductFn } = useContext(inventoryContext);
   const [ visible, setVisible ] = React.useState(false);
 
   const handler = async () => { 

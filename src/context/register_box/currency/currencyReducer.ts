@@ -1,11 +1,11 @@
 import {
   GET_CURRENCY,
   UPDATE_CURRENCY,
-  CURRENCY_ERROR,
   LOADING_FORM,
   LOADING_CURRENCY,
   UPDATE_MSJ_SUCCESS,
   UPDATE_MSJ_ERROR,
+  CURRENCY_ERROR,
 } from "./currencyType";
   import { CurrencyInf } from "../../../interface/currencyInf";
   

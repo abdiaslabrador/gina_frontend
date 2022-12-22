@@ -40,10 +40,16 @@ const EmployeeSystemProvider = ({ children }: props) => {
     loadingForm: false,
     loadingEmployee: false,
     loadingPasswordForm: false
-    // loadingDataSentence: ''
   };
 
   const [state, dispatch] = useReducer(employeeReducer, initialState);
+
+  function setSelectedEmployeeFn(employee: EmployeeInf) {
+    dispatch({
+      type: SET_SELECTED_EMPLOYEE,
+      selectedEmployee: employee
+    })
+  }
 
   async function getEmployeesFn() {
       try {
@@ -120,13 +126,6 @@ const EmployeeSystemProvider = ({ children }: props) => {
           saveErrorFromServerFn(true);
         }
     }
-  }
-
-  function setSelectedEmployeeFn(employee: EmployeeInf) {
-      dispatch({
-        type: SET_SELECTED_EMPLOYEE,
-        selectedEmployee: employee
-      })
   }
 
   async function deleteEmployeeFn(employeId : number){

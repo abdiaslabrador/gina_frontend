@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Head from "next/head";
-import Router from "next/router";
 import { useContext } from "react";
 import { getCookie } from "cookies-next";
 import { NextPage, GetServerSidePropsContext } from "next";

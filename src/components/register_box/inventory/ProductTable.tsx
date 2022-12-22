@@ -5,11 +5,10 @@ import { ProductInf } from "../../../interface/productInf";
 import DeleteProduct from "./DeleteProduct";
 import CreateProduct from "./CreateProduct";
 import UpdateProduct from "./UpdateProduct";
-// import { authContext } from "../../../context/login/authContext";
-import { productContext } from "../../../context/register_box/product/productContext";
+import { inventoryContext } from "../../../context/register_box/inventory/inventoryContext";
 
 const ProductTable = () => {
-    const {  selectedProduct, productList, loadingForm, loadingProduct, setSelectedProductFn } = useContext(productContext);
+    const {  selectedProduct, productList, loadingForm, loadingProduct, setSelectedProductFn } = useContext(inventoryContext);
     // const [loadingDataSentence, setLoadingDataSentence] = useState<string>("Cargando datos...");
 
     function objectSelection(product: ProductInf): void {
@@ -19,14 +18,10 @@ const ProductTable = () => {
 
   return (
     <Fragment>
-          
-              
-                <div className={prodcutTableCss["create_modify_bottom"]}>
-                  <CreateProduct/>
-                  <UpdateProduct/>
-                </div> 
-             
-
+              <div className={prodcutTableCss["create_modify_bottom"]}>
+                <CreateProduct/>
+                <UpdateProduct/>
+              </div> 
               <div className={prodcutTableCss["product_list"]}>
                 <div className={prodcutTableCss["product_list__titles"]}>
                   <div>Código</div>
@@ -80,14 +75,11 @@ const ProductTable = () => {
                     </div>)
                 }
                 </Fragment>
-                
               </div>
-              
-                <div className={prodcutTableCss["delete_bottom"]}>
-                  <DeleteProduct/>
-                </div> 
-             
-         
+
+              <div className={prodcutTableCss["delete_bottom"]}>
+                <DeleteProduct/>
+              </div> 
     </Fragment>
   );
 };

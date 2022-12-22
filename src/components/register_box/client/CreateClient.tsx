@@ -1,6 +1,5 @@
 import React, {Fragment, useContext} from "react";
 import { Modal, Loading } from "@nextui-org/react";
-import createEmployeeCss from "./CreateClient.module.css";
 import comunModalCss from "../../../styles/modal.module.css";
 import customAxios from "../../../config/axios";
 import { Formik, Form, Field, ErrorMessage } from "formik";
@@ -69,7 +68,7 @@ const CreateClient = () => {
     let error;
   
     if (!value.trim()) {
-      error = "Campo requerido";
+      return error = "Campo requerido";
     }
     try {
       const resp = await customAxios.post("client/getbyci", {

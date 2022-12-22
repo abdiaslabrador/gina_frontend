@@ -68,3 +68,13 @@ input:focus {
 .button_form__button--efect:active {
   transform: scale(0.98);
 }
+
+/* loading */
+.center_loading {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}

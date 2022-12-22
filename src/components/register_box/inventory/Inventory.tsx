@@ -1,20 +1,15 @@
 import React, {Fragment, useState, useContext, useEffect} from "react";
-import { Modal, Loading } from "@nextui-org/react";
+import { Modal } from "@nextui-org/react";
 import inventoryCss from "./Inventory.module.css";
 import cajaCss from "../register_box/Caja.module.css";
 import customAxios from "../../../config/axios";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import { productContext } from "../../../context/register_box/product/productContext";
+import { inventoryContext } from "../../../context/register_box/inventory/inventoryContext";
 import SearchFormProduct from "./SearchFormProduct";
 import ProductTable from "./ProductTable";
 import { currencyContext } from "../../../context/register_box/currency/currencyContext";
 
-interface initialValues {
-  id: number,
-  today_currency: number;
-}
 const Inventory = () => {
-  const { cleanProductsFn } = useContext(productContext);
+  const { cleanInventoryFn } = useContext(inventoryContext);
   const [visible, setVisible] = React.useState(false);
   const { currency, } = useContext( currencyContext );
   
@@ -23,7 +18,7 @@ const Inventory = () => {
   }
 
   const closeHandler = () => {
-    cleanProductsFn();
+    cleanInventoryFn();
     setVisible(false);
   };
 

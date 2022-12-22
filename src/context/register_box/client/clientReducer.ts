@@ -1,13 +1,13 @@
 import {
-  GET_CLIENT,
-  CREATE_CLIENT,
-    SET_SELECTED_CLIENT,
+    GET_CLIENT,
+    CREATE_CLIENT,
     DELETE_CLIENT,
-    UPDATE_CLIENT,
-    CLIENTS_ERROR,
+    SET_SELECTED_CLIENT,
     LOADING_FORM,
+    UPDATE_CLIENT,
     UPDATE_MSJ_SUCCESS,
     UPDATE_MSJ_ERROR,
+    CLIENTS_ERROR,
   } from "./clientType";
   import { ClientInf } from "../../../interface/clientInf";
   

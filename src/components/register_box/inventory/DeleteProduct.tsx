@@ -1,12 +1,11 @@
 import React, {useContext} from "react";
 import { Modal, Button } from "@nextui-org/react";
-import { ProductInf } from "../../../interface/productInf";
 import customAxios from "../../../config/axios";
 import { Loading } from "@nextui-org/react";
-import { productContext } from "../../../context/register_box/product/productContext";
+import { inventoryContext } from "../../../context/register_box/inventory/inventoryContext";
 
 const DeleteProduct = () => {
-  const { loadingForm, selectedProduct, deleteProductFn } = useContext(productContext);
+  const { loadingForm, selectedProduct, deleteProductFn } = useContext(inventoryContext);
   const [visible, setVisible] = React.useState(false);
   const [mensaje, setMensaje] = React.useState(
     "¿Estas seguro de eliminar el producto?"

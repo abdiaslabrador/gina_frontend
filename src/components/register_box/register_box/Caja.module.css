@@ -6,7 +6,6 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
   grid-template-rows: min-content minmax(56.47%, 1fr) min-content min-content;
-  /* grid-template-rows: min-content minmax(56.47%, 1fr) min-content min-content; */
   grid-template-areas:
     "client_info client_info pay_info pay_info"
     "product_list product_list product_list product_list"
@@ -117,10 +116,6 @@
   border: white 1px solid;
 }
 
-.product_list__item:nth-child(even) {
-  background-color: #313030;
-}
-
 .code {
   grid-area: "code";
 }
@@ -147,37 +142,35 @@
 }
 
 /*Botón para búsqueda de usuario y formulario de descuento*/
-.buttom_form {
-  padding: 3px 10px;
+/* .buttom_form {
   grid-area: buttom_form;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 50% 50%;
   font-size: 0.75rem;
+  padding: 3px 10px;
+} */
+.buttom_form {
+  grid-area: buttom_form;
+  display: flex;
+  font-size: 0.75rem;
+  padding: 3px 10px;
+}
+.buttom_form__ci {
+  /* justify-self: flex-start; */
+  justify-content: flex-start;
 }
 
-.button_form__button {
-  padding: 0 40px;
-  border: 1px solid;
-  justify-self: flex-start;
-}
-
-.button_form__button:hover {
-  background-color: #222121;
-}
-
-.button_form__button:active {
-  transform: scale(0.98);
-}
-
-.buttom_form__discount {
+/* .buttom_form__discount {
   justify-self: flex-end;
 }
+ */
 
 .buttom_form__box {
   background-color: #CFD6D4;
   border-style: none;
   width: 150px;
   font-size: 0.75rem;
+  color:black;
 }
 
 /*Botones*/
@@ -192,6 +185,14 @@
   padding: 15px;
   flex: 1 1 auto;
   border: 1px solid;
+  background-color: var(--cl-bckgd-pages);
+}
+
+.options__items--disable {
+  background-color: #605454;
+}
+.options__items--enable {
+  background-color: var(--cl-bckgd-pages);
 }
 
 .options__items:active {
@@ -274,7 +275,8 @@
     grid-template-columns: 1fr;
   }
 
-  .button_form__button {
+  /* .button_form__button  */
+  .buttom_form__ci{
     margin: 10px 0px;
   }
 
@@ -282,4 +284,14 @@
     margin: 10px 0px;
     justify-self: flex-start;
   }
+}
+
+.square__form-error {
+  display: inline-block;
+  font-weight: bold;
+  color: black;
+  background-color: var(--cl-error);
+  padding-left: 6%;
+  font-size: 0.75rem;
+  text-align: center;
 }
