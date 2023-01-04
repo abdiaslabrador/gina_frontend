@@ -51,9 +51,9 @@ const EditProduct = () => {
    return (
     <Fragment>
       <button
-        className={ `${cajaCss["options__items"]} ${ (!client) ? (cajaCss["options__items--disable"])  : (cajaCss["options__items--enable"]) } `}
+        className={ `${cajaCss["options__items"]} ${ (!selectedProductRegisterBox.id || !client) ? (cajaCss["options__items--disable"])  : (cajaCss["options__items--enable"]) } `}
         onClick={handler}
-        disabled={!selectedProductRegisterBox.id ? true : false}
+        disabled={!selectedProductRegisterBox.id || !client ? true : false}
       >
         <i className="fa-solid fa-pencil"></i>
       </button>
@@ -98,7 +98,7 @@ const EditProduct = () => {
                       <div className={comunModalCss["form_group__label"]}>
                         <label>Cantidad disponible:</label>
                       </div>
-                        {(selectedProductRegisterBox.enable_cant)?
+                        {(productApiRegisterBox.enable_cant)?
                             <Fragment>
 
                             {(productApiRegisterBox.id && !loadingProductRegisterBox)?

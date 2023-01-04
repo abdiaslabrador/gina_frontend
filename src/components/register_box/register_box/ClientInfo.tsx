@@ -18,7 +18,7 @@ const ClientInfo = () => {
                     <div>Cliente: {client.name} {client.last_name}</div>
                     <div>Rif: {client.ci_rif}</div>
                     <div>Dirección: {client.direction}</div>
-                    <div>Factura: 22753</div>
+                    {/* <div>Factura: 22753</div> */}
                   </Fragment> : 
                   <Fragment>
                     <div>No hay cliente</div>

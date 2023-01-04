@@ -67,7 +67,6 @@ const ClientTable = () => {
                   </div>
                 }
                 </Fragment>
-                
               </div>
               
                 <div className={clientTableCss["delete_bottom"]}>

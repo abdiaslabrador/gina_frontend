@@ -7,9 +7,8 @@ import { inventoryContext } from "../../../context/register_box/inventory/invent
 import { currencyContext } from "../../../context/register_box/currency/currencyContext";
 import  customAxios  from "../../../config/axios";
 import { ProductInf } from "../../../interface/productInf";
-import * as Yup from "yup";
-import { Divider } from "@nextui-org/react";
-import Currency from "../currency/Currency";
+import  UpdatePricesWithCurrency  from "./UpdatePricesWithCurrency";
+
 
 const SearchFormProduct = () => {
   const { selectOption, loadingProductPrices, searchProductByFn, setSelectOptionFn, setSelectedProductFn, updateProductPricesFn } = useContext(inventoryContext);
@@ -190,12 +189,7 @@ return (
           <div>
             Tasa: {currency.today_currency}
           </div>
-          <button
-              onClick={updatePrices}
-              className="button_form__button button_form__button--efect"
-          >
-              <i className="fa-solid fa-rotate-right"></i>
-          </button>
+          <UpdatePricesWithCurrency/>
         </Fragment>
         :
         <Loading

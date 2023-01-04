@@ -44,11 +44,15 @@ const SelectProduct = () => {
 
   const formHandler = async (e : any) => {
     e.preventDefault();
-    const product = {
+    const product : any = {
       ...selectedProduct,
       cant: productCant,
       subtotal: subtotal,
     }
+    
+    delete product.admit_update_currency
+    delete product.enable_cant
+    
     addToRegisterBoxListFn(product);
     setVisible(false);
   };

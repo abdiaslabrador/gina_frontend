@@ -74,6 +74,7 @@ input:focus {
   height: 100%;
   width: 100%;
   display: flex;
+  background-color: var(--cl-bckgd-table-items);
   justify-content: center;
   align-items: center;
   flex-direction: column;

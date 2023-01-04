@@ -26,7 +26,7 @@ const TakeOutProduct = () => {
     <div>
       
       <button
-        className={ `${cajaCss["options__items"]} ${ (!client) ? (cajaCss["options__items--disable"])  : (cajaCss["options__items--enable"]) } `}
+        className={ `${cajaCss["options__items"]} ${ (!selectedProductRegisterBox.id || !client) ? (cajaCss["options__items--disable"])  : (cajaCss["options__items--enable"]) } `}
         onClick={handler}
         disabled={!selectedProductRegisterBox.id ? true : false}
       >

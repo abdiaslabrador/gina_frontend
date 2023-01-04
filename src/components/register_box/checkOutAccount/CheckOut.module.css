@@ -1,0 +1,96 @@
+.payment_amounts_side{
+  display:grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-areas: "pay_info pay_info client_payment client_payment"
+}
+
+.payment_types_side{
+  display: flex;
+  justify-content: space-around;
+}
+
+.check_out_botton{
+  display: flex;
+  justify-content:center;
+}
+
+.delete_bottom {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+/*lista de producto*/
+.product_list {
+    display: flex;
+    flex-direction: column;
+    font-size: 16px;
+    color: white;
+}
+
+.product_list__titles {
+    background-color: var(--cl-headers);
+    flex: 0 1 auto;
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr 1.4fr 1.4fr 0.8fr 1.2fr 2.2fr 4px;
+}
+
+.product_list__titles>* {
+    text-align: center;
+    border-right: white 1px solid;
+
+}
+
+.product_list__products {
+    /*El height: 1px es solo para que el scroll aparezca*/
+    height: 200px; /*modificado aquí*/
+    flex: 1 1 auto;
+    overflow-y: scroll;
+    background-color: var(--cl-bckgd-table-items);
+}
+
+.product_list__item {
+    background-color: var(--cl-table-items);
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr 1.4fr 1.4fr 0.8fr 1.2fr 2.2fr;
+    grid-template-areas: "payment_date paymentType_name currency_day_value currency_name currency_amount amount detail";
+}
+
+.product_list__item>* {
+    text-align: center;
+    border: white 1px solid;
+}
+
+.payment_date {
+    grid-area: "payment_date";
+}
+
+.paymentType_name {
+    grid-area: "paymentType_name";
+}
+
+.currency_day_value {
+    grid-area: "currency_day_value";
+}
+
+.currency_name {
+  grid-area: "currency_name";
+}
+
+.currency_amount {
+  grid-area: "currency_amount";
+}
+
+.amount {
+  grid-area: "amount";
+}
+
+.detail {
+  grid-area: "detail";
+}
+
+.title{
+    color: var(--cl-fn-title);
+    margin-bottom: 30px;
+}

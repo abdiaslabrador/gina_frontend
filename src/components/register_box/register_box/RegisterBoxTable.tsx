@@ -20,7 +20,7 @@ const RegisterBoxTable = () => {
               <div>Descripción</div>
               <div>Cant</div>
               <div>Precio</div>
-              <div>Ref</div>
+              {/* <div>Ref</div> */}
               <div>Sub-Total</div>
             </div>
             <Fragment>
@@ -42,7 +42,7 @@ const RegisterBoxTable = () => {
                                 <div className={cajaCss["description"]}>{product.description}</div>
                                 <div className={cajaCss["cant"]}>{product.cant}</div>
                                 <div className={cajaCss["price"]}>{product.price}</div>
-                                <div className={cajaCss["ref"]}>{product.price_ref}$</div>
+                                {/* <div className={cajaCss["ref"]}>{product.price_ref}$</div> */}
                                 <div className={cajaCss["subtotal"]}>{product.subtotal}</div>
                             </div>
                         ))}

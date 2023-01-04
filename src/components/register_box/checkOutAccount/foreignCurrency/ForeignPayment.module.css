@@ -1,0 +1,26 @@
+.title{
+    color: var(--cl-fn-title);
+    margin-bottom: 30px;
+}
+
+.content{
+    display: grid;
+    grid-template-columns: 0.5fr 1.5fr;
+  }
+  
+  .button_side{
+      padding: 0px 10px;
+  }
+  .button_side > *{
+      margin-bottom: 10px;
+  }
+  
+  .input_side{
+      border-left: 1px solid white;
+  }
+  
+  .add_payment{
+    display:flex;
+    justify-content: center;
+    /* flex: 0 1 100%;*/
+  }

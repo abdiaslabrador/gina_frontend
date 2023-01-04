@@ -2,6 +2,9 @@ import React, { Fragment, useContext } from "react";
 import { Modal, Button } from "@nextui-org/react";
 import { Loading } from "@nextui-org/react";
 import { registerBoxContext } from "../../../context/register_box/register_box/registerBoxContext";
+import { docAccountContext } from "../../../context/register_box/documentAccount/docAccountContext";
+import { paymentMadeContext } from "../../../context/register_box/checkOut/paymentMade/paymentMadeContext";
+import { checkOutAccountContext } from "../../../context/register_box/checkOut/checkOutAccount/checkOutAccountContext";
 import cajaCss from "../register_box/Caja.module.css";
 
 
@@ -10,7 +13,11 @@ const CancelPurchase = () => {
   // const [mensaje, setMensaje] = React.useState(
   //   "¿Estas seguro de cancelar la compra?"
   // );
-  const { client, cancelThePurchaseFn } = useContext( registerBoxContext );
+  const { client, cleanRegisterBoxFn } = useContext( registerBoxContext );
+  const { cleanDocumentAccountFn } = useContext( docAccountContext );
+  const { cleanPaymentMadeFn } = useContext( paymentMadeContext );
+  const { cleanCheckOutAccountFn } = useContext( checkOutAccountContext );
+  
   
   const handler = () => setVisible(true);
 
@@ -19,9 +26,13 @@ const CancelPurchase = () => {
   };
 
   const cancelPurchase = async () => {
-      cancelThePurchaseFn();
-      setVisible(false);
+    cleanRegisterBoxFn();
+    cleanDocumentAccountFn();
+    cleanPaymentMadeFn();
+    cleanCheckOutAccountFn();
+    setVisible(false);
   };
+  
   return (
     <Fragment>
       <button

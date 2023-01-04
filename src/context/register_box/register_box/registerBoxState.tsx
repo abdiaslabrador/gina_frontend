@@ -11,14 +11,12 @@ import {registerBoxContext} from './registerBoxContext';
 import {
   GET_CLIENT, 
   LOADING_CLIENT,
-  CANCEL_PURCHASE,
+  CLEAN_REGISTERBOX,
   ADD_TO_LIST,
   TAKEOUT,
   SET_SELECTED_PRODUCT,
   LOADING_PRODUCT_REGISTERBOX,
   GET_PRODUCT_REGISTERBOX,
-  UPDATE_ACCOUNT,
-
  } from "./registerBoxType";
 
 interface props {
@@ -27,24 +25,16 @@ interface props {
 
 const RegisterBoxProvider = ({ children }: props) => {
   const { saveErrorFromServerFn } = useContext(errorServerContext);
-  const { currency } = useContext(currencyContext);
   const { logOut } = useContext(authContext);
 
   const initialState = {
     client : null,
     productListRegisterBox : [],
     selectedProductRegisterBox : {} as ProductRegisterBoxInf,
-    subtotal: 0 ,
-    discount: 0 ,
-    dolares: 0 ,
-    total: 0 ,
     productApiRegisterBox: {} as ProductInf,
+
     loadingProductRegisterBox: false,
     loadingClient: false,
-
-    // msjSuccess : "",
-    // msjError : "",
-    // loadingForm: false,
   };
 
   const [state, dispatch] = useReducer(registerBoxReducer, initialState);
@@ -56,8 +46,34 @@ const RegisterBoxProvider = ({ children }: props) => {
     })
   }
 
-  function cancelThePurchaseFn(){
-    dispatch({type:CANCEL_PURCHASE})
+  function cleanRegisterBoxFn(){
+    dispatch({type:CLEAN_REGISTERBOX})
+  }
+
+  function addToRegisterBoxListFn(product : any){
+    let indexProduct : number = -1;
+    let productFound : ProductRegisterBoxInf = state.productListRegisterBox.find( (element : ProductRegisterBoxInf, index : number) => 
+      {   
+          indexProduct = index;
+          return element.id == product.id;
+      })
+    let arrayCopy = state.productListRegisterBox.copyWithin(0, state.productListRegisterBox.length);
+      
+    if(productFound){
+      arrayCopy.splice(indexProduct, 1, product)
+    }else{
+      arrayCopy = [...arrayCopy, product]
+    }
+    
+    dispatch({type:ADD_TO_LIST,
+              productListRegisterBox: [...arrayCopy],
+            })
+  }
+
+  function takeOutProductRegisterBoxFn(productId : number){
+    dispatch({type:TAKEOUT, 
+      productListRegisterBox: state.productListRegisterBox.filter( (product : ProductRegisterBoxInf) => product.id != productId)
+    })
   }
 
   async function getProductRegisterBoxFn(code : string){
@@ -83,48 +99,6 @@ const RegisterBoxProvider = ({ children }: props) => {
         saveErrorFromServerFn(true);
       }
     }
-  }
-
-  function updateAccountFn(){
-    let subtotalAccount : number = 0;
-    let dolaresAccount : number = 0;
-
-    state.productListRegisterBox.forEach((product : ProductRegisterBoxInf) =>{
-      subtotalAccount = subtotalAccount + product.subtotal;
-    })
-    dolaresAccount = subtotalAccount / currency.today_currency;
-
-    dispatch({type:UPDATE_ACCOUNT, 
-      subtotal: Number(subtotalAccount.toFixed(2)),
-      dolares: Number(dolaresAccount.toFixed(2)),
-      total:  Number((subtotalAccount - state.discount).toFixed(2))
-    })
-  }
-  
-  function addToRegisterBoxListFn(product : ProductRegisterBoxInf){
-    let indexProduct : number = -1;
-    let productFound : ProductRegisterBoxInf = state.productListRegisterBox.find( (element : ProductRegisterBoxInf, index : number) => 
-      {   
-          indexProduct = index;
-          return element.id == product.id;
-      })
-    let arrayCopy = state.productListRegisterBox.copyWithin(0, state.productListRegisterBox.length);
-      
-    if(productFound){
-      arrayCopy.splice(indexProduct, 1, product)
-    }else{
-      arrayCopy = [...arrayCopy, product]
-    }
-    
-    dispatch({type:ADD_TO_LIST,
-              productListRegisterBox: [...arrayCopy],
-            })
-  }
-
-  function takeOutProductRegisterBoxFn(productId : number){
-    dispatch({type:TAKEOUT, 
-      productListRegisterBox: state.productListRegisterBox.filter( (product : ProductRegisterBoxInf) => product.id != productId)
-    })
   }
 
   async function searchClientByCiRegisterBoxFn(ci_rif:string){
@@ -159,81 +133,21 @@ const RegisterBoxProvider = ({ children }: props) => {
     }
   }
 
-  // function takeOutProductRegisterBoxFn(productId : number){
-  //   let subtotalAccount : number = 0;
-  //   let dolaresAccount : number = 0;
-  //   let arrayCopy = state.productListRegisterBox.filter( (product : ProductRegisterBoxInf) => product.id != productId)
-  //   arrayCopy.forEach((product : ProductRegisterBoxInf) =>{
-  //     subtotalAccount = subtotalAccount + product.subtotal;
-  //   })
-  //   dolaresAccount = subtotalAccount / currency.today_currency;
-
-  //   dispatch({type:TAKEOUT, 
-  //     productListRegisterBox: arrayCopy,
-  //     subtotal: Number(subtotalAccount.toFixed(2)),
-  //     dolares: Number(dolaresAccount.toFixed(2)),
-  //     total:  Number((subtotalAccount - state.discount).toFixed(2))
-  //   })
-  // }
-
-  // function addToRegisterBoxListFn(product : ProductRegisterBoxInf){
-  //   let subtotalAccount : number = 0;
-  //   let dolaresAccount : number = 0;
-  //   let indexProduct : number = -1;
-  //   let productFound : ProductRegisterBoxInf = state.productListRegisterBox.find( (element : ProductRegisterBoxInf, index : number) => 
-  //     {   
-  //         indexProduct = index;
-  //         return element.id == product.id;
-  //     })
-  //   let arrayCopy = state.productListRegisterBox.copyWithin(0, state.productListRegisterBox.length);
-      
-  //   if(productFound){
-  //     arrayCopy[indexProduct] = product;
-  //     arrayCopy.forEach((product : ProductRegisterBoxInf) =>{
-  //       subtotalAccount = subtotalAccount + product.subtotal;
-  //     })
-  //     dolaresAccount =  subtotalAccount / currency.today_currency;      
-  //   }else{
-  //     arrayCopy = [...arrayCopy, product]
-  //     arrayCopy.forEach((product : ProductRegisterBoxInf) =>{
-  //       subtotalAccount = subtotalAccount + product.subtotal;
-  //     })
-  //     dolaresAccount =  subtotalAccount / currency.today_currency;
-  //   }
-  //   dispatch({type:ADD_TO_LIST, 
-  //             productListRegisterBox: arrayCopy,
-  //             subtotal: Number(subtotalAccount.toFixed(2)),
-  //             dolares: Number(dolaresAccount.toFixed(2)),
-  //             total:  Number((subtotalAccount - state.discount).toFixed(2))
-  //           })
-  // }
-
   return (
     <registerBoxContext.Provider
       value={{
         selectedProductRegisterBox: state.selectedProductRegisterBox,
-        productListRegisterBox: state.productListRegisterBox,
-        subtotal: state.subtotal,
-        discount: state.discount,
-        dolares: state.dolares,
-        total: state.total,
-        client : state.client,
-        productApiRegisterBox: state.productApiRegisterBox,
         loadingProductRegisterBox: state.loadingProductRegisterBox,
+        productListRegisterBox: state.productListRegisterBox,
+        productApiRegisterBox: state.productApiRegisterBox,
         loadingClient: state.loadingClient,
-
-        // loadingForm : state.loadingForm,
-        // msjSuccess : state.msjSuccess,
-        // msjError : state.msjError,
-        // loadingProduct : state.loadingProduct,
-
+        client : state.client,
         setSelectedProductRegisterBoxFn,
         searchClientByCiRegisterBoxFn,
         takeOutProductRegisterBoxFn,
-        addToRegisterBoxListFn,
-        cancelThePurchaseFn,
         getProductRegisterBoxFn,
-        updateAccountFn
+        addToRegisterBoxListFn,
+        cleanRegisterBoxFn,
       }}
     >
       {children}

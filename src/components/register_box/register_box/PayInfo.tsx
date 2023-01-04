@@ -3,18 +3,20 @@ import customAxios from "../../../config/axios";
 import { Loading } from "@nextui-org/react";
 import { registerBoxContext } from "../../../context/register_box/register_box/registerBoxContext";
 import { currencyContext } from "../../../context/register_box/currency/currencyContext";
+import { docAccountContext } from "../../../context/register_box/documentAccount/docAccountContext";
 import cajaCss from "./Caja.module.css";
 import payInfoCss from "./PayInfo.module.css";
 
 const PayInfo = () => {
-  const { subtotal, discount, dolares, total, productListRegisterBox, updateAccountFn} = useContext( registerBoxContext );
+  const { subtotal, discount, dolares, total, updateDocAccountFn} = useContext( docAccountContext );
+  const { productListRegisterBox} = useContext( registerBoxContext );
   const { loadingCurrency, currency } = useContext( currencyContext );
   
   useEffect(()=>{
     if(currency){
-      updateAccountFn();
+      updateDocAccountFn();
     }
-  },[productListRegisterBox])
+  },[productListRegisterBox, discount])
   
   return (
     <Fragment>

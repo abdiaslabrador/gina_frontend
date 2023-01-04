@@ -1,7 +1,5 @@
 import React, {useContext} from "react";
 import { Modal, Button } from "@nextui-org/react";
-import {EmployeeInf} from "../../../interface/EmployeeInf";
-import deleteEmployeeCss from "./DeleteEmployee.module.css";
 import customAxios from "../../../config/axios";
 import { Loading } from "@nextui-org/react";
 import { employeeContext } from "../../../context/configuration/employee/employeeContext";
@@ -62,36 +60,20 @@ const DeleteEmployee = () => {
         {/* <Modal.Header>
             
         </Modal.Header> */}
-        <Modal.Body>{loadingForm ?
-        ( <Loading /> )
-        : 
-        (<div>{mensaje}</div>)
-        }</Modal.Body>
+        <Modal.Body>
+          {loadingForm ?
+            ( <Loading /> )
+            : 
+            (<div>{mensaje}</div>)
+          }
+        </Modal.Body>
         <Modal.Footer>
-          {loadingForm ? (
-            <Button
-              disabled
-              auto
-              flat
-              color="error"
-            >
-              Si
-            </Button> //con disable
-          ) : (
-            <Button auto flat color="error" onClick={() => eliminarEmployee()}>
+            <Button auto flat color="error" onClick={() => eliminarEmployee()} disabled={loadingForm}>
               Si
             </Button>
-          )}
-
-          {loadingForm ? (
-            <Button auto onClick={closeHandler} disabled>
-              No
-            </Button> //sin disable
-          ) : (
-            <Button auto onClick={closeHandler}>
+            <Button auto onClick={closeHandler} disabled={loadingForm}>
               No
             </Button>
-          )}
         </Modal.Footer>
       </Modal>
     </div>

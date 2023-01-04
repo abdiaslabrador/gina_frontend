@@ -1,6 +1,6 @@
 import {EmployeeInf} from "./EmployeeInf";
 
-export interface authContextInf {
+export interface AuthContextInf {
   user: EmployeeInf;
   message: string;
   loadingForm: string,

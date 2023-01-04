@@ -1,4 +1,4 @@
 import { createContext, useReducer } from "react";
-import { authContextInf } from "../../interface/auth";
+import { AuthContextInf } from "../../interface/auth";
 
-export const authContext = createContext<authContextInf>({} as authContextInf);
+export const authContext = createContext<AuthContextInf>({} as AuthContextInf);

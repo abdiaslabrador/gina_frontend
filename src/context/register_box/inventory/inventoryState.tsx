@@ -212,21 +212,19 @@ const InventoryProvider = ({ children }: props) => {
         if (error.response?.status == "404") { 
           await searchProductByFn(state.searchFormValue);
           setSelectedProductFn({} as ProductInf); //esto es nuevo, al pedir toda la lista se reinica la selección
-          dispatch({ type: LOADING_FORM, loadingForm: false })
+          dispatch({ type: LOADING_PRODUCT_PRICES, loadingProductPrices: false })
 
         }else if (error.response?.status == "403") { //usuario con el token inválido. NOTA: ya el token se elimina desde el backend
-          dispatch({type: LOADING_FORM, loadingForm: false });
+          dispatch({type: LOADING_PRODUCT_PRICES, loadingProductPrices: false });
           dispatch({type: PRODUCTS_ERROR})
           await logOut();
 
         }else {
-          dispatch({ type: LOADING_FORM, loadingForm: false })
+          dispatch({ type: LOADING_PRODUCT_PRICES, loadingProductPrices: false })
           dispatch({type: PRODUCTS_ERROR})
           saveErrorFromServerFn(true);
         }
     }
-    
-        
   }
 
   return (

@@ -1,28 +1,22 @@
 import {
    GET_CLIENT, 
    LOADING_CLIENT,
-   CANCEL_PURCHASE,
+   CLEAN_REGISTERBOX,
    ADD_TO_LIST,
    SET_SELECTED_PRODUCT,
    TAKEOUT,
    LOADING_PRODUCT_REGISTERBOX,
    GET_PRODUCT_REGISTERBOX,
-   UPDATE_ACCOUNT,
   } from "./registerBoxType";
   import { ClientInf } from "../../../interface/clientInf";
-import {ProductRegisterBoxInf} from "../../../interface/registerBoxInf";
+  import { ProductInf } from "../../../interface/productInf";
+  import {ProductRegisterBoxInf} from "../../../interface/registerBoxInf";
   
   type Action =
   
     | {
-        type: "UPDATE_ACCOUNT";
-        subtotal: number,
-        dolares: number,
-        total:  number,
-      }
-    | {
         type: "GET_PRODUCT_REGISTERBOX";
-        productApiRegisterBox: ProductRegisterBoxInf,
+        productApiRegisterBox: ProductInf,
         loadingProductRegisterBox: boolean,
       }
     | {
@@ -39,13 +33,11 @@ import {ProductRegisterBoxInf} from "../../../interface/registerBoxInf";
         productListRegisterBox : ProductRegisterBoxInf[],
       }
     | {
-        type: "CANCEL_PURCHASE";
+        type: "CLEAN_REGISTERBOX";
         productListRegisterBox?: ProductRegisterBoxInf[],
         selectedProductRegisterBox? :  ProductRegisterBoxInf,
+        productApiRegisterBox?: ProductInf,
         client?: ClientInf | null;
-        subtotal?: number,
-        dolares?: number,
-        total?:  number,
       }
     | {
         type: "GET_CLIENT";
@@ -74,13 +66,6 @@ import {ProductRegisterBoxInf} from "../../../interface/registerBoxInf";
   const registerBoxReducer = (state: any = {}, action: Action) => {
     switch (action.type) {
       
-      case UPDATE_ACCOUNT:
-          return {
-            ...state,
-            subtotal: action.subtotal,
-            dolares: action.dolares,
-            total:  action.total,
-          };
       case GET_PRODUCT_REGISTERBOX:
           return {
             ...state,
@@ -104,15 +89,13 @@ import {ProductRegisterBoxInf} from "../../../interface/registerBoxInf";
             ...state,
             productListRegisterBox : action.productListRegisterBox,
           };
-      case CANCEL_PURCHASE:
+      case CLEAN_REGISTERBOX:
         return {
           ...state,
           client: null,
           productListRegisterBox: [],
           selectedProductRegisterBox : {} as ProductRegisterBoxInf,
-          subtotal: 0,
-          dolares: 0,
-          total:  0,
+          productApiRegisterBox: {} as ProductInf,
         };
       case GET_CLIENT:
         return {

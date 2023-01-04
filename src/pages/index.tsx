@@ -7,6 +7,7 @@ import { authContext } from "../context/login/authContext";
 import WithLayout from "../components/layout/HocLayoutHeader";
 import {errorServerContext} from '../context/error/errorServerContext';
 import CurrencyProvider from '../context/register_box/currency/currencyState';
+import DocumentAccountProvider from '../context/register_box/documentAccount/docAccountState';
 import RegisterBoxProvider from '../context/register_box/register_box/registerBoxState';
 import RegisterBox from "../components/register_box/register_box/RegisterBox";
 
@@ -29,12 +30,14 @@ const Caja: NextPage = () => {
       {!errorFromServer ? (
         <CurrencyProvider>
           <RegisterBoxProvider>
-            <RegisterBox/>
+            <DocumentAccountProvider>
+              <RegisterBox/>
+            </DocumentAccountProvider>
           </RegisterBoxProvider>
         </CurrencyProvider>
       ) : (
         <div>
-          <ServerError />
+          <ServerError/>
         </div>
       )}
     </Fragment>

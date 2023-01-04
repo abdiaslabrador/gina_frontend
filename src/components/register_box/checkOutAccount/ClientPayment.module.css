@@ -1,0 +1,49 @@
+/*información del pago*/
+.client_payment {
+    grid-area: client_payment;
+    padding: 3.5px 15px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: min-content minmax(min-content, auto) minmax(min-content, auto) min-content;
+  }
+  
+  .client_payment__title {
+    color:white;
+    grid-column: 1 /2;
+  }
+  
+  .client_payment__count {
+    color:white;
+    grid-column: 2 /-1;
+    justify-self: self-end;
+  }
+  
+  .client_payment__title--aling {
+    color:white;
+    align-self: flex-start;
+  }
+
+  .client_payment__title--bigfont {
+    font-size: 1.75rem;
+    font-weight: bold;
+  }
+  
+  .client_payment__count--dollar {
+    line-height: 1.56rem;
+    font-size: 1.75rem;
+    color: #279D14;
+    font-weight: bold;
+  }
+  
+  .client_payment__count--total {
+    color:white;
+    line-height: 1.56rem;
+    font-size: 30px;
+    font-weight: bold;
+  }
+
+  .pay_info_loading {
+    grid-area: client_payment;
+    padding: 3.5px 15px;
+    display: flex;
+  }

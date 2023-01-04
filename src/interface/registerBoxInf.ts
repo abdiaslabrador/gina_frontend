@@ -1,15 +1,16 @@
 import { ClientInf } from "./clientInf";
+import {ProductInf} from "./productInf";
 
 export interface ProductRegisterBoxInf {
-  id: number;
-  code: string;
-  cant: number;
+  id: number; //* los que se usan en la base de datos
+  cant: number; //*
+  price: number; //*
+  price_ref: number; //*
+  subtotal: number; //*
   description: string;
-  price: number;
-  price_ref: number;
-  admit_update_currency: boolean;
-  enable_cant: boolean;
-  subtotal: number;
+  code: string;
+  // admit_update_currency: boolean;
+  // enable_cant: boolean;
   createdAt?: Date;
   updateAt?: Date;
 }
@@ -18,26 +19,20 @@ export interface RegisterBoxContextInf {
     selectedProductRegisterBox : ProductRegisterBoxInf;
     productListRegisterBox : ProductRegisterBoxInf[];
 
-    subtotal: 0;
-    discount: 0;
-    dolares: 0;
-    total: 0;
-    
     client :  ClientInf | null;
     loadingProductRegisterBox: boolean;
-    productApiRegisterBox: ProductRegisterBoxInf;
+    productApiRegisterBox: ProductInf;
     loadingClient : boolean;
-
-    // msjSuccess : string;
-    // msjError : string;
-    // loadingForm : boolean;
-    // loadingProduct : boolean;
 
     setSelectedProductRegisterBoxFn(employee:ProductRegisterBoxInf): void;
     searchClientByCiRegisterBoxFn(ci_rif:string):void;
     takeOutProductRegisterBoxFn(productId : number):void;
     addToRegisterBoxListFn(product : any):void;
-    cancelThePurchaseFn():void;
+    cleanRegisterBoxFn():void;
     getProductRegisterBoxFn(code : string):void;
-    updateAccountFn():void;
+
+    // msjSuccess : string;
+    // msjError : string;
+    // loadingForm : boolean;
+    // loadingProduct : boolean;
   }

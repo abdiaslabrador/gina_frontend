@@ -6,7 +6,7 @@ import { registerBoxContext } from "../../../context/register_box/register_box/r
 import cajaCss from "./Caja.module.css";
 
 const CiandDiscountBar = () => {
-const { client, subtotal, searchClientByCiRegisterBoxFn } = useContext( registerBoxContext );
+const { client, searchClientByCiRegisterBoxFn } = useContext( registerBoxContext );
 
     const formHandler = async  (values : any) =>{
         await searchClientByCiRegisterBoxFn(values.ci_rif);

@@ -3,11 +3,12 @@ export interface CurrencyInf{
     name:string;
     today_currency: number;
     createdAt?: Date;
-    updateA?: Date;
+    updateAt?: Date;
+    deleteAt?: Date;
 }
 
 export interface CurrencyContextInf{
-    currency: CurrencyInf
+    currency: CurrencyInf,
     msjSuccess : "",
     msjError : "",
     loadingForm: boolean,
