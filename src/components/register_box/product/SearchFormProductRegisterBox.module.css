@@ -1,26 +1,19 @@
 .container{
     display: flex;
+    flex-direction: column;
     margin-bottom: 20px;
-}
-
-.currency{
-    flex: 1 1 50%;
-    color: white;
-    display: flex;
-    justify-content: space-around;
-    align-items: flex-start;
-}
-.search{
-    flex: 1 1 50%;
-}
-.form_select {
-    margin-bottom: 5px;
     width: 50%;
 }
+
+.form_select {
+    width: 50%;
+    margin-bottom: 5px;
+}
+
 .form_group {
+    
     display: grid;
-    /* margin-bottom: 30px; */
-    grid-template-columns:  28% min-content;
+    grid-template-columns: 55% min-content;
     grid-template-rows:  min-content min-content;
 }
 

@@ -1,0 +1,69 @@
+.container{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.form_select {
+  width: auto;
+  margin-bottom: 5px;
+}
+
+.form_group {
+  display: grid;
+  grid-template-columns: 28% min-content;
+  grid-template-rows:  min-content min-content;
+}
+
+.date_group {
+  display: grid;
+  grid-template-columns: min-content min-content min-content min-content min-content;
+  grid-template-rows: min-content min-content;
+}
+
+.form {
+  width: 100%;
+  background-color: var(--cl-form);
+  border-style: none;
+  font-size: 1.2rem;
+  color: black;
+  padding: 0px 30px;
+}
+
+.form_label{
+  color:white;
+  text-align: left;
+  padding: 0px 10px 0px 20px;
+}
+
+.form_error {
+  width: 100%;
+  font-weight: bold;
+  color: black;
+  background-color: var(--cl-error);
+  margin-top: 5px;
+  padding-left: 6%;
+  font-size: 0.75rem;
+  text-align: center;
+}
+
+.form_error--form_group {
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 2;
+  grid-row-end: 3;
+}
+
+.form_error--date_since {
+  grid-column-start: 2;
+  grid-column-end: 3;
+  grid-row-start: 2;
+  grid-row-end: 3;
+}
+
+.form_error--date_until {
+  grid-column-start: 4;
+  grid-column-end: 5;
+  grid-row-start: 2;
+  grid-row-end: 3;
+}

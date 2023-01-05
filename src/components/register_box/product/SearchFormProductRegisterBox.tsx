@@ -71,8 +71,8 @@ const SearchFormProduct = () => {
   };
 
 return (
-    <div className={searchFormProductCss["container"]}>
-      <div className={searchFormProductCss["search"]}>
+  <Fragment>
+    
         {<Formik
             initialValues={initialValues}
             validateOnChange={false}
@@ -81,7 +81,7 @@ return (
           >
           {({ values , resetForm}) => (
           <Form>
-            <Fragment>
+            <div className={searchFormProductCss["container"]}>
                 <div className={searchFormProductCss["form_select"]}>
                     <select 
                       name="searchOptions"
@@ -166,13 +166,12 @@ return (
                     null
                   }  
                   </div>        
-                </Fragment>
+            </div>
           </Form>
         )}
-        </Formik> 
-        }
-        </div>
-    </div>
+        </Formik>}
+    </Fragment>
+        
   );
 };
 

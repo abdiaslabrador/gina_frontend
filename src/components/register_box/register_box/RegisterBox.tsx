@@ -3,6 +3,7 @@ import  customAxios  from "../../../config/axios";
 import cajaCss from "./Caja.module.css";
 import InventoryProvider from '../../../context/register_box/inventory/inventoryState';
 import ProductProvider from '../../../context/register_box/product/productState';
+import BillProvider from '../../../context/register_box/bill/billState';
 import CheckOutAccountProvider from '../../../context/register_box/checkOut/checkOutAccount/checkOutAccountState';
 import FinishPurchaseProvider from '../../../context/register_box/checkOut/finishPurchase/finishPurchaseState';
 import PaymentMadeProvider from '../../../context/register_box/checkOut/paymentMade/paymentMadeState';
@@ -69,8 +70,9 @@ const RegisterBox = () => {
               <i className="fa-solid fa-ban"></i>
             </div> */}
             {/* <CancelPurchase/> */}
-            
-            <BillManager/>
+            <BillProvider>
+                <BillManager/>
+            </BillProvider>
 
             {/* <div className={cajaCss["options__items"]}>
               <i className="fa-solid fa-cash-register"></i>

@@ -83,121 +83,121 @@ const SearchFormProduct = () => {
 return (
     <div className={searchFormProductCss["container"]}>
       <div className={searchFormProductCss["search"]}>
-        {<Formik
-            initialValues={initialValues}
-            validateOnChange={false}
-            validateOnBlur={false}
-            onSubmit={formHandler}
-          >
-          {({ values , resetForm}) => (
-          <Form>
-            <Fragment>
-                <div className={searchFormProductCss["form_select"]}>
-                    <select 
-                      name="searchOptions"
-                      value={selectOption}
-                      onChange={(e)=>busquedaHandler(e, resetForm)}
-                    >
-                        <option value=""> -- Seleccione un opción -- </option>
-                        <option value="all">Todos</option>
-                        <option value="description">Descripción</option>
-                        <option value="lessThan">Menor que</option>
-                        <option value="code">Código</option>
-                    </select>
-                </div>
-                 <div className={searchFormProductCss["form_group"]}>
-                  {(selectOption == "description")?
-                    (<Fragment>
-                      <Field
-                        validate={validateDescription}
-                        className={searchFormProductCss["square__form"]}
-                        type="text"
-                        name="description"
-                        placeholder="Decripción"
-                      />
-                      <ErrorMessage
-                        className={searchFormProductCss["square__form-error"]}
-                        component="div"
-                        name="description"
-                      />
-                    </Fragment>)
-                    :
-                      (null)
-                  }
-                  
-
-                  {(selectOption == "lessThan")?
+      {<Formik
+          initialValues={initialValues}
+          validateOnChange={false}
+          validateOnBlur={false}
+          onSubmit={formHandler}
+        >
+        {({ values , resetForm}) => (
+        <Form>
+          <Fragment>
+              <div className={searchFormProductCss["form_select"]}>
+                  <select 
+                    name="searchOptions"
+                    value={selectOption}
+                    onChange={(e)=>busquedaHandler(e, resetForm)}
+                  >
+                      <option value=""> -- Seleccione un opción -- </option>
+                      <option value="all">Todos</option>
+                      <option value="description">Descripción</option>
+                      <option value="lessThan">Menor que</option>
+                      <option value="code">Código</option>
+                  </select>
+              </div>
+                <div className={searchFormProductCss["form_group"]}>
+                {(selectOption == "description")?
                   (<Fragment>
                     <Field
-                      validate={validatLessThan}
-                      className={searchFormProductCss["square__form"]}
-                      type="number"
-                      name="lessThan"
-                      placeholder="Escriba el rango"
-                      min="0"
-                    />
-                    <ErrorMessage
-                      className={searchFormProductCss["square__form-error"]}
-                      component="div"
-                      name="lessThan"
-                    />
-                  </Fragment>)
-                  :
-                    null
-                  }
-
-                  {(selectOption == "code")?
-                  (<Fragment>
-                    <Field
-                      validate={validateCode}
+                      validate={validateDescription}
                       className={searchFormProductCss["square__form"]}
                       type="text"
-                      name="code"
-                      placeholder="Escriba el código"
+                      name="description"
+                      placeholder="Decripción"
                     />
                     <ErrorMessage
                       className={searchFormProductCss["square__form-error"]}
                       component="div"
-                      name="code"
+                      name="description"
                     />
                   </Fragment>)
                   :
-                    null
-                  }
+                    (null)
+                }
+                
 
-                  {
-                  (selectOption)?
-                    <button
-                        type="submit"
-                        className="button_form__button button_form__button--efect"
-                    >
-                        <i className="fa-solid fa-magnifying-glass"></i>
-                    </button>
-                  :
-                    null
-                  }  
-                  </div>        
-                </Fragment>
-          </Form>
-        )}
-        </Formik> 
-        }
-        </div>
-        <div className={searchFormProductCss["currency"]}>
-        {(!loadingCurrency && !loadingProductPrices)?
-        <Fragment>
-          <div>
-            Tasa: {currency.today_currency}
-          </div>
-          <UpdatePricesWithCurrency/>
-        </Fragment>
-        :
-        <Loading
-        type="spinner"
-        color="white"
-        size="xl"
-        /> 
+                {(selectOption == "lessThan")?
+                (<Fragment>
+                  <Field
+                    validate={validatLessThan}
+                    className={searchFormProductCss["square__form"]}
+                    type="number"
+                    name="lessThan"
+                    placeholder="Escriba el rango"
+                    min="0"
+                  />
+                  <ErrorMessage
+                    className={searchFormProductCss["square__form-error"]}
+                    component="div"
+                    name="lessThan"
+                  />
+                </Fragment>)
+                :
+                  null
+                }
+
+                {(selectOption == "code")?
+                (<Fragment>
+                  <Field
+                    validate={validateCode}
+                    className={searchFormProductCss["square__form"]}
+                    type="text"
+                    name="code"
+                    placeholder="Escriba el código"
+                  />
+                  <ErrorMessage
+                    className={searchFormProductCss["square__form-error"]}
+                    component="div"
+                    name="code"
+                  />
+                </Fragment>)
+                :
+                  null
+                }
+
+                {
+                (selectOption)?
+                  <button
+                      type="submit"
+                      className="button_form__button button_form__button--efect"
+                  >
+                      <i className="fa-solid fa-magnifying-glass"></i>
+                  </button>
+                :
+                  null
+                }  
+                </div>        
+              </Fragment>
+        </Form>
+      )}
+      </Formik> 
       }
+      </div>
+      <div className={searchFormProductCss["currency"]}>
+      {(!loadingCurrency && !loadingProductPrices)?
+      <Fragment>
+        <div>
+          Tasa: {currency.today_currency}
+        </div>
+        <UpdatePricesWithCurrency/>
+      </Fragment>
+      :
+      <Loading
+      type="spinner"
+      color="white"
+      size="xl"
+      /> 
+    }
       </div>
     </div>
   );

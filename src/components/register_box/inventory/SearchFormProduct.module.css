@@ -3,6 +3,10 @@
     margin-bottom: 20px;
 }
 
+.search{
+    flex: 1 1 50%;
+}
+
 .currency{
     flex: 1 1 50%;
     color: white;
@@ -10,12 +14,10 @@
     justify-content: space-around;
     align-items: flex-start;
 }
-.search{
-    flex: 1 1 50%;
-}
+
 .form_select {
-    margin-bottom: 5px;
     width: 50%;
+    margin-bottom: 5px;
 }
 .form_group {
     display: grid;

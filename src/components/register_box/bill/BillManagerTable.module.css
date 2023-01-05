@@ -1,0 +1,96 @@
+.create_modify_bottom {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 10px; /**/
+}
+
+.delete_bottom {
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+
+}
+
+.pickup_botton {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-bottom: 10px; /**/
+}
+
+/*lista de producto*/
+.product_list {
+    display: flex;
+    flex-direction: column;
+    font-size: 16px;
+    color: white;
+}
+
+.product_list__titles {
+    background-color: var(--cl-headers);
+    flex: 0 1 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 2fr 4px;
+}
+
+.product_list__titles>* {
+    text-align: center;
+    border-right: white 1px solid;
+
+}
+
+.product_list__products {
+    /*El height: 1px es solo para que el scroll aparezca*/
+    height: 300px;
+    flex: 1 1 auto;
+    overflow-y: scroll;
+    background-color: var(--cl-bckgd-table-items);
+}
+
+.product_list__item {
+    background-color: var(--cl-table-items);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 2fr 4px;
+    grid-template-areas: "bill_date code amount state detail";
+}
+
+.product_list__item>* {
+    text-align: center;
+    border: white 1px solid;
+}
+
+
+.bill_date {
+    grid-area: "bill_date";
+}
+
+.code {
+    grid-area: "code";
+}
+
+.amount {
+    grid-area: "amount";
+}
+
+.state {
+    grid-area: "state";
+}
+
+.detail {
+    grid-area: "detail";
+}
+
+.title{
+    color: var(--cl-fn-title);
+    margin-bottom: 30px;
+}
+
+.center_loading{
+    height: 300px;
+    background-color: var(--cl-bckgd-table-items);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
