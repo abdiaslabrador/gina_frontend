@@ -1,6 +1,5 @@
 import React, { Fragment, useContext } from "react";
 import { Modal, Button } from "@nextui-org/react";
-import { Loading } from "@nextui-org/react";
 import { registerBoxContext } from "../../../context/register_box/register_box/registerBoxContext";
 import { docAccountContext } from "../../../context/register_box/documentAccount/docAccountContext";
 import { paymentMadeContext } from "../../../context/register_box/checkOut/paymentMade/paymentMadeContext";
@@ -10,9 +9,6 @@ import cajaCss from "../register_box/Caja.module.css";
 
 const CancelPurchase = () => {
   const [visible, setVisible] = React.useState(false);
-  // const [mensaje, setMensaje] = React.useState(
-  //   "¿Estas seguro de cancelar la compra?"
-  // );
   const { client, cleanRegisterBoxFn } = useContext( registerBoxContext );
   const { cleanDocumentAccountFn } = useContext( docAccountContext );
   const { cleanPaymentMadeFn } = useContext( paymentMadeContext );
@@ -37,7 +33,6 @@ const CancelPurchase = () => {
     <Fragment>
       <button
         className={`${cajaCss["options__items"]} ${ (!client) ? (cajaCss["options__items--disable"])  : cajaCss["options__items--enable"]} `}
-        // {cajaCss["options__items"]}
         onClick={handler}
         disabled={ (!client) ? true  : false }
       >
@@ -46,7 +41,6 @@ const CancelPurchase = () => {
 
       <Modal
         closeButton
-        // ={!loadingForm}
         preventClose
         animated={false}
         aria-labelledby="modal-title"
@@ -57,15 +51,14 @@ const CancelPurchase = () => {
             
         </Modal.Header> */}
         <Modal.Body>
-          {/* {(loadingForm) ? ( <Loading /> ) : (<div>{mensaje}</div>)} */}
           ¿Está seguro de anular la compra?
         </Modal.Body>
         <Modal.Footer>
-            <Button auto flat color="error" onClick={cancelPurchase} /*disabled={loadingForm}*/>
+            <Button auto flat color="error" onClick={cancelPurchase}>
               Si
             </Button>
 
-            <Button auto onClick={closeHandler} /*disabled={loadingForm}*/ >
+            <Button auto onClick={closeHandler}>
               No
             </Button>
         </Modal.Footer>

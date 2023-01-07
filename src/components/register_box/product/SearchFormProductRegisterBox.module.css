@@ -18,10 +18,8 @@
 }
 
 .square__form-error {
-    /* height: 25px; */
     width: 100%;
     font-weight: bold;
-    /* margin-bottom: 16.5px; */
     color: black;
     background-color: var(--cl-error);
     margin-top: 5px;
@@ -32,7 +30,6 @@
     grid-row-start: 2;
     grid-row-end: 3;
     text-align: center;
-    /* padding-left:30px; */
 }
 
 .square__form {
@@ -41,7 +38,5 @@
     border-style: none;
     font-size: 1.2rem;
     color: black;
-    
-    /* margin-bottom: 10px;  */
     padding: 0px 30px;
 }

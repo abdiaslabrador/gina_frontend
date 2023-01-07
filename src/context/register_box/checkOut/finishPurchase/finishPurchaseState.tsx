@@ -21,10 +21,10 @@ interface props {
 
 const FinishPurchaseProvider = ({ children }: props) => {
   
-  const { subtotal, total, discount } = useContext(docAccountContext);
-  const { checkout_payed, checkout_change  } = useContext(checkOutAccountContext);
-  const { productListRegisterBox, client } = useContext(registerBoxContext);
-  const { paymentMadeList } = useContext(paymentMadeContext);
+  const { subtotal, total, discount, cleanDocumentAccountFn } = useContext(docAccountContext);
+  const { checkout_payed, checkout_change, cleanCheckOutAccountFn  } = useContext(checkOutAccountContext);
+  const { productListRegisterBox, client, cleanRegisterBoxFn, setProductBadCantListRegisterBoxFn } = useContext(registerBoxContext);
+  const { paymentMadeList, cleanPaymentMadeFn } = useContext(paymentMadeContext);
   const { currency } = useContext(currencyContext);
   
   const { saveErrorFromServerFn } = useContext(errorServerContext);
@@ -34,11 +34,15 @@ const FinishPurchaseProvider = ({ children }: props) => {
     loadingDocumentInfo: false ,
   };
   const [state, dispatch] = useReducer(finishPurchaseReducer, initialState);
-  
+
   async function finishPurchaseFn(){
     try {
       dispatch({type: LOADING_FINSIH_PURCHASE, loadingDocumentInfo: true})
-      const resp = await customAxios.post("/document/create/bill", {
+      await customAxios.post("/product/checkcant", {
+        productListRegisterBox: productListRegisterBox,
+      })
+
+      const resp = await customAxios.post("/document/bill/create", {
         client: client,
         currency_day_value: currency.today_currency,
         subtotal: subtotal,
@@ -46,19 +50,26 @@ const FinishPurchaseProvider = ({ children }: props) => {
         total: total,
         total_payed: checkout_payed,
         change: checkout_change,
-        productList: productListRegisterBox,
-        paymentMadeList: paymentMadeList,
+        docu_dets: productListRegisterBox,
+        docu_payments: paymentMadeList,
       })
+      cleanDocumentAccountFn();
+      cleanCheckOutAccountFn();
+      cleanRegisterBoxFn();
+      cleanPaymentMadeFn();
       dispatch({type: LOADING_FINSIH_PURCHASE, loadingDocumentInfo: false})
       
       saveErrorFromServerFn(false);
+
     } catch (error : any) {
       let message = error.response.data?.msg || error.message;
-      // dispatch({type: NPAYMENTS_ERROR});
-      // dispatch({ type: LOADING_GET_NPAYMENTS, loadingNatPayments: false })
       console.log(error);
+      dispatch({type: LOADING_FINSIH_PURCHASE, loadingDocumentInfo: false})
 
-      if (error.response?.status == "403") { //usuario con el token inválido. NOTA: ya el token se elimina desde el backend
+      if (error.response?.status == "400" && error.response.data?.code == "PRODUCT_BADCANT") {
+        console.log("entramos")
+        setProductBadCantListRegisterBoxFn(error.response.data?.productBadList)
+      }else if (error.response?.status == "403") { //usuario con el token inválido. NOTA: ya el token se elimina desde el backend
         await logOut();
 
       }else {
@@ -67,10 +78,6 @@ const FinishPurchaseProvider = ({ children }: props) => {
       }
     }
   }
-
-  // function cleanCheckOutAccountFn(){
-  //   dispatch({type: CLEAN_CHECKOUT_ACCOUNT,})
-  // }
 
   return (
     <finishPurchaseContext.Provider

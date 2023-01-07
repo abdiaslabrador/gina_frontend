@@ -1,0 +1,65 @@
+/*lista de producto*/
+.product_list {
+    display: flex;
+    flex-direction: column;
+    font-size: 16px;
+  }
+  
+  .product_list__titles {
+    color:white;
+    background-color: #164F4F;
+    flex: 0 1 auto;
+    display: grid;
+    grid-template-columns: 1.2fr 2.9fr 0.98fr 1.6fr 1.0fr 2.0fr 4px;
+  }
+  
+  .product_list__titles>* {
+    text-align: center;
+    border-right: white 1px solid;
+  
+  }
+  
+  .product_list__products {
+    height: 200px;
+    flex: 1 1 auto;
+    overflow-y: scroll;
+    background-color: #1B1A1A;
+  }
+  
+  .product_list__item {
+    background-color: #504F4F;
+    color:white;
+    display: grid;
+    grid-template-columns: 1.2fr 2.9fr 0.98fr 1.6fr 1.0fr 2.0fr; 
+    grid-template-areas: "code description cant price ref subtotal";
+  }
+  
+  .product_list__item>* {
+    text-align: center;
+    border: white 1px solid;
+  }
+  
+  .code {
+    grid-area: "code";
+  }
+  
+  .description {
+    grid-area: "description";
+    font-size: 12px;
+  }
+  
+  .cant {
+    grid-area: "cant";
+  }
+  
+  .price {
+    grid-area: "price";
+  }
+  
+  .ref {
+    grid-area: "ref";
+  }
+  
+  .subtotal {
+    grid-area: "subtotal";
+  }

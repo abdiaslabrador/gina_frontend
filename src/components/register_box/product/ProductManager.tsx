@@ -2,7 +2,6 @@ import React, {Fragment, useContext} from "react";
 import { Modal, } from "@nextui-org/react";
 import cajaCss from "../register_box/Caja.module.css";
 import productManagerCss from "./ProductManager.module.css";
-import customAxios from "../../../config/axios";
 import SearchFormProductRegisterBox from "./SearchFormProductRegisterBox";
 import ProductTableRegisterBox from "./ProductTableRegisterBox";
 import { registerBoxContext } from "../../../context/register_box/register_box/registerBoxContext";
@@ -51,12 +50,6 @@ const ProductManager = () => {
             <SearchFormProductRegisterBox/>
             <ProductTableRegisterBox/>
         </Modal.Body>
-        <Modal.Footer>
-           {/* <div className={comunModalCss["footer_container"]}>
-            {( msjSuccess )?(<div className={comunModalCss["msj_success"]}>{msjSuccess}</div>): null}
-            {( msjError )?(<div className={comunModalCss["msj_error"]}>{msjError}</div>):null}
-           </div> */}
-        </Modal.Footer>
       </Modal>
     </Fragment>
   );

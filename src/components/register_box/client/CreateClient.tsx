@@ -5,11 +5,6 @@ import customAxios from "../../../config/axios";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { clientContext } from "../../../context/register_box/client/clientContext";
 
-
-interface props {
-  setEmployeeList: Function;
-}
-
 const CreateClient = () => {
   const { msjSuccess, msjError, loadingForm, createClientFn } = useContext(clientContext);
   const [visible, setVisible] = React.useState(false);

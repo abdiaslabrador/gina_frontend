@@ -17,6 +17,7 @@ import {
   SET_SELECTED_PRODUCT,
   LOADING_PRODUCT_REGISTERBOX,
   GET_PRODUCT_REGISTERBOX,
+  SET_PRODUCT_BADCANT,
  } from "./registerBoxType";
 
 interface props {
@@ -32,6 +33,7 @@ const RegisterBoxProvider = ({ children }: props) => {
     productListRegisterBox : [],
     selectedProductRegisterBox : {} as ProductRegisterBoxInf,
     productApiRegisterBox: {} as ProductInf,
+    productBadCantList: [],
 
     loadingProductRegisterBox: false,
     loadingClient: false,
@@ -64,7 +66,6 @@ const RegisterBoxProvider = ({ children }: props) => {
     }else{
       arrayCopy = [...arrayCopy, product]
     }
-    
     dispatch({type:ADD_TO_LIST,
               productListRegisterBox: [...arrayCopy],
             })
@@ -74,6 +75,10 @@ const RegisterBoxProvider = ({ children }: props) => {
     dispatch({type:TAKEOUT, 
       productListRegisterBox: state.productListRegisterBox.filter( (product : ProductRegisterBoxInf) => product.id != productId)
     })
+  }
+
+  function setProductBadCantListRegisterBoxFn(productBadCantList : any[]){
+    dispatch({type: SET_PRODUCT_BADCANT, productBadCantList: productBadCantList})
   }
 
   async function getProductRegisterBoxFn(code : string){
@@ -142,6 +147,8 @@ const RegisterBoxProvider = ({ children }: props) => {
         productApiRegisterBox: state.productApiRegisterBox,
         loadingClient: state.loadingClient,
         client : state.client,
+        productBadCantList: state.productBadCantList,
+        setProductBadCantListRegisterBoxFn,
         setSelectedProductRegisterBoxFn,
         searchClientByCiRegisterBoxFn,
         takeOutProductRegisterBoxFn,

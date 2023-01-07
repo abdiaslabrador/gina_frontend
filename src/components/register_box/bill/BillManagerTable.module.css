@@ -1,10 +1,3 @@
-.create_modify_bottom {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-bottom: 10px; /**/
-}
-
 .delete_bottom {
     display: flex;
     flex-direction: row;
@@ -31,7 +24,7 @@
     background-color: var(--cl-headers);
     flex: 0 1 auto;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 2fr 4px;
+    grid-template-columns: 1fr 1fr 1fr 1fr  4px;
 }
 
 .product_list__titles>* {
@@ -41,7 +34,6 @@
 }
 
 .product_list__products {
-    /*El height: 1px es solo para que el scroll aparezca*/
     height: 300px;
     flex: 1 1 auto;
     overflow-y: scroll;
@@ -51,8 +43,8 @@
 .product_list__item {
     background-color: var(--cl-table-items);
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 2fr 4px;
-    grid-template-areas: "bill_date code amount state detail";
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-areas: "bill_date bill_id amount state";
 }
 
 .product_list__item>* {
@@ -65,8 +57,8 @@
     grid-area: "bill_date";
 }
 
-.code {
-    grid-area: "code";
+.bill_id {
+    grid-area: "bill_id";
 }
 
 .amount {
@@ -77,9 +69,7 @@
     grid-area: "state";
 }
 
-.detail {
-    grid-area: "detail";
-}
+
 
 .title{
     color: var(--cl-fn-title);

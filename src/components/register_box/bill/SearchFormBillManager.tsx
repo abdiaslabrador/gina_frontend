@@ -3,14 +3,15 @@ import searchBillCss from './SearchFormBillManager.module.css'
 import { Formik, Form, Field,  ErrorMessage } from "formik";
 import  customAxios  from "../../../config/axios";
 import { billContext } from "../../../context/register_box/bill/billContext";
+import { BillInf } from "../../../interface/billInf";
 import moment from "moment";
-import { today } from "@internationalized/date";
 
 const SearchFormBillManager = () => {
   const { selectOption, 
-        //   searchBillByFn,
+          searchBillByIdFn,
+          searchBillByDateFn,
           setSelectOptionFn,
-        //   setSelectedProductFn
+          setSelectedBillFn
          } = useContext(billContext);
 
   const today_date : string = moment( new Date()).format("YYYY-MM-DD")
@@ -19,38 +20,32 @@ const SearchFormBillManager = () => {
       until_date: today_date
   }
 
-
-  const formHandler = async  (values: any) => {
-    // setSelectedProductFn({} as ProductInf); //limpia la selección
-    // let selectValue : string;
-    // if(selectOption == "code"){
-    //   selectValue = (values[selectOption]).toLowerCase().trim();
-    // }else{
-    //   selectValue = values.bill_date;
-    // }
-    // await searchBillByFn(selectValue);
-    console.log("Buscando factura...")
-    
+  const formDateHandler = async  (values: any) => {
+    setSelectedBillFn({} as BillInf);
+    searchBillByDateFn(values.since_date, values.until_date);
   }
 
+  const formIdHandler = async  (values: any) => {
+    setSelectedBillFn({} as BillInf);
+    searchBillByIdFn(values.id);
+  }
 
-
+  
   async function validateCode(value: any) {
     let error;
 
     if (!value) {
       return error = "Campo requerido";
     }
-    // try {
-    //   const resp = await customAxios.post("product/searchby", {
-    //     selectValue: value.trim(),
-    //     selectOption: "code"
-    //   });
-    //   (resp.data.length == 0) ? error = "No se encuentra el producto" : null;
+    try {
+      const resp = await customAxios.post("/document/bill/getbyid", {
+        id : value
+      });
+      (resp.data.length == 0) ? error = "No se encuentra el producto" : null;
 
-    // } catch (errorPetition: any) {
-    //     error = errorPetition.response.data?.msg || errorPetition.message;
-    // }
+    } catch (errorPetition: any) {
+        error = errorPetition.response.data?.msg || errorPetition.message;
+    }
 
     return error;
   }
@@ -80,7 +75,7 @@ return (
             >
                 <option value=""> -- Seleccione un opción -- </option>
                 <option value="bill_date">Fecha</option>
-                <option value="code">Código</option>
+                <option value="id">Número</option>
             </select>
         </div>
 
@@ -90,7 +85,7 @@ return (
                         initialValues={initialDateValues}
                         validateOnChange={false}
                         validateOnBlur={false}
-                        onSubmit={formHandler}
+                        onSubmit={formDateHandler}
                       >
                     {({ values , resetForm}) => (
                     <Form>
@@ -145,13 +140,13 @@ return (
                     null
                   }
 
-                  {(selectOption == "code")?
+                  {(selectOption == "id")?
                   (
                     <Formik
-                        initialValues={{code: ''}}
+                        initialValues={{id: ''}}
                         validateOnChange={false}
                         validateOnBlur={false}
-                        onSubmit={formHandler}
+                        onSubmit={formIdHandler}
                       >
                     <Form>
                       <div className={searchBillCss["form_group"]}>
@@ -160,13 +155,13 @@ return (
                           className={searchBillCss["form"]}
                           type="number"
                           min="1"
-                          name="code"
+                          name="id"
                           placeholder="Escriba el número"
                         />
                         <ErrorMessage
                           className={`${searchBillCss["form_error"]} ${searchBillCss["form_error--form_group"]}`}
                           component="div"
-                          name="code"
+                          name="id"
                         />
                         <button
                             type="submit"

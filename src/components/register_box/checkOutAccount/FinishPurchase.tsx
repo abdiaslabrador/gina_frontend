@@ -1,12 +1,9 @@
 import React, { useState, useContext } from "react";
 import { Modal, Button } from "@nextui-org/react";
-import customAxios from "../../../config/axios";
 import { Loading } from "@nextui-org/react";
 import { finishPurchaseContext } from "../../../context/register_box/checkOut/finishPurchase/finishPurchaseContext";
 import { docAccountContext } from "../../../context/register_box/documentAccount/docAccountContext";
 import { checkOutAccountContext } from "../../../context/register_box/checkOut/checkOutAccount/checkOutAccountContext";
-import { registerBoxContext } from "../../../context/register_box/register_box/registerBoxContext";
-import { paymentMadeContext } from "../../../context/register_box/checkOut/paymentMade/paymentMadeContext";
 
 const FinishPurchase = () => {
   const [visible, setVisible] = useState(false);
@@ -15,11 +12,8 @@ const FinishPurchase = () => {
   );
   
   const { loadingDocumentInfo, finishPurchaseFn } = useContext( finishPurchaseContext );
-  const { total, cleanDocumentAccountFn } = useContext( docAccountContext );
-  const { checkout_payed, cleanCheckOutAccountFn } = useContext( checkOutAccountContext );
-  const { cleanRegisterBoxFn } = useContext( registerBoxContext );
-  const { cleanPaymentMadeFn } = useContext( paymentMadeContext );
-
+  const { total } = useContext( docAccountContext );
+  const { checkout_payed } = useContext( checkOutAccountContext );
   const handler = () => setVisible(true);
 
   const closeHandler = () => {
@@ -28,10 +22,6 @@ const FinishPurchase = () => {
 
   const finishPurchase = async () => {
     await finishPurchaseFn();
-    cleanRegisterBoxFn();
-    cleanDocumentAccountFn();
-    cleanPaymentMadeFn();
-    cleanCheckOutAccountFn();
     setVisible(false);
 
   };

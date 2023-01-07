@@ -1,27 +1,27 @@
 import {  Loading, } from "@nextui-org/react";
 import React, { Fragment, useEffect, useContext, useState } from "react";
 import billTableCss from "./BillManagerTable.module.css";
-// import { clientContext } from "../../../context/register_box/client/clientContext";
+import { billContext } from "../../../context/register_box/bill/billContext";
+import { BillInf } from "../../../interface/billInf";
+import SelectBill from "./selectBill/SelectBill";
+import moment from "moment";
 
 const BillManagerTable = () => {
-    // const {  selectedClient, clientList, loadingForm, setSelectedClientFn } = useContext(clientContext);
-
-    // function objectSelection(client: ClientInf): void {
-    // //   setSelectedClientFn(client);
-    // }
+    const { billList,
+            selectedBill,
+            loadingBillList, 
+            setSelectedBillFn,
+          } = useContext(billContext);
+    
+    function objectSelection(bill: BillInf): void {
+      setSelectedBillFn(bill);
+    }
 
 
   return (
     <Fragment>
                 <div className={billTableCss["pickup_botton"]}>
-                <button
-                    className="button_form__button button_form__button--efect"
-                    // onClick={handler}
-                    // disabled={selectedProduct.id ? false : true}
-                >
-                    Seleccionar
-                </button>
-                {/* <SelectProduct/> */}
+                  <SelectBill/>
                 </div>
              
 
@@ -31,44 +31,45 @@ const BillManagerTable = () => {
                   <div>Código</div>
                   <div>Monto</div>
                   <div>Estado</div>
-                  <div>Detalle</div>
                 </div>
                 <Fragment>
-                  {/* {(!loadingForm)?( */}
+                { (!loadingBillList)?(
                  <div className={billTableCss["product_list__products"]}> 
 
-                            {/* {(clientList?.length > 0) ? 
+                            {(billList?.length > 0) ? 
                                 (<Fragment>
-                                {clientList.map((client, index) => (
+                                {billList.map((bill, index) => (
                                     <div
                                     key={index}
                                     style={
-                                        client.id === selectedClient?.id
+                                        bill.id === selectedBill?.id
                                         ? { backgroundColor: "#313030" }
                                         : {}
                                     }
                                     className={billTableCss["product_list__item"]}
-                                    onClick={() => objectSelection(client)}
+                                    onClick={() => objectSelection(bill)}
                                     >
-                                    <div className={billTableCss["ci"]}>{client.ci_rif}</div>
-                                    <div className={billTableCss["name"]}>{client.name}</div>
-                                    <div className={billTableCss["last_name"]}>{client.last_name}</div>
+                                    <div className={billTableCss["bill_date"]}>{moment(bill?.docu?.document_date).format("DD-MM-YYYY")}</div>
+                                    <div className={billTableCss["bill_id"]}>{bill.id}</div>
+                                    <div className={billTableCss["amount"]}>{bill?.docu?.total}</div>
+                                    <div className={billTableCss["state"]}>No echo todavía</div>
                                     </div>
                                 ))}
                                 </Fragment>
                                 ):
-                                (null)
-                            } */}
+                                <h4>No hay facturas</h4>
+                            }
+
                           </div>
-                          {/* ) :
+                 ) :
                   <div className={billTableCss["center_loading"]}>
-                  <Loading
-                  type="spinner"
-                  color="white"
-                  size="xl"
-                  /> 
+                    <Loading
+                    type="spinner"
+                    color="white"
+                    size="xl"
+                    /> 
                   </div>
-                } */}
+                } 
                 </Fragment>
               </div>
               
@@ -77,6 +78,8 @@ const BillManagerTable = () => {
                     className="button_form__button button_form__button--efect"
                     // onClick={handler}
                     // disabled={selectedProduct.id ? false : true}
+                    disabled={loadingBillList ? true : false}
+
                 >
                     Anular
                 </button>

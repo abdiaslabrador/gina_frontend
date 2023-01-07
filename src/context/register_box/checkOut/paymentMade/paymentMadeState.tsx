@@ -4,7 +4,6 @@ import {natPaymentContext} from "../nationalPayment/natPaymentContext";
 import {foreignPaymentContext} from "../foreignPayment/foreignPaymentContext";
 import {paymentMadeContext} from "./paymentMadeContext";
 import {PaymentMadeInf} from "../../../../interface/checkOut/paymentMadeInf";
-
 import {
     ADD_PAYMENTMADE,
     SET_SELECTED_PAYMENTMADE,

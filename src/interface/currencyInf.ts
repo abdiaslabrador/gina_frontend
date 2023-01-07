@@ -2,6 +2,7 @@ export interface CurrencyInf{
     id:number;
     name:string;
     today_currency: number;
+    active: boolean;
     createdAt?: Date;
     updateAt?: Date;
     deleteAt?: Date;

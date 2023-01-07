@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react";
 import { Modal, Button } from "@nextui-org/react";
 import customAxios from "../../../config/axios";
-import { Loading } from "@nextui-org/react";
 import { paymentMadeContext } from "../../../context/register_box/checkOut/paymentMade/paymentMadeContext";
 
 const DeletePayment = () => {
@@ -34,7 +33,6 @@ const DeletePayment = () => {
 
       <Modal
         closeButton
-        // ={!loadingForm}
         preventClose
         animated={false}
         aria-labelledby="modal-title"
@@ -45,11 +43,7 @@ const DeletePayment = () => {
             
         </Modal.Header> */}
         <Modal.Body>
-            {/* {loadingForm ?
-                ( <Loading /> )
-                :  */}
                 <div>{mensaje}</div>
-                {/* } */}
         </Modal.Body>
         <Modal.Footer>
         <Button auto flat color="error" onClick={() => deletePayment()} >

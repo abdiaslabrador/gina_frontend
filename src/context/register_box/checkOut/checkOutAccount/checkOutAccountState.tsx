@@ -1,13 +1,13 @@
 import React, {useContext} from "react";
 import { useReducer } from "react";
-import customAxios from "../../../../config/axios";
+// import customAxios from "../../../../config/axios";
 import checkOutInfReducer from "./checkOutAccountReducer";
 import {checkOutAccountContext} from "./checkOutAccountContext";
 import {paymentMadeContext} from "../paymentMade/paymentMadeContext";
 import {currencyContext} from '../../currency/currencyContext';
 import {docAccountContext} from '../../documentAccount/docAccountContext';
-import {authContext} from '../../../login/authContext';
-import {errorServerContext} from '../../../error/errorServerContext';
+// import {authContext} from '../../../login/authContext';
+// import {errorServerContext} from '../../../error/errorServerContext';
 
 import { 
          UPDATE_CHECKOUT_ACCOUNT,

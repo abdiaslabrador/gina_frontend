@@ -1,5 +1,5 @@
 import { 
-         LOADING_FINSIH_PURCHASE
+         LOADING_FINSIH_PURCHASE,
        } from "./finishPurchaseType";
   
   type Action =
@@ -8,7 +8,6 @@ import {
         type: "LOADING_FINSIH_PURCHASE";
         loadingDocumentInfo : boolean;
       }
-      
     ;
     
     

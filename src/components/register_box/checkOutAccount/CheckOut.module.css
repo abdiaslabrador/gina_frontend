@@ -9,6 +9,13 @@
   justify-content: space-around;
 }
 
+.check_product_cant{
+  display: flex;
+  flex-direction: column;
+  color: yellow;
+  font-size: 24px;
+}
+
 .check_out_botton{
   display: flex;
   justify-content:center;
@@ -43,8 +50,7 @@
 }
 
 .product_list__products {
-    /*El height: 1px es solo para que el scroll aparezca*/
-    height: 200px; /*modificado aquí*/
+    height: 200px;
     flex: 1 1 auto;
     overflow-y: scroll;
     background-color: var(--cl-bckgd-table-items);

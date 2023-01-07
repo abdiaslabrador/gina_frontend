@@ -1,5 +1,5 @@
 import {  Loading, } from "@nextui-org/react";
-import React, { Fragment, useEffect, useContext, useState } from "react";
+import React, { Fragment, useContext } from "react";
 import clientTableCss from "./ClientTable.module.css";
 import { ClientInf } from "../../../interface/clientInf";
 import DeleteClient from "./DeleteClient";

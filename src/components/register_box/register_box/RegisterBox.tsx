@@ -69,7 +69,6 @@ const RegisterBox = () => {
             {/* <div className={cajaCss["options__items"]} onClick={cancelThePurchase}>
               <i className="fa-solid fa-ban"></i>
             </div> */}
-            {/* <CancelPurchase/> */}
             <BillProvider>
                 <BillManager/>
             </BillProvider>

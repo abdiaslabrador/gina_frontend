@@ -1,9 +1,7 @@
-import React, {Fragment, useContext, useEffect, useState} from "react";
-import { Modal, Loading } from "@nextui-org/react";
+import React, {Fragment, } from "react";
+import { Modal, } from "@nextui-org/react";
 import cajaCss from "../register_box/Caja.module.css";
 import clientCss from './Client.module.css'
-import { useRouter } from "next/router";
-import { authContext } from "../../../context/login/authContext";
 import SearchFormClient from "./SearchFormClient";
 import ClientTable from "./ClientTable";
 import ClientProvider from "../../../context/register_box/client/clientState";

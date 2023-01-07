@@ -1,0 +1,62 @@
+/*lista de producto*/
+.product_list {
+    display: flex;
+    flex-direction: column;
+    font-size: 16px;
+  }
+  
+  .product_list__titles {
+    color:white;
+    background-color: #164F4F;
+    flex: 0 1 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 0.98fr 1.6fr 2.0fr 4px;
+  }
+  
+  .product_list__titles>* {
+    text-align: center;
+    border-right: white 1px solid;
+  
+  }
+  
+  .product_list__products {
+    height: 200px;
+    flex: 1 1 auto;
+    overflow-y: scroll;
+    background-color: #1B1A1A;
+  }
+  
+  .product_list__item {
+    background-color: #504F4F;
+    color:white;
+    display: grid;
+    grid-template-columns: 2fr 1fr 0.98fr 1.6fr 2.0fr; 
+    grid-template-areas: "type currency_name currency_amount amount detail";
+  }
+  
+  .product_list__item>* {
+    text-align: center;
+    border: white 1px solid;
+  }
+  
+  .type {
+    grid-area: "type";
+  }
+  
+  .currency_name {
+    grid-area: "currency_name";
+  }
+  
+  .currency_amount {
+    grid-area: "currency_amount";
+  }
+  
+  .amount {
+    grid-area: "amount";
+  }
+  
+  .detail {
+    grid-area: "detail";
+    font-size: 12px;
+  }
+

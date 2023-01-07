@@ -9,30 +9,26 @@ export interface ProductRegisterBoxInf {
   subtotal: number; //*
   description: string;
   code: string;
-  // admit_update_currency: boolean;
-  // enable_cant: boolean;
   createdAt?: Date;
   updateAt?: Date;
+  // admit_update_currency y  enable_cant  no estan
 }
 
 export interface RegisterBoxContextInf {
     selectedProductRegisterBox : ProductRegisterBoxInf;
     productListRegisterBox : ProductRegisterBoxInf[];
+    productBadCantList: any[],
 
     client :  ClientInf | null;
     loadingProductRegisterBox: boolean;
     productApiRegisterBox: ProductInf;
     loadingClient : boolean;
 
+    setProductBadCantListRegisterBoxFn(productBadCantList : any[]):void;
     setSelectedProductRegisterBoxFn(employee:ProductRegisterBoxInf): void;
     searchClientByCiRegisterBoxFn(ci_rif:string):void;
     takeOutProductRegisterBoxFn(productId : number):void;
     addToRegisterBoxListFn(product : any):void;
     cleanRegisterBoxFn():void;
     getProductRegisterBoxFn(code : string):void;
-
-    // msjSuccess : string;
-    // msjError : string;
-    // loadingForm : boolean;
-    // loadingProduct : boolean;
   }

@@ -3,7 +3,6 @@ import { Modal } from "@nextui-org/react";
 import { Loading } from "@nextui-org/react";
 import comunModalCss from "../../../../styles/modal.module.css";
 import foreignPaymentCss from "./ForeignPayment.module.css";
-// import customAxios from "../../../config/axios";
 import { foreignPaymentContext } from "../../../../context/register_box/checkOut/foreignPayment/foreignPaymentContext";
 import { checkOutAccountContext } from "../../../../context/register_box/checkOut/checkOutAccount/checkOutAccountContext";
 import { paymentMadeContext } from "../../../../context/register_box/checkOut/paymentMade/paymentMadeContext";
@@ -17,11 +16,9 @@ const ForeignPayment = () => {
   const [currency_amount, setCurrencyAmount] = useState(0);
   const [detail, setDetail] = useState("");
   const [visible, setVisible] = useState(false);
-// const { currency, } = useContext( currencyContext );
 
   const handler = async () => { 
     getForeignPaymentsFn();
-    // setCurrencyAmount(checkout_balance);
     setVisible(true);
   }
 

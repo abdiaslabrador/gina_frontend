@@ -21,8 +21,8 @@ interface props {
 const DocumentAccountProvider = ({ children }: props) => {
   const { currency } = useContext(currencyContext);
   const { productListRegisterBox } = useContext(registerBoxContext);
-  const { saveErrorFromServerFn } = useContext(errorServerContext);
-  const { logOut } = useContext(authContext);
+  // const { saveErrorFromServerFn } = useContext(errorServerContext);
+  // const { logOut } = useContext(authContext);
 
   const initialState = {
     subtotal: 0 ,
@@ -52,7 +52,7 @@ const DocumentAccountProvider = ({ children }: props) => {
     productListRegisterBox.forEach((product : ProductRegisterBoxInf) =>{
       subtotalAccount = subtotalAccount + product.subtotal;
     })
-    dolaresAccount = (subtotalAccount -  state.discount) / currency.today_currency;
+    dolaresAccount = (subtotalAccount -  (state.discount)) / currency.today_currency;
 
     dispatch({type:UPDATE_ACCOUNT, 
       subtotal: Number(subtotalAccount.toFixed(2)),

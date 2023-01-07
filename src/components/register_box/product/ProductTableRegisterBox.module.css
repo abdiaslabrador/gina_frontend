@@ -67,11 +67,6 @@
 .price_ref {
     grid-area: "price_ref";
 }
-/* 
-.title{
-    color: var(--cl-fn-title);
-    margin-bottom: 30px;
-} */
 
 .center_loading{
     height: 300px;

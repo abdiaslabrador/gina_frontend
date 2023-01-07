@@ -15,7 +15,6 @@ const SearchFormProduct = () => {
       code: '',
   }
 
-
   const formHandler = async  (values: any) => {
     setSelectedProductFn({} as ProductInf); //limpia la selección
     let selectValue : string | number;
@@ -27,6 +26,11 @@ const SearchFormProduct = () => {
     await searchProductByFn(selectValue);
     
   }
+
+  const busquedaHandler = (e: any, resetForm : any) => {
+    setSelectOptionFn(e.target.value );
+    resetForm({values: ''})
+  };
 
   function validateDescription(value: any) {
     let error;
@@ -65,11 +69,6 @@ const SearchFormProduct = () => {
     return error;
   }
 
-  const busquedaHandler = (e: any, resetForm : any) => {
-    setSelectOptionFn(e.target.value );
-    resetForm({values: ''})
-  };
-
 return (
   <Fragment>
     
@@ -91,7 +90,7 @@ return (
                         <option value=""> -- Seleccione un opción -- </option>
                         <option value="all">Todos</option>
                         <option value="description">Descripción</option>
-                        <option value="lessThan">Menor que</option>
+                        <option value="lessThan">Menor o igual que</option>
                         <option value="code">Código</option>
                     </select>
                 </div>

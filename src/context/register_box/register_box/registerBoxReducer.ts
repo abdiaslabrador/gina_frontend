@@ -1,19 +1,23 @@
-import {
-   GET_CLIENT, 
-   LOADING_CLIENT,
-   CLEAN_REGISTERBOX,
-   ADD_TO_LIST,
-   SET_SELECTED_PRODUCT,
-   TAKEOUT,
-   LOADING_PRODUCT_REGISTERBOX,
-   GET_PRODUCT_REGISTERBOX,
-  } from "./registerBoxType";
   import { ClientInf } from "../../../interface/clientInf";
   import { ProductInf } from "../../../interface/productInf";
   import {ProductRegisterBoxInf} from "../../../interface/registerBoxInf";
-  
+  import {
+        SET_PRODUCT_BADCANT,
+        GET_CLIENT, 
+        LOADING_CLIENT,
+        CLEAN_REGISTERBOX,
+        ADD_TO_LIST,
+        SET_SELECTED_PRODUCT,
+        TAKEOUT,
+        LOADING_PRODUCT_REGISTERBOX,
+        GET_PRODUCT_REGISTERBOX,
+    } from "./registerBoxType";
+
   type Action =
-  
+    | {
+      type: "SET_PRODUCT_BADCANT";
+      productBadCantList? : any[];
+    }
     | {
         type: "GET_PRODUCT_REGISTERBOX";
         productApiRegisterBox: ProductInf,
@@ -38,6 +42,7 @@ import {
         selectedProductRegisterBox? :  ProductRegisterBoxInf,
         productApiRegisterBox?: ProductInf,
         client?: ClientInf | null;
+        productBadCantList? : any[];
       }
     | {
         type: "GET_CLIENT";
@@ -66,6 +71,11 @@ import {
   const registerBoxReducer = (state: any = {}, action: Action) => {
     switch (action.type) {
       
+      case SET_PRODUCT_BADCANT:
+        return {
+          ...state,
+          productBadCantList : action.productBadCantList,
+        };
       case GET_PRODUCT_REGISTERBOX:
           return {
             ...state,
@@ -96,6 +106,7 @@ import {
           productListRegisterBox: [],
           selectedProductRegisterBox : {} as ProductRegisterBoxInf,
           productApiRegisterBox: {} as ProductInf,
+          productBadCantList: []
         };
       case GET_CLIENT:
         return {

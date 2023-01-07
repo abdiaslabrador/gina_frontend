@@ -1,0 +1,27 @@
+/*titulo*/
+.title{
+    color:white;
+    margin-bottom: 10px;
+  }
+
+.client_side{
+    color:white;
+    font-size: 1.2em;
+    display: flex;
+    flex-direction: column;
+}
+
+.client_side__bill_title{
+    text-align: center;
+}
+.client_side__bill_number{
+    display: flex;
+    justify-content: space-between;
+}
+
+.total_side{
+    color:white;
+    font-size: 1.2em;
+    display: flex;
+    flex-direction: column;
+}

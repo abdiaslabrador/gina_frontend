@@ -1,6 +1,5 @@
 import React, { Fragment, useContext } from "react";
 import { Modal, Button } from "@nextui-org/react";
-import { Loading } from "@nextui-org/react";
 import { registerBoxContext } from "../../../context/register_box/register_box/registerBoxContext";
 import { paymentMadeContext } from "../../../context/register_box/checkOut/paymentMade/paymentMadeContext";
 import cajaCss from "../register_box/Caja.module.css";
@@ -16,11 +15,7 @@ import { PaymentMadeInf } from "../../../interface/checkOut/paymentMadeInf";
 
 const CheckOut = () => {
   const [visible, setVisible] = React.useState(false);
-  // const [mensaje, setMensaje] = React.useState(
-  //   "¿Estas seguro de cancelar la compra?"
-  // );
-  
-  const { client, productListRegisterBox } = useContext( registerBoxContext );
+  const { client, productListRegisterBox, productBadCantList } = useContext( registerBoxContext );
   const { paymentMadeList, selectedPaymentMade,  setSelectedPaymentMadeFn } = useContext( paymentMadeContext );
   const handler = () => setVisible(true);
 
@@ -60,20 +55,30 @@ const CheckOut = () => {
             <PayInfo/>
             <ClientPayment/>
         </div>
-
+        {(productBadCantList.length > 0)?
+          <div className={checkOutCss["check_product_cant"]}>
+            <div>Corrija los productos para procesar la compra:</div>
+            {productBadCantList.map((product, index) => (
+              <div
+                key={index}
+              >
+                - "{product.description}" cantidad disponible {product.cant}, cantidad que quiere llevar {productListRegisterBox.find(productRegisterBox => productRegisterBox.id == product.id)?.cant}
+              </div>
+            ))}
+          </div>
+          :
+          null
+        }
           <div className={checkOutCss["product_list"]}>
             <div className={checkOutCss["product_list__titles"]}>
               <div>Fecha</div>
               <div>Tipo</div>
               <div>Tasa</div>
               <div>Moneda</div>
-              <div>Cant $</div>
+              <div>Monto $</div>
               <div>Monto Bs</div>
               <div>Detalle</div>
             </div>
-            {/* <Fragment> */}
-              {/* {(!loadingForm)? 
-                (  */}
                   <div className={checkOutCss["product_list__products"]}> 
                     
                     {(paymentMadeList?.length > 0) ? 
@@ -116,20 +121,8 @@ const CheckOut = () => {
                     }  
                    
                   </div> 
-                {/* ) 
-                : 
-                (
-                  <div className={checkOutCss["center_loading"]}>
-                        <Loading
-                        type="spinner"
-                        color="white"
-                        size="xl"
-                    /> 
-                  </div> 
-                ) */}
-            {/* </Fragment> */}
-                
           </div>
+
           <div className={checkOutCss["delete_bottom"]}>
             <DeletePayment/>
             <DiscountInput/>
@@ -139,6 +132,7 @@ const CheckOut = () => {
             <NationalPayment/>
             <ForeignPayment/>
           </div>
+          
           <div className={checkOutCss["check_out_botton"]}>
             <FinishPurchase/>
           </div>
