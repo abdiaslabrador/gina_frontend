@@ -71,7 +71,7 @@ const SelectBill = () => {
           <BillProducts/>
           <div className={selectBillCss["total_side"]}>
             <div>Sub-total: {selectedBill.docu?.subtotal}</div> 
-            <div>Descuento: {selectedBill.docu?.discount}</div>
+            <div>Descuento: ({selectedBill.docu?.discount}%) {(Number(((selectedBill.docu?.discount * selectedBill.docu?.subtotal)/100).toFixed(2)))}</div>
             <div>Total: {selectedBill.docu?.total}</div>
             <div>Total pagado: {selectedBill.docu?.total_payed}</div>
             <div>Cambio: {selectedBill.docu?.change}</div>

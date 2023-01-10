@@ -4,7 +4,7 @@ import  discountInputCss from "./DiscountInput.module.css";
 import { docAccountContext } from "../../../context/register_box/documentAccount/docAccountContext";
 
 const DiscountInput = () => {
-    const { subtotal, setDiscountFn } = useContext( docAccountContext );
+    const {  setDiscountFn } = useContext( docAccountContext );
     const [discount, setDiscount] = useState(0);
 
   function discountOnChange(e : any){
@@ -23,7 +23,7 @@ const DiscountInput = () => {
         <input className={discountInputCss["buttom_form__box"]}
         type="number"
         min="0"
-        max={subtotal}
+        max={100}
         step="0.01"
         name="discount"
         onChange={discountOnChange}

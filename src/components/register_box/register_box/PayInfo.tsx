@@ -24,8 +24,8 @@ const PayInfo = () => {
           <div className={cajaCss["pay_info"]}>
           <div className={cajaCss["pay_info__title"]}>Sub-total</div>
           <div className={cajaCss["pay_info__count"]}>{subtotal}</div>
-          <div className={cajaCss["pay_info__title"]}>Descuento</div>
-          <div className={cajaCss["pay_info__count"]}>{discount}</div>
+          <div className={cajaCss["pay_info__title"]}>Descuento ({discount}%) </div>
+          <div className={cajaCss["pay_info__count"]}>{(Number(((discount * subtotal)/100).toFixed(2)))}</div>
           <div
             className={`${cajaCss["pay_info__title"]} ${cajaCss["pay_info__title--aling"]}`}
           >

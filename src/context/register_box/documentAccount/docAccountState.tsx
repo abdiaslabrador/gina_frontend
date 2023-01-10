@@ -52,12 +52,17 @@ const DocumentAccountProvider = ({ children }: props) => {
     productListRegisterBox.forEach((product : ProductRegisterBoxInf) =>{
       subtotalAccount = subtotalAccount + product.subtotal;
     })
-    dolaresAccount = (subtotalAccount -  (state.discount)) / currency.today_currency;
+
+    if(subtotalAccount == 0){
+      setDiscountFn(0)
+    }
+    const second_discount = Number(((state.discount * subtotalAccount)/100).toFixed(2));
+    dolaresAccount = (subtotalAccount -  second_discount) / currency.today_currency;
 
     dispatch({type:UPDATE_ACCOUNT, 
       subtotal: Number(subtotalAccount.toFixed(2)),
       dolares: Number(dolaresAccount.toFixed(2)),
-      total:  Number((subtotalAccount - state.discount).toFixed(2))
+      total:  Number((subtotalAccount - second_discount).toFixed(2))
     })
   }
   
