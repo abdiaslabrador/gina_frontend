@@ -3,94 +3,63 @@ import { Modal, Loading } from "@nextui-org/react";
 import comunModalCss from "../../../styles/modal.module.css";
 import customAxios from "../../../config/axios";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { employeeContext } from "../../../context/configuration/employee/employeeContext";
-import { EmployeeInf } from "../../../interface/EmployeeInf";
+import { patientContext } from "../../../context/odontology/patientManager/patientContext";
+// import { PatientInf } from "../../../interface/PatientInf";
 
 
 interface props {
-  setEmployeeList: Function;
+  setPatientList: Function;
 }
-const CreateEmployee = () => {
-  const { msjSuccess, msjError, loadingForm, createEmployeeFn } = useContext(employeeContext);
+const CreatePatient = () => {
+  const { msjSuccessPatient, msjErrorPatient, loadingFormPatient, createPatientFn } = useContext(patientContext);
   const [visible, setVisible] = React.useState(false);
 
   const handler = () => setVisible(true);
 
   const closeHandler = () => {
     setVisible(false);
-    console.log("closed");
   };
 
   const formHandler = async (values: any, resetForm: any) => {
-    
-        const employee  = {
-          email: values.email.toLowerCase().trim(),
+
+        const background = {
+          rm: values.rm.toLowerCase().trim(),
+          app: values.app.toLowerCase().trim(),
+          ah: values.ah.toLowerCase().trim(),
+          apf: values.apf.toLowerCase().trim(),
+          habits:values.habits.toLowerCase().trim(),  
+        };
+
+        const patient  = {
           name: values.name.toLowerCase().trim(),
           last_name: values.last_name.toLowerCase().trim(),
           ci_rif: values.ci_rif.toLowerCase().trim(),
           phone_number: values.phone_number.toLowerCase().trim(),
+          sex: values.sex,
           direction: values.direction.toLowerCase().trim(),
           birthday: values.birthday,
-          active: values.active,
-          secretary: values.secretary,
-          superuser: values.superuser,
-          password: values.password1
+          background: background,
         };
-        await createEmployeeFn(employee);
+        await createPatientFn(patient);
         resetForm({ values: "" });
   };
 
   const personalInfoInitialValues = {
     name: "",
-
     last_name: "",
-
     ci_rif: "",
-
+    sex: "",
     birthday: "",
-
     phone_number: "",
-
     direction: "",
-
-    email: "",
-
-    active: true,
-
-    secretary: true,
-
-    superuser: false,
-
-    password1: "",
-
-    password2: "",
+    rm: "",
+    app: "",
+    ah: "",
+    apf: "",
+    habits: "",
   };
 
-  async function validateEmail(value: any) {
-    let error;
-
-    if (!value.trim()) {
-      error = "Campo requerido";
-    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)) {
-      error = "Email mal escrito";
-    }
-    try {
-      const resp = await customAxios.post("employee/getbyemail", {
-        email: value.toLowerCase().trim(),
-      });
-      if (resp?.data) {
-        error = "Correo ya existe";
-      }
-    } catch (errorPetition: any) {
-      if (errorPetition.response?.status != "404") {
-        error = errorPetition.response.data?.msg || errorPetition.message;
-      }
-    }
-
-    return error;
-  }
-
-  async function validateName(value: any) {
+  function validateName(value: any) {
     let error;
 
     if (!value.trim()) {
@@ -99,7 +68,7 @@ const CreateEmployee = () => {
     return error;
   }
 
-  async function validateLastName(value: any) {
+  function validateLastName(value: any) {
     let error;
 
     if (!value.trim()) {
@@ -115,11 +84,11 @@ const CreateEmployee = () => {
       error = "Campo requerido";
     }
     try {
-      const resp = await customAxios.post("employee/getbyci", {
+      const resp = await customAxios.post("patient/getbyci", {
         ci_rif: value.toLowerCase().trim(),
       });
       if (resp?.data) {
-        error = "Usuario ya existe";
+        error = "Paciente ya existe";
       }
     } catch (errorPetition: any) {
       if (errorPetition.response?.status != "404") {
@@ -139,29 +108,14 @@ const CreateEmployee = () => {
     return error;
   }
 
-  function validatePassword1(value: any) {
-    let error;
-    if (!value) {
-      error = "Campo requerido";
-    } else if (value.length < 6) {
-      error = "Contraseña debe contener más de 6 caracteres";
-    }
-
-    return error;
-  }
-
-  function validatePassword2(value: any, values: any) {
+  function validateSex(value: any){
     let error;
     if (!value) {
       error = "Campo requerido";
     }
-    if (value != values.password1) {
-      error = "Las contraseñas tiene que ser iguales";
-    }
 
     return error;
   }
-
   
 
   return (
@@ -177,7 +131,8 @@ const CreateEmployee = () => {
         animated={false}
         width="600px"
         css={{ height: "600px", backgroundColor: "#302F2F" }}
-        closeButton={!loadingForm}
+        closeButton
+        // ={!loadingFormPatient}
         preventClose
         aria-labelledby="modal-title"
         open={visible}
@@ -190,7 +145,7 @@ const CreateEmployee = () => {
         >
           <div className={comunModalCss["header_container"]}>
             <div className={comunModalCss["header_title"]}>
-              Creando un empleado
+              Creando un paciente
             </div>
             <div className={comunModalCss["header_subtitle"]}>
               (*) Atributos requeridos
@@ -210,25 +165,7 @@ const CreateEmployee = () => {
               >
                 {({ values }) => (
                   <Form>
-                    <div className={comunModalCss["form_group"]}>
-                      <div className={comunModalCss["form_group__label"]}>
-                        <label>Email*:</label>
-                      </div>
-
-                      <Field
-                        validate={validateEmail}
-                        type="email"
-                        name="email"
-                        placeholder="Correo electrónico"
-                        disabled={loadingForm}
-                      />
-
-                      <ErrorMessage
-                        className={comunModalCss["square__form-error"]}
-                        component="div"
-                        name="email"
-                      />
-                    </div>
+                    
 
                     <div className={comunModalCss["form_group"]}>
                       <div className={comunModalCss["form_group__label"]}>
@@ -239,7 +176,7 @@ const CreateEmployee = () => {
                         type="text"
                         name="name"
                         placeholder="Escriba el nombre"
-                        disabled={loadingForm}
+                        disabled={loadingFormPatient}
                       />
 
                       <ErrorMessage
@@ -258,7 +195,7 @@ const CreateEmployee = () => {
                           type="text"
                           name="last_name"
                           placeholder="Escriba el apellido"
-                          disabled={loadingForm}
+                          disabled={loadingFormPatient}
                         />
                       <ErrorMessage
                         className={comunModalCss["square__form-error"]}
@@ -276,8 +213,8 @@ const CreateEmployee = () => {
                         validate={validateCi}
                         type="text"
                         name="ci_rif"
-                        placeholder="Escriba la cédula"
-                        disabled={loadingForm}
+                        placeholder="Escriba ci"
+                        disabled={loadingFormPatient}
                       />
 
                       <ErrorMessage
@@ -285,6 +222,22 @@ const CreateEmployee = () => {
                         component="div"
                         name="ci_rif"
                       />
+                    </div>
+
+                    <div className={comunModalCss["form_group"]}>
+                      <div className={comunModalCss["form_group__label"]}>
+                        <label>Sexo*:</label>
+                      </div>
+                      <Field name="sex" as="select" validate={validateSex}>
+                        <option value="">Seleccione una opción</option>
+                        <option value="F">F</option>
+                        <option value="M">M</option>
+                      </Field>
+                      <ErrorMessage
+                          className={comunModalCss["square__form-error"]}
+                          component="div"
+                          name="sex"
+                        />
                     </div>
 
                     <div className={comunModalCss["form_group"]}>
@@ -297,7 +250,7 @@ const CreateEmployee = () => {
                         type="date"
                         name="birthday"
                         placeholder="Escriba el teléfono"
-                        disabled={loadingForm}
+                        disabled={loadingFormPatient}
                       />
                       <ErrorMessage
                         className={comunModalCss["square__form-error"]}
@@ -314,7 +267,7 @@ const CreateEmployee = () => {
                         type="text"
                         name="phone_number"
                         placeholder="Escriba el teléfono"
-                        disabled={loadingForm}
+                        disabled={loadingFormPatient}
                       />
                     </div>
 
@@ -330,87 +283,91 @@ const CreateEmployee = () => {
                           style={{ resize: "none" }}
                           rows={5}
                           cols={23}
-                          disabled={loadingForm}
+                          disabled={loadingFormPatient}
                         />
                     </div>
 
                     <div className={comunModalCss["form_group"]}>
                       <div className={comunModalCss["form_group__label"]}>
-                        <label>Activo:</label>
+                        <div>Reacción medicamentosa:</div>
                       </div>
-                      <Field
-                        type="checkbox"
-                        name="active"
-                        placeholder="Escriba el teléfono"
-                        disabled={loadingForm}
-                      />
+                        <Field
+                          as="textarea"
+                          type="text"
+                          name="rm"
+                          placeholder="Escriba el antecedente"
+                          style={{ resize: "none" }}
+                          rows={3}
+                          cols={23}
+                          disabled={loadingFormPatient}
+                        />
                     </div>
 
                     <div className={comunModalCss["form_group"]}>
                       <div className={comunModalCss["form_group__label"]}>
-                        <label>Secretario:</label>
+                        <div>Antecedentes patológicos personales:</div>
                       </div>
-                      <Field
-                        type="checkbox"
-                        name="secretary"
-                        placeholder="Escriba el teléfono"
-                        disabled={loadingForm}
-                      />
+                        <Field
+                          as="textarea"
+                          type="text"
+                          name="app"
+                          placeholder="Escriba el antecedente"
+                          style={{ resize: "none" }}
+                          rows={3}
+                          cols={23}
+                          disabled={loadingFormPatient}
+                        />
+                    </div>
+                    
+                    <div className={comunModalCss["form_group"]}>
+                      <div className={comunModalCss["form_group__label"]}>
+                        <div>Antecedentes hemorágicos:</div>
+                      </div>
+                        <Field
+                          as="textarea"
+                          type="text"
+                          name="ah"
+                          placeholder="Escriba el antecedente"
+                          style={{ resize: "none" }}
+                          rows={3}
+                          cols={23}
+                          disabled={loadingFormPatient}
+                        />
                     </div>
 
                     <div className={comunModalCss["form_group"]}>
                       <div className={comunModalCss["form_group__label"]}>
-                        <label>Superusuario:</label>
+                        <div>Antecedentes patológicos familiares:</div>
                       </div>
-                      <Field
-                        type="checkbox"
-                        name="superuser"
-                        placeholder="Escriba el teléfono"
-                        disabled={loadingForm}
-                      />
+                        <Field
+                          as="textarea"
+                          type="text"
+                          name="apf"
+                          placeholder="Escriba el antecedente"
+                          style={{ resize: "none" }}
+                          rows={3}
+                          cols={23}
+                          disabled={loadingFormPatient}
+                        />
                     </div>
-
                     <div className={comunModalCss["form_group"]}>
                       <div className={comunModalCss["form_group__label"]}>
-                        <label>Contraseña*:</label>
+                        <div>Hábitos:</div>
                       </div>
-
-                      <Field
-                        validate={validatePassword1}
-                        type="password"
-                        name="password1"
-                        placeholder="Contraseña"
-                        disabled={loadingForm}
-                      />
-                      <ErrorMessage
-                        className={comunModalCss["square__form-error"]}
-                        component="div"
-                        name="password1"
-                      />
+                        <Field
+                          as="textarea"
+                          type="text"
+                          name="habits"
+                          placeholder="Escriba el antecedente"
+                          style={{ resize: "none" }}
+                          rows={3}
+                          cols={23}
+                          disabled={loadingFormPatient}
+                        />
                     </div>
-
-                    <div className={comunModalCss["form_group"]}>
-                      <div className={comunModalCss["form_group__label"]}>
-                        <label>Repita contraseña*:</label>
-                      </div>
-                      <Field
-                        validate={(value: any) =>
-                          validatePassword2(value, values)
-                        }
-                        type="password"
-                        name="password2"
-                        placeholder="Repita contraseña"
-                        disabled={loadingForm}
-                      />
-                      <ErrorMessage
-                        className={comunModalCss["square__form-error"]}
-                        component="div"
-                        name="password2"
-                      />
-                    </div>
-
+                    
                     <div className={comunModalCss["button_group"]}>
-                    {loadingForm ? (
+                    {loadingFormPatient ? (
                       <div className="button_form__button">
                         <Loading
                           type="spinner"
@@ -425,7 +382,7 @@ const CreateEmployee = () => {
                       >
                         Crear
                       </button>
-                    )}
+                     )} 
                   </div>
                   </Form>
                 )}
@@ -435,8 +392,8 @@ const CreateEmployee = () => {
         </Modal.Body>
         <Modal.Footer>
            <div className={comunModalCss["footer_container"]}>
-            {( msjSuccess )?(<div className={comunModalCss["msj_success"]}>{msjSuccess}</div>): null}
-            {( msjError )?(<div className={comunModalCss["msj_error"]}>{msjError}</div>):null}
+            {( msjSuccessPatient )?(<div className={comunModalCss["msj_success"]}>{msjSuccessPatient}</div>): null}
+            {( msjErrorPatient )?(<div className={comunModalCss["msj_error"]}>{msjErrorPatient}</div>):null}
            </div>
         </Modal.Footer>
       </Modal>
@@ -444,4 +401,4 @@ const CreateEmployee = () => {
   );
 };
 
-export default CreateEmployee;
+export default CreatePatient;

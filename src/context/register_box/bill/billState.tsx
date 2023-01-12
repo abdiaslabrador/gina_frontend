@@ -6,7 +6,7 @@ import {BillInf} from "../../../interface/billInf";
 import billReducer from "./billReducer";
 import {billContext} from './billContext';
 import {
-  GET_BILLS, 
+  GET_BILLS,
   SET_SELECTED_SELECT,
   LOADING_GET_BILL,
   SET_SELECTED_BILL,
@@ -26,7 +26,6 @@ const BillProvider = ({ children }: props) => {
     selectedBill : {} as BillInf,
     billList : [],
     selectOption: "",
-    searchFormValue: "",
     // msjSuccessBill : "",
     // msjErrorBill : "",
     loadingFormBill: false,
@@ -58,7 +57,7 @@ const BillProvider = ({ children }: props) => {
       });
       dispatch({
         type: GET_BILLS,
-        billList: response.data,
+        billList: [response.data],
         loadingBillList: false,
       })
       saveErrorFromServerFn(false);
@@ -110,7 +109,6 @@ const BillProvider = ({ children }: props) => {
         selectedBill: state.selectedBill,
         billList: state.billList,
         selectOption: state.selectOption,
-        searchFormValue: state.searchFormValue,
         // msjSuccessBill : state.msjSuccessBill,
         // msjErrorBill : state.msjErrorBill,
         loadingFormBill: state.loadingFormBill,

@@ -2,10 +2,10 @@ import React, {useContext} from "react";
 import { Modal, Button } from "@nextui-org/react";
 import customAxios from "../../../config/axios";
 import { Loading } from "@nextui-org/react";
-import { employeeContext } from "../../../context/configuration/employee/employeeContext";
+import { patientContext } from "../../../context/odontology/patientManager/patientContext";
 
-const DeleteEmployee = () => {
-  const { loadingForm, selectedEmployee, deleteEmployeeFn } = useContext(employeeContext);
+const DeletePatient = () => {
+  const { loadingPatientList, selectedPatient, deletePatientFn } = useContext(patientContext);
   const [visible, setVisible] = React.useState(false);
   const [mensaje, setMensaje] = React.useState(
     "¿Estas seguro de eliminar el empleado?"
@@ -18,8 +18,8 @@ const DeleteEmployee = () => {
     console.log("closed");
   };
 
-  const eliminarEmployee = async () => {
-      await deleteEmployeeFn(selectedEmployee.id)
+  const eliminarPatient = async () => {
+      await deletePatientFn(selectedPatient.id)
       setVisible(false);
   };
 
@@ -28,13 +28,13 @@ const DeleteEmployee = () => {
       <button
         className="button_form__button button_form__button--efect"
         onClick={handler}
-        disabled={selectedEmployee.id ? false : true}
+        disabled={selectedPatient.id ? false : true}
       >
         Eliminar
       </button>
 
       <Modal
-        closeButton={!loadingForm}
+        closeButton={!loadingPatientList}
         preventClose
         animated={false}
         aria-labelledby="modal-title"
@@ -45,17 +45,17 @@ const DeleteEmployee = () => {
             
         </Modal.Header> */}
         <Modal.Body>
-          {loadingForm ?
+          {loadingPatientList ?
             ( <Loading /> )
             : 
             (<div>{mensaje}</div>)
           }
         </Modal.Body>
         <Modal.Footer>
-            <Button auto flat color="error" onClick={() => eliminarEmployee()} disabled={loadingForm}>
+            <Button auto flat color="error" onClick={() => eliminarPatient()} disabled={loadingPatientList}>
               Si
             </Button>
-            <Button auto onClick={closeHandler} disabled={loadingForm}>
+            <Button auto onClick={closeHandler} disabled={loadingPatientList}>
               No
             </Button>
         </Modal.Footer>
@@ -64,4 +64,4 @@ const DeleteEmployee = () => {
   );
 };
 
-export default DeleteEmployee;
+export default DeletePatient;

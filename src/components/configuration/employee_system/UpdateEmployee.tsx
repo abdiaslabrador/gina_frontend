@@ -320,7 +320,7 @@ const UpdateEmployee = () => {
                     <Field
                       type="text"
                       name="phone_number"
-                      placeholder="Escriba el telefono"
+                      placeholder="Escriba el teléfono"
                       disabled={loadingForm}
                     />
                   </div>

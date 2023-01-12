@@ -41,7 +41,6 @@ const SearchFormBillManager = () => {
       const resp = await customAxios.post("/document/bill/getbyid", {
         id : value
       });
-      (resp.data.length == 0) ? error = "No se encuentra el producto" : null;
 
     } catch (errorPetition: any) {
         error = errorPetition.response.data?.msg || errorPetition.message;

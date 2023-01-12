@@ -10,7 +10,6 @@ export interface BillContextInf {
     billList: BillInf[],
     selectedBill: BillInf,
     selectOption: string,
-    searchFormValue: string,
     loadingFormBill: boolean,
     loadingBillList: boolean,
     cleanBillFn():void,
