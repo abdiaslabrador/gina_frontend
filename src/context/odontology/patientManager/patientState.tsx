@@ -113,7 +113,7 @@ const PatientProvider = ({ children }: props) => {
       dispatch({type: LOADING_FORM, loadingFormPatient: false });
       console.log(error);
 
-        if (error.response?.status == "404") { //usuario con el token inválido. NOTA: ya el token se elimina desde el backend
+        if (error.response?.status == "404") { 
             console.log(message)
         } 
         else if (error.response?.status == "403") { //usuario con el token inválido. NOTA: ya el token se elimina desde el backend

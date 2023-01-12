@@ -35,6 +35,7 @@ export interface PatientInfContext{
     selectOption: string,
     createPatientFn(patient: any):void,
     updatePatientFn(patient: PatientInf):void,
+    deletePatientFn(patientId : number):void,
     setSelectOptionFn(optionSelected : string):void,
     setSelectedPatientFn(patient: PatientInf):void,
     searchPatientByCiFn(ci_rif:string):void,

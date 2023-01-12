@@ -8,7 +8,7 @@ const DeletePatient = () => {
   const { loadingPatientList, selectedPatient, deletePatientFn } = useContext(patientContext);
   const [visible, setVisible] = React.useState(false);
   const [mensaje, setMensaje] = React.useState(
-    "¿Estas seguro de eliminar el empleado?"
+    "¿Estas seguro de eliminar el paciente?"
   );
   
   const handler = () => setVisible(true);

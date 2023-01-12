@@ -70,9 +70,9 @@ const PatientTable = () => {
                 </Fragment>
               </div>
               
-                {/* <div className={patientTableCss["delete_bottom"]}>
+                <div className={patientTableCss["delete_bottom"]}>
                   <DeletePatient/>
-                </div>  */}
+                </div>
              
          
     </Fragment>

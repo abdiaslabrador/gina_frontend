@@ -26,12 +26,12 @@ import {
         msjErrorPatient : string,
         loadingFormPatient : boolean,
       }
-    // | {
-    //   type: "DELETE_PATIENT";
-    //   patientList: PatientInf[];
-    //   selectedPatient: PatientInf;
-    //   loadingFormPatient: false;
-    //   }
+    | {
+      type: "DELETE_PATIENT";
+      patientList: PatientInf[];
+      selectedPatient: PatientInf;
+      loadingFormPatient: false;
+      }
     | {
       type: "UPDATE_PATIENT";
       patientList: PatientInf[];
@@ -98,13 +98,13 @@ import {
             ...state,
             selectOption: action.selectOption
           };
-        // case DELETE_PATIENT:
-        //   return {
-        //     ...state,
-        //     patientList: action.patientList,
-        //     selectedPatient: action.selectedPatient,
-        //     loadingFormPatient: false
-        //   };
+        case DELETE_PATIENT:
+          return {
+            ...state,
+            patientList: action.patientList,
+            selectedPatient: action.selectedPatient,
+            loadingFormPatient: false
+          };
           case UPDATE_PATIENT:
           return {
             ...state,

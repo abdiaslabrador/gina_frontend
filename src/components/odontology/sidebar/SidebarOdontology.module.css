@@ -10,7 +10,7 @@
 .sidebar__item {
     text-align: center;
     padding: 0.5rem 0.5rem;
-    font-size: 64px;
+    font-size: 32px;
 }
 
 .sidebar__item:hover {
