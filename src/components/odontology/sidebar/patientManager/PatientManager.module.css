@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin-bottom: 10px; /**/
+    margin-bottom: 10px;
 }
 
 .delete_bottom {
@@ -17,14 +17,13 @@
     display: flex;
     flex-direction: column;
     font-size: 16px;
-    color: white;
 }
 
 .product_list__titles {
     background-color: var(--cl-headers);
     flex: 0 1 auto;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 2fr 4px;
+    grid-template-columns: 0.17fr 0.22fr 0.22fr 0.17fr 0.22fr 0.22fr 4px;
 }
 
 .product_list__titles>* {
@@ -44,8 +43,8 @@
 .product_list__item {
     background-color: var(--cl-table-items);
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 2fr;
-    grid-template-areas: "id name last_name birthday direction";
+    grid-template-columns: 1.7fr 2.2fr 2.2fr 1.7fr 2.2fr 2.2fr;
+    grid-template-areas: "ci name last_name active secretary superuser";
 }
 
 .product_list__item>* {
@@ -54,8 +53,8 @@
 }
 
 
-.id {
-    grid-area: "id";
+.ci {
+    grid-area: "ci";
 }
 
 .name {
@@ -66,24 +65,29 @@
     grid-area: "last_name";
 }
 
-.birthday {
-    grid-area: "birthday";
+.active {
+    grid-area: "active";
 }
 
-.direction {
-    grid-area: "direction";
+.secretary {
+    grid-area: "secretary";
+}
+
+.superuser {
+    grid-area: "superuser";
 }
 
 .title{
     color: var(--cl-fn-title);
     margin-bottom: 30px;
 }
-
 .center_loading{
-    height: 300px;
+        height: 300px;
     background-color: var(--cl-bckgd-table-items);
+
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    
 }

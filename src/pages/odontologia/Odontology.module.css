@@ -3,9 +3,10 @@
     height: 100vh;
     color: white;
     display: grid;
-    /* grid-template-columns: minmax(0, 16%) minmax(0, 1fr); */
-    grid-template-columns: minmax(0, 8%) minmax(0, 1fr) ;
     padding-top: var(--navbar-height);
+    grid-template-columns: minmax(0, 8%) minmax(0, 1.3fr) minmax(0, 0.7fr);
+    grid-template-rows: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 2fr);
+
 }
 
 .main {

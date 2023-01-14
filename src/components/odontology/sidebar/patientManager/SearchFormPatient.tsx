@@ -1,9 +1,9 @@
 import React, {Fragment, useContext, } from "react";
 import searchPatientCss from './SearchFormPatient.module.css'
 import { Formik, Form, Field,  ErrorMessage } from "formik";
-import  customAxios  from "../../../config/axios";
-import { patientContext } from "../../../context/odontology/patientManager/patientContext";
-import { PatientInf } from "../../../interface/odontology/patientInf";
+import  customAxios  from "../../../../config/axios";
+import { patientManagerContext } from "../../../../context/odontology/patientManager/patientManagerContext";
+import { PatientInf } from "../../../../interface/odontology/patientInf";
 import moment from "moment";
 
 const SearchFormPatient = () => {
@@ -14,7 +14,7 @@ const SearchFormPatient = () => {
           searchPatientByNamesFn,
           setSelectOptionFn,
           setSelectedPatientFn
-         } = useContext(patientContext);
+         } = useContext(patientManagerContext);
 
   const today_date : string = moment( new Date()).format("YYYY-MM-DD")
   const initialDateValues={

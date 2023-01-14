@@ -36,7 +36,7 @@ const { client, searchClientByCiRegisterBoxFn } = useContext( registerBoxContext
     }
 
   return (
-        <div className={cajaCss["buttom_form"]}>
+          <div className={cajaCss["buttom_form"]}>
             {(!client)?
             <Formik
                   initialValues={initialValues}
@@ -69,11 +69,18 @@ const { client, searchClientByCiRegisterBoxFn } = useContext( registerBoxContext
               </Form>
             </Formik>
             :
-            <Fragment>
-              Cliente seleccionado
-            </Fragment>  
+              <div>Cliente seleccionado</div>
             }
-            {/* <div className={cajaCss["buttom_form__discount"]}>
+            </div>
+ 
+            
+  );
+};
+
+export default CiandDiscountBar;
+
+
+{/* <div className={cajaCss["buttom_form__discount"]}>
               <label>Descuento: </label>
               <input className={cajaCss["buttom_form__box"]}
                 disabled={ (!client || subtotal == 0)? true : false }
@@ -83,8 +90,3 @@ const { client, searchClientByCiRegisterBoxFn } = useContext( registerBoxContext
                 onChange={ discountOnChange }
               />
             </div> */}
-          </div>
-  );
-};
-
-export default CiandDiscountBar;

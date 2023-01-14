@@ -2,12 +2,11 @@ import React, {useContext} from "react";
 import { useRouter } from "next/router";
 import { useReducer } from "react";
 import customAxios from "../../../config/axios";
-import patientReducer from "./patientReducer";
+import patientManagerReducer from "./patientManagerReducer";
 import {PatientInf} from "../../../interface/odontology/patientInf";
-import {patientContext} from './patientContext';
+import {patientManagerContext} from './patientManagerContext';
 import {authContext} from '../../login/authContext';
 import {errorServerContext} from '../../error/errorServerContext';
-
 import {
     GET_PATIENT,
     CREATE_PATIENT,
@@ -20,13 +19,13 @@ import {
     LOADING_GET_PATIENT,
     UPDATE_MSJ_SUCCESS,
     UPDATE_MSJ_ERROR,
-  } from "./patientType";
+  } from "./patientManagerType";
 
 interface props {
   children: JSX.Element | JSX.Element[];
 }
 
-const PatientProvider = ({ children }: props) => {
+const PatientManagerProvider = ({ children }: props) => {
   const { saveErrorFromServerFn } = useContext(errorServerContext);
   const { logOut } = useContext(authContext);
   
@@ -34,14 +33,14 @@ const PatientProvider = ({ children }: props) => {
   const initialState = {
     selectedPatient : {} as PatientInf,
     patientList : [],
-    msjSuccessPatient : "",
-    msjErrorPatient : "",
-    loadingFormPatient: false,
+    msjSuccessPatientList : "",
+    msjErrorPatientList : "",
+    loadingFormPatientList: false,
     loadingPatientList: false,
     selectOption: "ci_rif",
   };
 
-  const [state, dispatch] = useReducer(patientReducer, initialState);
+  const [state, dispatch] = useReducer(patientManagerReducer, initialState);
 
   function setSelectOptionFn(optionSelected : string){
     dispatch({type: SET_SELECTED_SELECT, selectOption: optionSelected})
@@ -62,28 +61,28 @@ const PatientProvider = ({ children }: props) => {
 
   async function createPatientFn(patient : any) {
     try {
-        dispatch({ type: LOADING_FORM, loadingFormPatient: true })
+        dispatch({ type: LOADING_FORM, loadingFormPatientList: true })
         await customAxios.post("patient/create", {
           patient: patient,
         });
       
         dispatch({
           type: CREATE_PATIENT,
-          msjSuccessPatient: "Paciente creado exitosamente",
-          msjErrorPatient: "",
-          loadingFormPatient: false,
+          msjSuccessPatientList: "Paciente creado exitosamente",
+          msjErrorPatientList: "",
+          loadingFormPatientList: false,
         })
-        setTimeout(() => dispatch({type:UPDATE_MSJ_SUCCESS, msjSuccessPatient:""}), 8000);
+        setTimeout(() => dispatch({type:UPDATE_MSJ_SUCCESS, msjSuccessPatientList:""}), 8000);
         saveErrorFromServerFn(false);
 
     } catch (error : any ) {
       let message = error.response.data?.msg || error.message;
-      dispatch({type: LOADING_FORM, loadingFormPatient: false });
+      dispatch({type: LOADING_FORM, loadingFormPatientList: false });
       console.log(error );
 
         if(error.response?.status == "400"){
-          dispatch({type:UPDATE_MSJ_ERROR, msjErrorPatient:message});
-          setTimeout(() => dispatch({type:UPDATE_MSJ_ERROR, msjErrorPatient:""}), 8000);
+          dispatch({type:UPDATE_MSJ_ERROR, msjErrorPatientList:message});
+          setTimeout(() => dispatch({type:UPDATE_MSJ_ERROR, msjErrorPatientList:""}), 8000);
           
         }else if (error.response?.status == "403") { //usuario con el token inválido. NOTA: ya el token se elimina desde el backend
           dispatch({type: PATIENT_ERROR});
@@ -97,20 +96,20 @@ const PatientProvider = ({ children }: props) => {
 
   async function deletePatientFn(patientId : number){
     try {
-      dispatch({ type: LOADING_FORM, loadingFormPatient: true })
+      dispatch({ type: LOADING_FORM, loadingFormPatientList: true })
       const resp = await customAxios.post("/patient/delete", {id: patientId});
       dispatch({
         type: DELETE_PATIENT,
         patientList: resp.data,
         selectedPatient: ({} as PatientInf),
-        loadingFormPatient: false
+        loadingFormPatientList: false
       })
       saveErrorFromServerFn(false);
 
     } catch (error:any) {
       let message = error.response.data?.msg || error.message;
       dispatch({type: PATIENT_ERROR});
-      dispatch({type: LOADING_FORM, loadingFormPatient: false });
+      dispatch({type: LOADING_FORM, loadingFormPatientList: false });
       console.log(error);
 
         if (error.response?.status == "404") { 
@@ -127,7 +126,7 @@ const PatientProvider = ({ children }: props) => {
 
   async function updatePatientFn(patient : PatientInf){
     try {
-      dispatch({ type: LOADING_FORM, loadingFormPatient: true })
+      dispatch({ type: LOADING_FORM, loadingFormPatientList: true })
       await customAxios.post("patient/update", {
         patient: patient
       });
@@ -135,22 +134,22 @@ const PatientProvider = ({ children }: props) => {
         type: UPDATE_PATIENT,
         patientList: [patient],
         selectedPatient: patient,
-        msjSuccessPatient: "Paciente actualizado exitosamente",
-        msjErrorPatient: "",
-        loadingFormPatient: false,
+        msjSuccessPatientList: "Paciente actualizado exitosamente",
+        msjErrorPatientList: "",
+        loadingFormPatientList: false,
       })
-      setTimeout(() => dispatch({type:UPDATE_MSJ_SUCCESS, msjSuccessPatient:""}), 8000);
+      setTimeout(() => dispatch({type:UPDATE_MSJ_SUCCESS, msjSuccessPatientList:""}), 8000);
       saveErrorFromServerFn(false);
 
     } catch (error : any) {
       let message = error.response.data?.msg || error.message;
       dispatch({type: PATIENT_ERROR});
-      dispatch({type: LOADING_FORM, loadingFormPatient: false });
+      dispatch({type: LOADING_FORM, loadingFormPatientList: false });
       console.log(error);
 
       if(error.response?.status == "404"){//el usuario se intenta actualizar pero no está en la base de datos
-        dispatch({type:UPDATE_MSJ_ERROR, msjErrorPatient:message})
-        setTimeout(() => dispatch({type:UPDATE_MSJ_ERROR, msjErrorPatient:""}), 8000);
+        dispatch({type:UPDATE_MSJ_ERROR, msjErrorPatientList:message})
+        setTimeout(() => dispatch({type:UPDATE_MSJ_ERROR, msjErrorPatientList:""}), 8000);
      
       }else if (error.response?.status == "403") { //usuario con el token inválido. NOTA: ya el token se elimina desde el backend
         await logOut();
@@ -244,13 +243,13 @@ const PatientProvider = ({ children }: props) => {
   }
 
   return (
-    <patientContext.Provider
+    <patientManagerContext.Provider
       value={{
         selectedPatient: state.selectedPatient,
         patientList: state.patientList,
-        msjSuccessPatient : state.msjSuccessPatient,
-        msjErrorPatient : state.msjErrorPatient,
-        loadingFormPatient: state.loadingFormPatient,
+        msjSuccessPatientList : state.msjSuccessPatientList,
+        msjErrorPatientList : state.msjErrorPatientList,
+        loadingFormPatientList: state.loadingFormPatientList,
         loadingPatientList: state.loadingPatientList,
         selectOption: state.selectOption,
         // searchPatientByCiFn,
@@ -266,8 +265,8 @@ const PatientProvider = ({ children }: props) => {
       }}
     >
       {children}
-    </patientContext.Provider>
+    </patientManagerContext.Provider>
   );
 };
 
-export default PatientProvider;
+export default PatientManagerProvider;

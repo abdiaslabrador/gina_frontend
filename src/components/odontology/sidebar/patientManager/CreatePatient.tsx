@@ -1,9 +1,9 @@
 import React, {useContext} from "react";
 import { Modal, Loading } from "@nextui-org/react";
-import comunModalCss from "../../../styles/modal.module.css";
-import customAxios from "../../../config/axios";
+import comunModalCss from "../../../../styles/modal.module.css";
+import customAxios from "../../../../config/axios";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { patientContext } from "../../../context/odontology/patientManager/patientContext";
+import { patientManagerContext } from "../../../../context/odontology/patientManager/patientManagerContext";
 // import { PatientInf } from "../../../interface/PatientInf";
 
 
@@ -11,7 +11,7 @@ interface props {
   setPatientList: Function;
 }
 const CreatePatient = () => {
-  const { msjSuccessPatient, msjErrorPatient, loadingFormPatient, createPatientFn } = useContext(patientContext);
+  const { msjSuccessPatientList, msjErrorPatientList, loadingFormPatientList, createPatientFn } = useContext(patientManagerContext);
   const [visible, setVisible] = React.useState(false);
 
   const handler = () => setVisible(true);
@@ -132,7 +132,7 @@ const CreatePatient = () => {
         width="600px"
         css={{ height: "600px", backgroundColor: "#302F2F" }}
         closeButton
-        // ={!loadingFormPatient}
+        // ={!loadingFormPatientList}
         preventClose
         aria-labelledby="modal-title"
         open={visible}
@@ -176,7 +176,7 @@ const CreatePatient = () => {
                         type="text"
                         name="name"
                         placeholder="Escriba el nombre"
-                        disabled={loadingFormPatient}
+                        disabled={loadingFormPatientList}
                       />
 
                       <ErrorMessage
@@ -195,7 +195,7 @@ const CreatePatient = () => {
                           type="text"
                           name="last_name"
                           placeholder="Escriba el apellido"
-                          disabled={loadingFormPatient}
+                          disabled={loadingFormPatientList}
                         />
                       <ErrorMessage
                         className={comunModalCss["square__form-error"]}
@@ -214,7 +214,7 @@ const CreatePatient = () => {
                         type="text"
                         name="ci_rif"
                         placeholder="Escriba ci"
-                        disabled={loadingFormPatient}
+                        disabled={loadingFormPatientList}
                       />
 
                       <ErrorMessage
@@ -250,7 +250,7 @@ const CreatePatient = () => {
                         type="date"
                         name="birthday"
                         placeholder="Escriba el teléfono"
-                        disabled={loadingFormPatient}
+                        disabled={loadingFormPatientList}
                       />
                       <ErrorMessage
                         className={comunModalCss["square__form-error"]}
@@ -267,7 +267,7 @@ const CreatePatient = () => {
                         type="text"
                         name="phone_number"
                         placeholder="Escriba el teléfono"
-                        disabled={loadingFormPatient}
+                        disabled={loadingFormPatientList}
                       />
                     </div>
 
@@ -283,7 +283,7 @@ const CreatePatient = () => {
                           style={{ resize: "none" }}
                           rows={5}
                           cols={23}
-                          disabled={loadingFormPatient}
+                          disabled={loadingFormPatientList}
                         />
                     </div>
 
@@ -299,7 +299,7 @@ const CreatePatient = () => {
                           style={{ resize: "none" }}
                           rows={3}
                           cols={23}
-                          disabled={loadingFormPatient}
+                          disabled={loadingFormPatientList}
                         />
                     </div>
 
@@ -315,7 +315,7 @@ const CreatePatient = () => {
                           style={{ resize: "none" }}
                           rows={3}
                           cols={23}
-                          disabled={loadingFormPatient}
+                          disabled={loadingFormPatientList}
                         />
                     </div>
                     
@@ -331,7 +331,7 @@ const CreatePatient = () => {
                           style={{ resize: "none" }}
                           rows={3}
                           cols={23}
-                          disabled={loadingFormPatient}
+                          disabled={loadingFormPatientList}
                         />
                     </div>
 
@@ -347,7 +347,7 @@ const CreatePatient = () => {
                           style={{ resize: "none" }}
                           rows={3}
                           cols={23}
-                          disabled={loadingFormPatient}
+                          disabled={loadingFormPatientList}
                         />
                     </div>
                     <div className={comunModalCss["form_group"]}>
@@ -362,12 +362,12 @@ const CreatePatient = () => {
                           style={{ resize: "none" }}
                           rows={3}
                           cols={23}
-                          disabled={loadingFormPatient}
+                          disabled={loadingFormPatientList}
                         />
                     </div>
                     
                     <div className={comunModalCss["button_group"]}>
-                    {loadingFormPatient ? (
+                    {loadingFormPatientList ? (
                       <div className="button_form__button">
                         <Loading
                           type="spinner"
@@ -392,8 +392,8 @@ const CreatePatient = () => {
         </Modal.Body>
         <Modal.Footer>
            <div className={comunModalCss["footer_container"]}>
-            {( msjSuccessPatient )?(<div className={comunModalCss["msj_success"]}>{msjSuccessPatient}</div>): null}
-            {( msjErrorPatient )?(<div className={comunModalCss["msj_error"]}>{msjErrorPatient}</div>):null}
+            {( msjSuccessPatientList )?(<div className={comunModalCss["msj_success"]}>{msjSuccessPatientList}</div>): null}
+            {( msjErrorPatientList )?(<div className={comunModalCss["msj_error"]}>{msjErrorPatientList}</div>):null}
            </div>
         </Modal.Footer>
       </Modal>

@@ -1,15 +1,12 @@
 import {  Loading, } from "@nextui-org/react";
 import React, { Fragment, useContext } from "react";
 import patientTableCss from "./PatientTable.module.css";
-import { PatientInf } from "../../../interface/odontology/patientInf";
-import DeletePatient from "./DeletePatient";
-import CreatePatient from "./CreatePatient";
-import UpdatePatient from "./UpdatePatient";
-import { patientContext } from "../../../context/odontology/patientManager/patientContext";
+import { PatientInf } from "../../../../interface/odontology/patientInf";
+import { patientManagerContext } from "../../../../context/odontology/patientManager/patientManagerContext";
 import moment from "moment";
 
 const PatientTable = () => {
-    const {  patientList, loadingPatientList, selectedPatient, setSelectedPatientFn } = useContext(patientContext);
+    const {  patientList, loadingPatientList, selectedPatient, setSelectedPatientFn } = useContext(patientManagerContext);
 
     function objectSelection(patient: PatientInf): void {
       setSelectedPatientFn(patient);
@@ -18,10 +15,6 @@ const PatientTable = () => {
 
   return (
     <Fragment>
-              <div className={patientTableCss["create_modify_bottom"]}>
-                <CreatePatient/>
-                <UpdatePatient/>
-              </div> 
               <div className={patientTableCss["product_list"]}>
                 <div className={patientTableCss["product_list__titles"]}>
                   <div>ID</div>
@@ -69,12 +62,6 @@ const PatientTable = () => {
                 } 
                 </Fragment>
               </div>
-              
-                <div className={patientTableCss["delete_bottom"]}>
-                  <DeletePatient/>
-                </div>
-             
-         
     </Fragment>
   );
 };

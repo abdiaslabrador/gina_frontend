@@ -158,13 +158,14 @@
 } */
 .buttom_form {
   grid-area: buttom_form;
-  display: flex;
   font-size: 0.75rem;
   padding: 3px 10px;
 }
+
+
 .buttom_form__ci {
-  /* justify-self: flex-start; */
-  justify-content: flex-start;
+ display: flex; 
+ flex-direction: row;
 }
 
 /* .buttom_form__discount {
@@ -294,11 +295,10 @@
 }
 
 .square__form-error {
-  display: inline-block;
   font-weight: bold;
   color: black;
   background-color: var(--cl-error);
-  padding-left: 6%;
+  padding: 0px 20px;
   font-size: 0.75rem;
   text-align: center;
 }

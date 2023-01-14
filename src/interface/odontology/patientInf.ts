@@ -26,11 +26,20 @@ export interface PatientInf {
 }
 
 export interface PatientInfContext{
-    selectedPatient : PatientInf,
-    patientList : PatientInf[],
+    patient : PatientInf,
+    loadingFormPatient: boolean,
+    loadingPatient: boolean,
     msjSuccessPatient : string,
     msjErrorPatient : string,
-    loadingFormPatient: boolean,
+    setPatientFn(patient: PatientInf):void,
+}
+
+export interface PatientManagerInfContext{
+    selectedPatient : PatientInf,
+    patientList : PatientInf[],
+    msjSuccessPatientList : string,
+    msjErrorPatientList : string,
+    loadingFormPatientList: boolean,
     loadingPatientList: boolean,
     selectOption: string,
     createPatientFn(patient: any):void,

@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from "react";
 import sidebarCss from './SidebarOdontology.module.css'
 import { useRouter } from "next/router";
-import PatientManager from "../patientManager/PatientManager";
+import PatientManager from "./patientManager/PatientManager";
 // import { authContext } from "../../../context/login/authContext";
 const SidebarOdont = () => {
   const router = useRouter();

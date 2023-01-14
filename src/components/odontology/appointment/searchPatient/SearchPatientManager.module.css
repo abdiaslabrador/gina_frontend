@@ -1,0 +1,11 @@
+.title{
+    color: var(--cl-fn-title);
+    margin-bottom: 30px;
+}
+
+.pickup_botton {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-bottom: 10px; /**/
+}

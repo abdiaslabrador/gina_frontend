@@ -1,11 +1,11 @@
 import React, {useContext} from "react";
 import { Modal, Button } from "@nextui-org/react";
-import customAxios from "../../../config/axios";
+import customAxios from "../../../../config/axios";
 import { Loading } from "@nextui-org/react";
-import { patientContext } from "../../../context/odontology/patientManager/patientContext";
+import { patientManagerContext } from "../../../../context/odontology/patientManager/patientManagerContext";
 
 const DeletePatient = () => {
-  const { loadingPatientList, selectedPatient, deletePatientFn } = useContext(patientContext);
+  const { loadingPatientList, selectedPatient, deletePatientFn } = useContext(patientManagerContext);
   const [visible, setVisible] = React.useState(false);
   const [mensaje, setMensaje] = React.useState(
     "¿Estas seguro de eliminar el paciente?"

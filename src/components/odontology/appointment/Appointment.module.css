@@ -1,0 +1,27 @@
+.container {
+    grid-row: 4/5;
+    display: flex;
+    flex-direction: column;
+    color:white;
+    border: 1px solid white;
+}
+
+.buttom_form {
+    grid-area: buttom_form;
+    font-size: 0.75rem;
+    padding: 3px 10px;
+  }
+  
+  .buttom_form__ci {
+   display: flex; 
+   flex-direction: row;
+  }
+
+.square__form-error {
+    font-weight: bold;
+    color: black;
+    background-color: var(--cl-error);
+    padding: 0px 20px;
+    font-size: 0.75rem;
+    text-align: center;
+  }

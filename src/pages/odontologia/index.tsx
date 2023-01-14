@@ -9,8 +9,14 @@ import { getCookie } from "cookies-next";
 // import customAxios from "../../config/axios";
 import odontologyCss from "./Odontology.module.css";
 import SidebarOdont from "../../components/odontology/sidebar/SidebarOdontology";
+import Odontograma from "../../components/odontology/odontograma/Odontograma";
+import Background from "../../components/odontology/background/Background";
+import Appointment from "../../components/odontology/appointment/Appointment";
+import AppointmentHistory from "../../components/odontology/appointment_history/AppointmentHistory";
 import ServerError from "../../components/error/500";
 import { errorServerContext } from '../../context/error/errorServerContext';
+import PatientProvider from "../../context/odontology/patient/patientState";
+import PatientManagerProvider from "../../context/odontology/patientManager/patientManagerState";
 
 // import comunModalCss from "../../styles/modal.module.css";
 
@@ -26,10 +32,16 @@ const Odontology: NextPage = () => {
       </Head>
       {!errorFromServer ? (
         <div className={odontologyCss["container"]}>
-        <SidebarOdont/>
-          <div className={odontologyCss["main"]}>
-            
-          </div>
+        <PatientManagerProvider>
+        <PatientProvider>
+          <SidebarOdont/>
+          <Odontograma/>
+          <Background/>
+          <Appointment/>
+          <AppointmentHistory/>
+        </PatientProvider>
+        </PatientManagerProvider>
+
         </div>
       ):(
       <div>
@@ -52,26 +64,3 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext){
   }
 
 export default WithLayout(Odontology);
-
-// async function validateCi(value: any) {
-//   let error;
-
-//   if (!value.trim()) {
-//     error = "Campo requerido";
-//   }
-//   try {
-//     const resp = await customAxios.post("employee/getbyciupdate", {
-//       look_ci_rif: value.toLowerCase().trim(),
-//       ci_rif: user.ci_rif,
-//     });
-//     if (resp?.data) {
-//       error = "Usuario ya existe";
-//     }
-//   } catch (errorPetition: any) {
-//     if (errorPetition.response?.status != "404") {
-//       error = errorPetition.response.data?.msg || errorPetition.message;
-//     }
-//   }
-
-//   return error;
-// }

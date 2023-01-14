@@ -1,3 +1,4 @@
+import { PatientInf } from "../../../interface/odontology/patientInf";
 import {
     GET_PATIENT,
     CREATE_PATIENT,
@@ -10,8 +11,7 @@ import {
     UPDATE_MSJ_SUCCESS,
     UPDATE_MSJ_ERROR,
     PATIENT_ERROR,
-  } from "./patientType";
-  import { PatientInf } from "../../../interface/odontology/patientInf";
+  } from "./patientManagerType";
   
   type Action =
   
@@ -22,23 +22,23 @@ import {
       }
     | {
         type: "CREATE_PATIENT";
-        msjSuccessPatient : string,
-        msjErrorPatient : string,
-        loadingFormPatient : boolean,
+        msjSuccessPatientList : string,
+        msjErrorPatientList : string,
+        loadingFormPatientList : boolean,
       }
     | {
       type: "DELETE_PATIENT";
       patientList: PatientInf[];
       selectedPatient: PatientInf;
-      loadingFormPatient: false;
+      loadingFormPatientList: false;
       }
     | {
       type: "UPDATE_PATIENT";
       patientList: PatientInf[];
       selectedPatient: PatientInf;
-      msjSuccessPatient : string,
-      msjErrorPatient : string,
-      loadingFormPatient : boolean,
+      msjSuccessPatientList : string,
+      msjErrorPatientList : string,
+      loadingFormPatientList : boolean,
       }
     | {
       type: "SET_SELECTED_PATIENT";
@@ -50,7 +50,7 @@ import {
       } 
     | {
       type: "LOADING_FORM";
-      loadingFormPatient: boolean;
+      loadingFormPatientList: boolean;
       }
     | {
       type: "LOADING_GET_PATIENT";
@@ -63,17 +63,17 @@ import {
       }
     | {
       type: "UPDATE_MSJ_SUCCESS";
-      msjSuccessPatient : string,
+      msjSuccessPatientList : string,
       
     }
     | {
       type: "UPDATE_MSJ_ERROR";
-      msjErrorPatient : string,
+      msjErrorPatientList : string,
     }
     ;
     
     
-  const patientReducer = (state: any = {}, action: Action) => {
+  const patientManagerReducer = (state: any = {}, action: Action) => {
     switch (action.type) {
       case GET_PATIENT:
         return {
@@ -84,9 +84,9 @@ import {
         case CREATE_PATIENT:
         return {
           ...state,
-          msjSuccessPatient : action.msjSuccessPatient,
-          msjErrorPatient : action.msjErrorPatient,
-          loadingFormPatient : action.loadingFormPatient,
+          msjSuccessPatientList : action.msjSuccessPatientList,
+          msjErrorPatientList : action.msjErrorPatientList,
+          loadingFormPatientList : action.loadingFormPatientList,
         };
         case SET_SELECTED_PATIENT:
           return {
@@ -103,16 +103,16 @@ import {
             ...state,
             patientList: action.patientList,
             selectedPatient: action.selectedPatient,
-            loadingFormPatient: false
+            loadingFormPatientList: false
           };
           case UPDATE_PATIENT:
           return {
             ...state,
             patientList: action.patientList,
             selectedPatient: action.selectedPatient,
-            msjSuccessPatient: action.msjSuccessPatient,
-            msjErrorPatient: action.msjErrorPatient,
-            loadingFormPatient: action.loadingFormPatient,
+            msjSuccessPatientList: action.msjSuccessPatientList,
+            msjErrorPatientList: action.msjErrorPatientList,
+            loadingFormPatientList: action.loadingFormPatientList,
           };
           case PATIENT_ERROR:
           return {
@@ -123,7 +123,7 @@ import {
           case LOADING_FORM:
           return {
             ...state,
-            loadingFormPatient: action.loadingFormPatient,
+            loadingFormPatientList: action.loadingFormPatientList,
           };
           case LOADING_GET_PATIENT:
           return {
@@ -133,12 +133,12 @@ import {
           case UPDATE_MSJ_SUCCESS:
             return {
               ...state,
-              msjSuccessPatient: action.msjSuccessPatient,
+              msjSuccessPatientList: action.msjSuccessPatientList,
             };
           case UPDATE_MSJ_ERROR:
             return {
               ...state,
-              msjErrorPatient: action.msjErrorPatient,
+              msjErrorPatientList: action.msjErrorPatientList,
             };
 
       default:
@@ -146,5 +146,5 @@ import {
     }
   };
   
-  export default patientReducer;
+  export default patientManagerReducer;
   
