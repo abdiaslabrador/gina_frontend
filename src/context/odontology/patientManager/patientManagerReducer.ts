@@ -11,6 +11,7 @@ import {
     UPDATE_MSJ_SUCCESS,
     UPDATE_MSJ_ERROR,
     PATIENT_ERROR,
+    CLEAN_STATE
   } from "./patientManagerType";
   
   type Action =
@@ -60,7 +61,18 @@ import {
         type: "PATIENT_ERROR";
         patientList?: PatientInf[];
         selectedPatient?: PatientInf;
+        selectOption?: string;
       }
+    | {
+        type: "CLEAN_STATE";
+        selectedPatient? : PatientInf,
+        patientList? : PatientInf[],
+        msjSuccessPatientList? : string,
+        msjErrorPatientList? : string,
+        loadingFormPatientList?: boolean,
+        loadingPatientList?: boolean,
+        selectOption?: string,
+    }
     | {
       type: "UPDATE_MSJ_SUCCESS";
       msjSuccessPatientList : string,
@@ -118,7 +130,8 @@ import {
           return {
             ...state,
             patientList: [],
-            selectedPatient: {} as PatientInf
+            selectedPatient: {} as PatientInf,
+            selectOption: "ci_rif"
           };
           case LOADING_FORM:
           return {
@@ -140,6 +153,18 @@ import {
               ...state,
               msjErrorPatientList: action.msjErrorPatientList,
             };
+          case CLEAN_STATE:
+          return {
+            ...state,
+            selectedPatient : {} as PatientInf,
+            patientList : [],
+            msjSuccessPatientList : "",
+            msjErrorPatientList : "",
+            loadingFormPatientList: false,
+            loadingPatientList: false,
+            selectOption: "ci_rif",
+          };
+            
 
       default:
         return state;

@@ -8,17 +8,18 @@ import { patientManagerContext } from "../../../../context/odontology/patientMan
 
 const searchPatientManager = () => {
   const { setPatientFn } = useContext( patientContext );
-  const { selectedPatient } = useContext( patientManagerContext );
-  const [visible, setVisible] = React.useState(false);
+  const { selectedPatient, cleanPatientsFn } = useContext( patientManagerContext );
+  const [visible, setVisible] = useState(false);
   const handler = () => setVisible(true);
 
   const closeHandler = () => {
+    cleanPatientsFn();
     setVisible(false);
   };
 
   function setPatient(){
-    console.log(selectedPatient)
     setPatientFn(selectedPatient);
+    closeHandler();
   }
   return (
     <Fragment>

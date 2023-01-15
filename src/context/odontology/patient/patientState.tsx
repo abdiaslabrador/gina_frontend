@@ -25,7 +25,7 @@ const PatientProvider = ({ children }: props) => {
   
 
   const initialState = {
-    patient : {} as PatientInf,
+    patient : null,
     loadingFormPatient: false,
     loadingPatient: false,
     msjSuccessPatient : "",
@@ -42,6 +42,38 @@ const PatientProvider = ({ children }: props) => {
     })
   }
 
+  async function updatePatientProfileFn(patient : PatientInf){
+    try {
+      dispatch({ type: LOADING_FORM, loadingFormPatient: true })
+      await customAxios.post("patient/update", {
+        patient: patient
+      });
+      dispatch({ type: LOADING_FORM, loadingFormPatient: false })
+
+      setPatientFn(patient);
+      dispatch({type:UPDATE_MSJ_SUCCESS, msjSuccessPatient:"Paciente actualizado exitosamente"});
+      setTimeout(() => dispatch({type:UPDATE_MSJ_SUCCESS, msjSuccessPatient:""}), 8000);
+      saveErrorFromServerFn(false);
+
+    } catch (error : any) {
+      let message = error.response.data?.msg || error.message;
+      dispatch({type: PATIENT_ERROR});
+      dispatch({type: LOADING_FORM, loadingFormPatient: false });
+      console.log(error);
+
+      if(error.response?.status == "404"){//el usuario se intenta actualizar pero no está en la base de datos
+        dispatch({type:UPDATE_MSJ_ERROR, msjErrorPatient:message})
+        setTimeout(() => dispatch({type:UPDATE_MSJ_ERROR, msjErrorPatient:""}), 8000);
+     
+      }else if (error.response?.status == "403") { //usuario con el token inválido. NOTA: ya el token se elimina desde el backend
+        await logOut();
+
+      }else {
+        saveErrorFromServerFn(true);
+      }
+    }
+  }
+
   // function cleanPatientsFn(){
   //       dispatch({type: PATIENT_ERROR});
   // }
@@ -56,6 +88,7 @@ const PatientProvider = ({ children }: props) => {
         msjSuccessPatient : state.msjSuccessPatient,
         msjErrorPatient : state.msjErrorPatient,
         setPatientFn,
+        updatePatientProfileFn,
         // cleanPatientsFn,
       }}
     >

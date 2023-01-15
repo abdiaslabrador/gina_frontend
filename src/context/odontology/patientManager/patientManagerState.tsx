@@ -19,6 +19,7 @@ import {
     LOADING_GET_PATIENT,
     UPDATE_MSJ_SUCCESS,
     UPDATE_MSJ_ERROR,
+    CLEAN_STATE
   } from "./patientManagerType";
 
 interface props {
@@ -53,9 +54,9 @@ const PatientManagerProvider = ({ children }: props) => {
     })
   }
 
-  // function cleanPatientsFn(){
-  //       dispatch({type: PATIENT_ERROR});
-  // }
+  function cleanPatientsFn(){
+        dispatch({type: CLEAN_STATE});
+  }
 
   
 
@@ -252,8 +253,6 @@ const PatientManagerProvider = ({ children }: props) => {
         loadingFormPatientList: state.loadingFormPatientList,
         loadingPatientList: state.loadingPatientList,
         selectOption: state.selectOption,
-        // searchPatientByCiFn,
-        // cleanPatientsFn,
         createPatientFn,
         setSelectedPatientFn,
         setSelectOptionFn,
@@ -262,6 +261,7 @@ const PatientManagerProvider = ({ children }: props) => {
         searchPatientByDateFn,
         searchPatientByNamesFn,
         searchPatientByCiFn,
+        cleanPatientsFn
       }}
     >
       {children}

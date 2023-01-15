@@ -26,12 +26,13 @@ export interface PatientInf {
 }
 
 export interface PatientInfContext{
-    patient : PatientInf,
+    patient : PatientInf | null,
     loadingFormPatient: boolean,
     loadingPatient: boolean,
     msjSuccessPatient : string,
     msjErrorPatient : string,
     setPatientFn(patient: PatientInf):void,
+    updatePatientProfileFn(patient : PatientInf):void,
 }
 
 export interface PatientManagerInfContext{
@@ -50,4 +51,5 @@ export interface PatientManagerInfContext{
     searchPatientByCiFn(ci_rif:string):void,
     searchPatientByNamesFn(name : string, last_name : string):void,
     searchPatientByDateFn(birthday : string):void,
+    cleanPatientsFn():void,
 }

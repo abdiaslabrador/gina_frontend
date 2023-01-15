@@ -41,7 +41,8 @@ const Currency = () => {
 
   return (
     <Fragment>
-      <div className={cajaCss["options__items"]}
+      <div 
+      className={ `${cajaCss["options__items"]} ${(cajaCss["options__items--enable"]) } `}
       onClick={handler}
       >
         <i className="fa-solid fa-gears"></i>

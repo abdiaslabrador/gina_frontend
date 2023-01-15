@@ -1,17 +1,17 @@
-import React, {useContext, useState} from "react";
+import React, {Fragment, useContext, useState} from "react";
 import { Modal, Loading, } from "@nextui-org/react";
 import customAxios from "../../../../config/axios";
 import comunModalCss from "../../../../styles/modal.module.css";
 import {PatientInf, BackgroundInf} from "../../../../interface/odontology/patientInf";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import updatePatientCss from "./UpdatePatient.module.css";
 import moment from "moment";
 import { patientManagerContext } from "../../../../context/odontology/patientManager/patientManagerContext";
+import { patientContext } from "../../../../context/odontology/patient/patientContext";
+import sidebarCss from '../SidebarOdontology.module.css'
 
+const PatientProfile = () => {
 
-const UpdatePatient = () => {
-
-  const { msjSuccessPatientList, msjErrorPatientList, loadingFormPatientList, selectedPatient, updatePatientFn } = useContext(patientManagerContext);
+  const { patient, loadingFormPatient, msjSuccessPatient, msjErrorPatient,updatePatientProfileFn } = useContext(patientContext);
   const [visible, setVisible] = useState(false);
   const [mensajeSuccess, setMensajeSuccess] = useState("");
 
@@ -21,21 +21,21 @@ const UpdatePatient = () => {
     setVisible(false);
   };
 
-  const personalInfoInitialValues = {
-    name: selectedPatient.name,
-    last_name: selectedPatient.last_name,
-    ci_rif: selectedPatient.ci_rif,
-    sex: selectedPatient.sex,
-    birthday: moment(selectedPatient.birthday).format("YYYY-MM-DD"),
-    phone_number: selectedPatient.phone_number,
-    direction: selectedPatient.direction,
+  const personalInfoInitialValues = (patient)?{
+    name:  patient.name,
+    last_name: patient.last_name,
+    ci_rif: patient.ci_rif,
+    sex:  patient.sex,
+    birthday: moment(patient.birthday).format("YYYY-MM-DD"),
+    phone_number: patient.phone_number,
+    direction: patient.direction,
 
-    rm: selectedPatient.background?.rm,
-    app: selectedPatient.background?.app,
-    ah: selectedPatient.background?.ah,
-    apf: selectedPatient.background?.apf,
-    habits: selectedPatient.background?.habits,
-  };
+    rm: patient.background?.rm,
+    app: patient.background?.app,
+    ah: patient.background?.ah,
+    apf: patient.background?.apf,
+    habits: patient.background?.habits,
+  }: {} as PatientInf;
 
   async function validateName(value: any) {
     let error;
@@ -64,7 +64,7 @@ const UpdatePatient = () => {
     // try {
     //   const resp = await customAxios.post("employee/getbyciupdate", {
     //     look_ci_rif: value.toLowerCase().trim(),
-    //     ci_rif: selectedPatient.ci_rif,
+    //     ci_rif: patient.ci_rif,
     //   });
     //   if (resp?.data) {
     //     error = "Usuario ya existe";
@@ -95,9 +95,12 @@ const UpdatePatient = () => {
   }
 
   const pesonalInfoHandler = async (values: any) => {
-      
-      const background : BackgroundInf = {
-        id: selectedPatient.background.id,
+    let background : BackgroundInf ;
+    let new_patient : PatientInf ;
+
+      if(patient){
+       background  = {
+        id: patient.background.id,
         rm: values.rm.toLowerCase().trim(),
         app: values.app.toLowerCase().trim(),
         ah: values.ah.toLowerCase().trim(),
@@ -105,8 +108,8 @@ const UpdatePatient = () => {
         habits:values.habits.toLowerCase().trim(),  
       };
 
-      const patient : PatientInf = {
-          id: selectedPatient.id,
+       new_patient = {
+          id: patient.id,
           name: values.name.toLowerCase().trim(),
           last_name: values.last_name.toLowerCase().trim(),
           sex: values.sex,
@@ -116,25 +119,26 @@ const UpdatePatient = () => {
           birthday: values.birthday,
           background: background,
         };
-      await updatePatientFn(patient);
+      await updatePatientProfileFn(new_patient);
+    }
 
   };
 
   return (
-    <div>
-      <button
-        className="button_form__button button_form__button--efect"
+    <Fragment>
+      <button 
+        className={`${sidebarCss["sidebar__item"]} ${ (!patient) ? (sidebarCss["sidebar__item--disable"]) : sidebarCss["sidebar__item--enable"]} `}
         onClick={handler}
-        disabled={selectedPatient.id ? false : true}
+        disabled={!patient}
       >
-        Editar
+        <i className="fa-solid fa-user"></i>
       </button>
 
       <Modal
         animated={false}
         width="600px"
         css={{ height: "600px", backgroundColor: "#302F2F" }}
-        closeButton={!loadingFormPatientList}
+        closeButton={!loadingFormPatient}
         preventClose
         aria-labelledby="modal-title"
         open={visible}
@@ -147,7 +151,7 @@ const UpdatePatient = () => {
         >
           <div className={comunModalCss["header_container"]}>
             <div className={comunModalCss["header_title"]}>
-              Actualizando un paciente
+              Perfil del paciente
             </div>
             <div className={comunModalCss["header_subtitle"]}>
               (*) Atributos requeridos
@@ -172,7 +176,7 @@ const UpdatePatient = () => {
                       type="text"
                       name="name"
                       placeholder="Escriba el nombre"
-                      disabled={loadingFormPatientList}
+                      disabled={loadingFormPatient}
                     />
 
                     <ErrorMessage
@@ -191,7 +195,7 @@ const UpdatePatient = () => {
                         type="text"
                         name="last_name"
                         placeholder="Escriba el apellido"
-                        disabled={loadingFormPatientList}
+                        disabled={loadingFormPatient}
                       />
                     <ErrorMessage
                       className={comunModalCss["square__form-error"]}
@@ -210,7 +214,7 @@ const UpdatePatient = () => {
                       type="text"
                       name="ci_rif"
                       placeholder="Escriba la cédula"
-                      disabled={loadingFormPatientList}
+                      disabled={loadingFormPatient}
                     />
 
                     <ErrorMessage
@@ -246,7 +250,7 @@ const UpdatePatient = () => {
                       type="date"
                       name="birthday"
                       placeholder="Escriba el teléfono"
-                      disabled={loadingFormPatientList}
+                      disabled={loadingFormPatient}
                     />
                     <ErrorMessage
                       className={comunModalCss["square__form-error"]}
@@ -263,7 +267,7 @@ const UpdatePatient = () => {
                       type="text"
                       name="phone_number"
                       placeholder="Escriba el teléfono"
-                      disabled={loadingFormPatientList}
+                      disabled={loadingFormPatient}
                     />
                   </div>
 
@@ -279,7 +283,7 @@ const UpdatePatient = () => {
                         style={{ resize: "none" }}
                         rows={5}
                         cols={23}
-                        disabled={loadingFormPatientList}
+                        disabled={loadingFormPatient}
                       />
                   </div>
 
@@ -295,7 +299,7 @@ const UpdatePatient = () => {
                           style={{ resize: "none" }}
                           rows={3}
                           cols={23}
-                          disabled={loadingFormPatientList}
+                          disabled={loadingFormPatient}
                         />
                     </div>
 
@@ -311,7 +315,7 @@ const UpdatePatient = () => {
                           style={{ resize: "none" }}
                           rows={3}
                           cols={23}
-                          disabled={loadingFormPatientList}
+                          disabled={loadingFormPatient}
                         />
                     </div>
                     
@@ -327,7 +331,7 @@ const UpdatePatient = () => {
                           style={{ resize: "none" }}
                           rows={3}
                           cols={23}
-                          disabled={loadingFormPatientList}
+                          disabled={loadingFormPatient}
                         />
                     </div>
 
@@ -343,7 +347,7 @@ const UpdatePatient = () => {
                           style={{ resize: "none" }}
                           rows={3}
                           cols={23}
-                          disabled={loadingFormPatientList}
+                          disabled={loadingFormPatient}
                         />
                     </div>
                     <div className={comunModalCss["form_group"]}>
@@ -358,12 +362,12 @@ const UpdatePatient = () => {
                           style={{ resize: "none" }}
                           rows={3}
                           cols={23}
-                          disabled={loadingFormPatientList}
+                          disabled={loadingFormPatient}
                         />
                     </div>
 
                   <div className={comunModalCss["button_group"]}>
-                    {loadingFormPatientList ? (
+                    {loadingFormPatient ? (
                       <div className="button_form__button">
                         <Loading
                           type="spinner"
@@ -386,13 +390,13 @@ const UpdatePatient = () => {
         </Modal.Body>
         <Modal.Footer>
            <div className={comunModalCss["footer_container"]}>
-            {( msjSuccessPatientList )?(<div className={comunModalCss["msj_success"]}>{msjSuccessPatientList}</div>): null}
-            {( msjErrorPatientList )?(<div className={comunModalCss["msj_error"]}>{msjErrorPatientList}</div>):null}
+            {( msjSuccessPatient )?(<div className={comunModalCss["msj_success"]}>{msjSuccessPatient}</div>): null}
+            {( msjErrorPatient )?(<div className={comunModalCss["msj_error"]}>{msjErrorPatient}</div>):null}
            </div>
         </Modal.Footer>
       </Modal>
-    </div>
+    </Fragment>
   );
 };
 
-export default UpdatePatient;
+export default PatientProfile;

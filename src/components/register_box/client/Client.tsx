@@ -18,7 +18,7 @@ const Client = () => {
   return (
     <Fragment>
         <div 
-            className={cajaCss["options__items"]}
+            className={ `${cajaCss["options__items"]} ${(cajaCss["options__items--enable"]) } `}
             onClick={handler}
         >
             <i className="fa-solid fa-user"></i>

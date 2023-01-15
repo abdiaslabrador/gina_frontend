@@ -203,11 +203,11 @@
   background-color: var(--cl-bckgd-pages);
 }
 
-.options__items:active {
+.options__items--enable:active {
   transform: scale(0.98);
 }
 
-.options__items:hover {
+.options__items--enable:hover {
   background-color: #222121;
 }
 
