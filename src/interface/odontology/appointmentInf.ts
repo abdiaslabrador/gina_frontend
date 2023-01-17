@@ -17,6 +17,8 @@ export interface AppointmentInfContext{
     setVisibleAppointmentEditFn(visible:boolean):void,
     setSelectedAppointmentFn(appointment:AppointmentInf):void,
     updateAppointmentListFn():void,
+    deleteAppointmentFn():void,
+    updateAppointmentFn(appointment:AppointmentInf):void,
     // deleteAppointmentFn(id:number):void,
     createAppointmentFn(appointment:any):void,
 }

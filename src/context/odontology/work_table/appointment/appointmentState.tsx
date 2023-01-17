@@ -85,6 +85,57 @@ const AppointmentProvider = ({ children }: props) => {
     }
   }
 
+  async function updateAppointmentFn(appointment:AppointmentInf){
+    try {
+          dispatch({ type: LOADING_FORM, loadingFormAppointment: true })
+          const resp = await customAxios.post("appointment/update", {
+            appointment: appointment,
+          });
+          await updateAppointmentListFn();
+          dispatch({ type: LOADING_FORM, loadingFormAppointment: false })
+          saveErrorFromServerFn(false);
+    
+        } catch (error : any) {
+          let message = error.response.data?.msg || error.message;
+          dispatch({type: APPOINTMENT_ERROR});
+          dispatch({ type: LOADING_FORM, loadingFormAppointment: false });
+          console.log(error);
+    
+          if (error.response?.status == "403") { //usuario con el token inválido. NOTA: ya el token se elimina desde el backend
+            await logOut();
+    
+          }else {
+            saveErrorFromServerFn(true);
+          }
+        }
+  }
+
+  async function deleteAppointmentFn(){
+    try {
+      dispatch({ type: LOADING_FORM, loadingFormAppointment: true })
+      const resp = await customAxios.post("appointment/delete", {
+        id: state.appointment.id,
+      });
+      await updateAppointmentListFn();
+      dispatch({ type: LOADING_FORM, loadingFormAppointment: false })
+      setVisibleAppointmentEditFn(false);
+      saveErrorFromServerFn(false);
+
+    } catch (error : any) {
+      let message = error.response.data?.msg || error.message;
+      dispatch({type: APPOINTMENT_ERROR});
+      dispatch({ type: LOADING_FORM, loadingFormAppointment: false });
+      console.log(error);
+
+      if (error.response?.status == "403") { //usuario con el token inválido. NOTA: ya el token se elimina desde el backend
+        await logOut();
+
+      }else {
+        saveErrorFromServerFn(true);
+      }
+    }
+  }
+
   async function updateAppointmentListFn(){
     try {
           dispatch({ type: LOADING_GET_APPOINTMENTS, loadingAppointmentList: true })
@@ -189,6 +240,8 @@ const AppointmentProvider = ({ children }: props) => {
         msjSuccessAppointment : state.msjSuccessAppointment,
         msjErrorAppointment : state.msjErrorAppointment,
         createAppointmentFn,
+        updateAppointmentFn,
+        deleteAppointmentFn,
         updateAppointmentListFn,
         setVisibleAppointmentEditFn,
         setSelectedAppointmentFn,

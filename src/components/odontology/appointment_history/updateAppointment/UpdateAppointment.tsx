@@ -6,9 +6,17 @@ import { Modal, Loading } from "@nextui-org/react";
 import { appointmentContext } from "../../../../context/odontology/work_table/appointment/appointmentContext";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import comunModalCss from "../../../../styles/modal.module.css";
+import updateAppointmentCss from "./UpdateAppointment.module.css";
+import {AppointmentInf} from "../../../../interface/odontology/appointmentInf";
+import DeleteAppointment from "../deleteAppointment/DeleteAppointment";
+
 
 const UpdateAppointment = () => {
-  const {appointment, visibleAppointmentEdit, setVisibleAppointmentEditFn} = useContext(appointmentContext);
+  const {  appointment, visibleAppointmentEdit, 
+           loadingFormAppointment, setVisibleAppointmentEditFn,
+           updateAppointmentFn
+        } = useContext(appointmentContext);
+
   const initialValues = {
     today_date: appointment.appointment_date,
     reason: appointment.reason,
@@ -19,21 +27,21 @@ const UpdateAppointment = () => {
   };
 
   async function formHandler(values : any){
-    const appointment = {
-      today_date: values.today_date,
+    const new_appointment : AppointmentInf = {
+      id: appointment.id,
+      appointment_date: values.today_date,
       reason: values.reason,
       description: values.description,
     }
-    // createAppointmentFn(appointment);
+    await updateAppointmentFn(new_appointment);
   }
 
-  return (
+ return (
     <Modal
         animated={false}
         width="600px"
         css={{ height: "600px", backgroundColor: "#302F2F" }}
-        closeButton
-        // ={!loadingFormPatientList}
+        closeButton={!loadingFormAppointment}
         preventClose
         aria-labelledby="modal-title"
         open={visibleAppointmentEdit}
@@ -54,6 +62,10 @@ const UpdateAppointment = () => {
           </div> */}
         </Modal.Header>
         <Modal.Body>
+        <div className={updateAppointmentCss["delete_button"]}>
+          <DeleteAppointment/>
+        </div>
+
         <Formik
                 initialValues={initialValues}
                 onSubmit={formHandler}
@@ -70,7 +82,7 @@ const UpdateAppointment = () => {
                       // validate={validateBirthday}
                       type="date"
                       name="today_date"
-                    //   disabled={loadingFormAppointment}
+                      disabled={loadingFormAppointment}
                     />
                     <ErrorMessage
                       className={comunModalCss["square__form-error"]}
@@ -91,7 +103,7 @@ const UpdateAppointment = () => {
                         style={{ resize: "none" }}
                         rows={3}
                         cols={23}
-                        // disabled={loadingFormAppointment}
+                        disabled={loadingFormAppointment}
                       />
                   </div>
 
@@ -105,24 +117,27 @@ const UpdateAppointment = () => {
                           name="description"
                           placeholder="Escriba el antecedente"
                           style={{ resize: "none" }}
-                          rows={5}
+                          rows={10}
                           cols={23}
-                        //   disabled={loadingFormAppointment}
+                          disabled={loadingFormAppointment}
                         />
                       </div>
                       <div className={comunModalCss["button_group"]}>
-                      <button
-                          type="submit"
-                          className="button_form__button button_form__button--efect"
-                        >
-                        {
-                        (!loadingFormAppointment) ? <span>Guardar</span>  : 
-                        (<Loading
-                          type="spinner"
-                          color="currentColor"
-                          size="sm"
-                        />)}
-                      </button>
+                        <button
+                            type="submit"
+                            className="button_form__button button_form__button--efect"
+                          >
+                          {
+                            (!loadingFormAppointment) ? 
+                            <span>Guardar</span>  
+                          : 
+                            (<Loading
+                              type="spinner"
+                              color="currentColor"
+                              size="sm"
+                            />)
+                          }
+                        </button>
                       </div>
 
                 </Form>
