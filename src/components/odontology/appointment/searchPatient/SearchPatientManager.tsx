@@ -5,9 +5,12 @@ import SearchFormPatient from "../../sidebar/patientManager/SearchFormPatient";
 import searchCss from './SearchPatientManager.module.css';
 import { patientContext } from "../../../../context/odontology/patient/patientContext";
 import { patientManagerContext } from "../../../../context/odontology/patientManager/patientManagerContext";
+import { appointmentContext } from "../../../../context/odontology/work_table/appointment/appointmentContext";
 
 const searchPatientManager = () => {
   const { setPatientFn } = useContext( patientContext );
+  const { loadingFormAppointment } = useContext( appointmentContext );
+  
   const { selectedPatient, cleanPatientsFn } = useContext( patientManagerContext );
   const [visible, setVisible] = useState(false);
   const handler = () => setVisible(true);
@@ -26,6 +29,7 @@ const searchPatientManager = () => {
         <button
           className="button_form__button button_form__button--efect"
           onClick={handler}
+          disabled={loadingFormAppointment}
         >
           Buscar paciente
         </button>

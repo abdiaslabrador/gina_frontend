@@ -4,4 +4,33 @@
     /* flex-direction: column; */
     color:white;
     border: 1px solid white;
+    overflow-y: scroll;
+}
+
+.title{
+    text-align: center;
+    background-color: var(--cl-headers);
+    position: sticky;
+    top:0px;
+}
+
+.content{
+  padding:10px;
+}
+
+.appoiment{
+    border: 1px solid white;
+    margin-bottom: 10px;
+    padding: 20px;
+}
+.appoiment > p{
+    margin-bottom:20px;
+}
+.appoiment > p > span{
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.appoiment:hover{
+    background-color: var(--cl-bottom-hover);
 }

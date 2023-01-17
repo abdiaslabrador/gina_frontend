@@ -17,6 +17,7 @@ import ServerError from "../../components/error/500";
 import { errorServerContext } from '../../context/error/errorServerContext';
 import PatientProvider from "../../context/odontology/patient/patientState";
 import PatientManagerProvider from "../../context/odontology/patientManager/patientManagerState";
+import AppointmentProvider from "../../context/odontology/work_table/appointment/appointmentState";
 
 // import comunModalCss from "../../styles/modal.module.css";
 
@@ -34,11 +35,13 @@ const Odontology: NextPage = () => {
         <div className={odontologyCss["container"]}>
         <PatientManagerProvider>
         <PatientProvider>
+        <AppointmentProvider>
           <SidebarOdont/>
           <Odontograma/>
           <Background/>
           <Appointment/>
           <AppointmentHistory/>
+        </AppointmentProvider>
         </PatientProvider>
         </PatientManagerProvider>
 
