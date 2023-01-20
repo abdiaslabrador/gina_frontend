@@ -1,7 +1,122 @@
-.odontograma {
+.container {
     grid-row: 1/4;
-    /* display: flex; */
-    /* flex-direction: column; */
+    display: flex;
+    flex-direction: column;
     color:white;
     border: 1px solid white;
+    justify-content: center;
+    align-items: center;
+}
+
+.odont{
+ display: flex;
+}
+
+.odont__frame{
+    height: 120px;
+    width: 78px;
+    border: 1px solid white;
+    display: flex;
+    flex-direction: column;
+}
+
+.odont__dash{
+    display: flex;
+    font-size: 10px;
+}
+
+.odont__dash > div{
+    border: 1px solid white;
+    flex-grow: 1;
+    text-align: center;
+}
+
+.odont__circle{
+    height: 100%;
+    padding: 6px 6px 10px 6px;
+    background-color: blue;
+    display: flex;
+    flex-direction: column;
+}
+
+.odont__line{
+   background-color: red;
+   margin-bottom: 7px;
+   flex: 0 1 5px;
+   border:  1px solid white;
+}
+
+.odont__ring{
+    background-color: red;
+    border:  1px solid white;
+    flex: 1 1 auto;
+    padding: 5px;
+}
+
+.odont__molar_parts{
+   background-color: white;
+   height: 100%;
+   display: grid;
+   grid-template-areas: 
+   "one two two three"
+   "one five five three"
+   "one five five three"
+   "one four four three";
+   grid-template-columns: 1fr 1fr 1fr 1fr;
+   grid-template-rows: 1fr 1fr 1fr 1fr;
+}
+
+.tooth > div{
+   border:  1px solid black;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
+.odont__tooth_parts{
+    background-color: white;
+    height: 100%;
+    display: grid;
+    grid-template-areas: 
+    "one two two three"
+    "one two two three"
+    "one four four three"
+    "one four four three";
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+ }
+
+.one{
+    grid-area: one;
+}
+.two{
+    grid-area: two;
+}
+
+.three{
+    grid-area: three;
+}
+
+.four{
+    grid-area: four;
+}
+
+.five{
+    grid-area: five;
+}
+
+.point{
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+}
+.point--red{
+    background-color: red;
+}
+.point--blue{
+    background-color: blue;
+}
+.point--red_blue{
+    background-color: blue;
+    border: 2px solid red;
 }
