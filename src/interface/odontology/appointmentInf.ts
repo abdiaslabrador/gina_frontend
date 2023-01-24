@@ -3,6 +3,9 @@ export interface AppointmentInf{
     appointment_date: Date,
     reason:string,
     description:string,
+    created?: Date,
+    updateAt?: Date,
+    deleteAt?: Date,
 }
 
 export interface AppointmentInfContext{

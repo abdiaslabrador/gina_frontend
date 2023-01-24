@@ -1,4 +1,4 @@
 import { createContext } from "react";
-import {AppointmentInfContext} from "../../../../interface/odontology/appointmentInf";
+import {OdontogramaInfContext} from "../../../../interface/odontology/odontogramaInf";
 
-export const appointmentContext = createContext<AppointmentInfContext>({} as AppointmentInfContext);
+export const odontogramaContext = createContext<OdontogramaInfContext>({} as OdontogramaInfContext);

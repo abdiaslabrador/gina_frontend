@@ -1,48 +1,49 @@
-import {AppointmentInf} from "../../../../interface/odontology/appointmentInf";
+import {ToothInf} from "../../../../interface/odontology/odontogramaInf";
 import {
-  SET_VISIBLE,
-  SET_SELECTED_APPOIMENT,
-  LOADING_FORM,
-  SET_APPOINTMENTS,
-  LOADING_GET_APPOINTMENTS,
-  UPDATE_MSJ_SUCCESS,
-  UPDATE_MSJ_ERROR,
-  APPOINTMENT_ERROR
+  SET_VISIBLE_TOOTH_OPTIONS,
+  SET_SELECTED_TOOTH,
+  LOADING_GET_THEE,
+  THEE_ERROR,
+  SET_ODTG_EDITABLE,
 } from "./odontogramaType";
   
   type Action =
-
+  
     | {
-      type: "SET_SELECTED_APPOIMENT";
-      appointment: AppointmentInf;
+      type: "SET_ODTG_EDITABLE";
+      odontogramaEditable: any;
     }
     | {
-        type: "SET_VISIBLE";
-        visibleAppointmentEdit: boolean;
+      type: "SET_VISIBLE_TOOTH_OPTIONS";
+      visibleToothOptions: boolean;
+    }
+    | {
+        type: "SET_SELECTED_TOOTH";
+        tooth: ToothInf;
       }
+    // | {
+    //     type: "SET_APPOINTMENTS";
+    //     appointmentList: AppointmentInf[];
+    //   }
+    // | {
+    //   type: "LOADING_FORM";
+    //   loadingFormAppointment: boolean;
+    // }
     | {
-        type: "SET_APPOINTMENTS";
-        appointmentList: AppointmentInf[];
-      }
-    | {
-      type: "LOADING_FORM";
-      loadingFormAppointment: boolean;
+      type: "LOADING_GET_THEE";
+      loadingTeethList: boolean;
     }
+    // | {
+    //   type: "UPDATE_MSJ_SUCCESS";
+    //   msjSuccessAppointment: string;
+    // }
+    // | {
+    //   type: "UPDATE_MSJ_ERROR";
+    //   msjErrorAppointment: string;
+    // }
     | {
-      type: "LOADING_GET_APPOINTMENTS";
-      loadingAppointmentList: boolean;
-    }
-    | {
-      type: "UPDATE_MSJ_SUCCESS";
-      msjSuccessAppointment: string;
-    }
-    | {
-      type: "UPDATE_MSJ_ERROR";
-      msjErrorAppointment: string;
-    }
-    | {
-      type: "APPOINTMENT_ERROR";
-      appointment?: AppointmentInf | null;
+      type: "THEE_ERROR";
+      tooth?: ToothInf[];
     }
     
     ;
@@ -51,49 +52,53 @@ import {
   const appointmentReducer = (state: any = {}, action: Action) => {
     switch (action.type) {
       
-      case SET_SELECTED_APPOIMENT:
+      case SET_ODTG_EDITABLE:
         return {
           ...state,
-          appointment: action.appointment,
+          odontogramaEditable: action.odontogramaEditable,
         };
-      case SET_VISIBLE:
+      case SET_VISIBLE_TOOTH_OPTIONS:
         return {
           ...state,
-          visibleAppointmentEdit: action.visibleAppointmentEdit,
+          visibleToothOptions: action.visibleToothOptions,
         };
-      case SET_APPOINTMENTS:
+      case SET_SELECTED_TOOTH:
         return {
           ...state,
-          appointmentList: action.appointmentList,
+          tooth: action.tooth,
+        };
+      // case SET_APPOINTMENTS:
+      //   return {
+      //     ...state,
+      //     appointmentList: action.appointmentList,
           
-        };
-        case LOADING_FORM:
-        return {
-          ...state,
-          loadingFormAppointment: action.loadingFormAppointment,
+      //   };
+      //   case LOADING_FORM:
+      //   return {
+      //     ...state,
+      //     loadingFormAppointment: action.loadingFormAppointment,
           
-        };
-        case LOADING_GET_APPOINTMENTS:
+      //   };
+        case LOADING_GET_THEE:
         return {
           ...state,
-          loadingAppointmentList: action.loadingAppointmentList,
+          loadingTeethList: action.loadingTeethList,
+        };
+      //   case UPDATE_MSJ_SUCCESS:
+      //   return {
+      //     ...state,
+      //     msjSuccessAppointment: action.msjSuccessAppointment,
           
-        };
-        case UPDATE_MSJ_SUCCESS:
+      //   };
+      //   case UPDATE_MSJ_ERROR:
+      //   return {
+      //     ...state,
+      //     msjErrorAppointment: action.msjErrorAppointment,
+      //   };
+        case THEE_ERROR:
         return {
           ...state,
-          msjSuccessAppointment: action.msjSuccessAppointment,
-          
-        };
-        case UPDATE_MSJ_ERROR:
-        return {
-          ...state,
-          msjErrorAppointment: action.msjErrorAppointment,
-        };
-        case APPOINTMENT_ERROR:
-        return {
-          ...state,
-          appointment: null,
+          ToothInf: [],
         };
         
       default:

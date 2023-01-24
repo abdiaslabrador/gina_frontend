@@ -1,0 +1,68 @@
+/*titulo*/
+.title{
+    color:white;
+    margin-bottom: 10px;
+  }
+.subtitle{
+    color:white;
+    text-align: center;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+  
+.tooth__letter--red{
+    font-weight: 900;
+    color: red;
+}
+.tooth__letter--blue{
+    font-weight: 900;
+    color: blue;
+}
+.tooth__bckgd--red{
+    background-color: red;
+}
+.tooth__bckgd--blue{
+    background-color: blue;
+}
+.tooth__bckgd_letter_br{
+    font-weight: 900;
+    background-color: red;
+    color: blue;
+}
+
+.toothParts{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+.parts__number_point{
+    display: flex;
+    flex-direction: column;
+}
+
+.parts__number{
+    color: white;
+    padding: 15px;    
+}
+
+.parts__point{
+    height:15px;
+    width: 15px;    
+}
+
+.point{
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+}
+.point--red{
+    background-color: red;
+}
+.point--blue{
+    background-color: blue;
+}
+.point--blue_red{
+    background-color: blue;
+    border: 2px solid red;
+}

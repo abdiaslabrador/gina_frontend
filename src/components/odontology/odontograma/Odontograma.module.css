@@ -8,13 +8,28 @@
     align-items: center;
 }
 
-.odont{
+.odont__above{
  display: flex;
+ margin: 0px 5px 5px 5px;
+}
+.odont__below{
+ display: flex;
+ margin: 0px 5px;
+}
+
+.odont__left{
+    display: flex;
+    margin-right: 2px;
+}
+.odont__right{
+    display: flex;
+    margin-left: 2px;
 }
 
 .tooth__frame{
+    flex: 1 1 auto;
     height: 140px;
-    width: 78px;
+    /* width: 70px; */
     border: 1px solid white;
     display: flex;
     flex-direction: column;
@@ -28,12 +43,13 @@
 }
 .tooth__dash-options{
     display: flex;
+    justify-content:space-between;
 }
 .tooth__dash-options > div{
-    font-weight: bold;
     flex-grow: 1;
+    font-weight: bold;
     text-align: center;
-    font-size: 15px;
+    font-size: 12px;
 }
 
 .tooth__dash--number{
@@ -58,6 +74,8 @@
     padding: 6px 6px 10px 6px;
     display: flex;
     flex-direction: column;
+    background-color: var(--cl-bckgd-pages);
+
 }
 .tooth__x{
     display: flex;
