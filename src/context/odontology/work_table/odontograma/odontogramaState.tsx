@@ -13,6 +13,7 @@ import {
   LOADING_GET_THEE,
   THEE_ERROR,
   SET_ODTG_EDITABLE,
+  LOADING_CREATE_UPDATE_TOOTH,
 } from "./odontogramaType";
 
 
@@ -33,6 +34,7 @@ const OdontogramaProvider = ({ children }: props) => {
     // appointmentList: [],
     // appointmentSelected: {} as AppointmentInf,
     loadingTeethList: false,
+    loadingCreateUpdateTeeth: false,
     // loadingFormAppointment: false,
     // msjSuccessAppointment : "",
     // msjErrorAppointment : "",
@@ -54,8 +56,8 @@ const OdontogramaProvider = ({ children }: props) => {
   }
 
   function fillOdontograma(theeFromDB : any[]){
-    let thee_44_to_48 : ToothInf[] = [];
-    let thee_41_to_43 : ToothInf[] = [];
+    let thee_48_to_44 : ToothInf[] = [];
+    let thee_43_to_41 : ToothInf[] = [];
 
     let thee_34_to_38 : ToothInf[] = [];
     let thee_31_to_33 : ToothInf[] = [];
@@ -63,8 +65,8 @@ const OdontogramaProvider = ({ children }: props) => {
     let thee_24_to_28 : ToothInf[] = [];
     let thee_21_to_23 : ToothInf[] = [];
 
-    let thee_14_to_18 : ToothInf[] = [];
-    let thee_11_to_13 : ToothInf[] = [];
+    let thee_18_to_14 : ToothInf[] = [];
+    let thee_13_to_11 : ToothInf[] = [];
 
     let tooth : ToothInf = {} as ToothInf;
     
@@ -90,20 +92,20 @@ const OdontogramaProvider = ({ children }: props) => {
     //48-44
     for(let i = 48; i>=44; i--){
       if(i == theeFromDB[theeFromDB.length-1]?.number ){
-        thee_44_to_48.push(theeFromDB[theeFromDB.length-1])
+        thee_48_to_44.push(theeFromDB[theeFromDB.length-1])
           theeFromDB.pop()
       }else{
-        thee_44_to_48.push({...tooth, number:i})
+        thee_48_to_44.push({...tooth, number:i})
       }
     }
     //43-41
     for(let i = 43; i>=41; i--){
       if(i == theeFromDB[theeFromDB.length-1]?.number ){
-        thee_41_to_43.push(theeFromDB[theeFromDB.length-1])
+        thee_43_to_41.push(theeFromDB[theeFromDB.length-1])
           theeFromDB.pop()
       }else{
           
-        thee_41_to_43.push({...tooth, number:i})
+        thee_43_to_41.push({...tooth, number:i})
       }
     }
     //38-34
@@ -146,25 +148,25 @@ const OdontogramaProvider = ({ children }: props) => {
     //18-14
     for(let i = 18; i>=14; i--){
       if(i == theeFromDB[theeFromDB.length-1]?.number ){
-        thee_14_to_18.push(theeFromDB[theeFromDB.length-1])
+        thee_18_to_14.push(theeFromDB[theeFromDB.length-1])
           theeFromDB.pop()
       }else{
-        thee_14_to_18.push({...tooth, number:i})
+        thee_18_to_14.push({...tooth, number:i})
       }
     }
     //13-11
     for(let i = 13; i>=11; i--){
       if(i == theeFromDB[theeFromDB.length-1]?.number ){
-        thee_11_to_13.push(theeFromDB[theeFromDB.length-1])
+        thee_13_to_11.push(theeFromDB[theeFromDB.length-1])
           theeFromDB.pop()
       }else{
           
-        thee_11_to_13.push({...tooth, number:i})
+        thee_13_to_11.push({...tooth, number:i})
       }
     }
     dispatch({ type: SET_ODTG_EDITABLE, odontogramaEditable: {
-      thee_44_to_48 : thee_44_to_48,
-      thee_41_to_43 : thee_41_to_43,
+      thee_48_to_44 : thee_48_to_44,
+      thee_43_to_41 : thee_43_to_41,
 
       thee_34_to_38 : thee_34_to_38,
       thee_31_to_33 : thee_31_to_33,
@@ -172,8 +174,8 @@ const OdontogramaProvider = ({ children }: props) => {
       thee_24_to_28 : thee_24_to_28,
       thee_21_to_23 : thee_21_to_23,
 
-      thee_14_to_18 : thee_14_to_18,
-      thee_11_to_13 : thee_11_to_13
+      thee_18_to_14 : thee_18_to_14,
+      thee_13_to_11 : thee_13_to_11
     } })
     
   }
@@ -206,37 +208,33 @@ const OdontogramaProvider = ({ children }: props) => {
   // function setAppointmentsFn(appointmentList : AppointmentInf[]){
   //   dispatch({ type: SET_APPOINTMENTS, appointmentList: appointmentList })
   // }
-  // async function createAppointmentFn(appointment:any){
-  //   try {
-  //     dispatch({ type: LOADING_FORM, loadingFormAppointment: true })
-  //     await customAxios.post("appointment/create", {
-  //       appointment: appointment,
-  //       patient: patient
-  //     });
-  //     await updateAppointmentListFn();
-  //     dispatch({ type: LOADING_FORM, loadingFormAppointment: false })
-  //     // dispatch({type:UPDATE_MSJ_SUCCESS, msjSuccessAppointment:"Consulta creada exitosamente"});
-  //     // setTimeout(() => dispatch({type:UPDATE_MSJ_SUCCESS, msjSuccessAppointment:""}), 8000);
-  //     saveErrorFromServerFn(false);
+  async function createOrToothFn(tooth: any){
+    try {
+      dispatch({ type: LOADING_CREATE_UPDATE_TOOTH, loadingCreateUpdateTeeth: true })
+      await customAxios.post("odontograma/tooth/createupdate", {
+        tooth: tooth,
+        patient: patient
+      });
+      await getTeethFn();
+      dispatch({ type: LOADING_CREATE_UPDATE_TOOTH, loadingCreateUpdateTeeth: false })
+      // dispatch({type:UPDATE_MSJ_SUCCESS, msjSuccessAppointment:"Consulta creada exitosamente"});
+      // setTimeout(() => dispatch({type:UPDATE_MSJ_SUCCESS, msjSuccessAppointment:""}), 8000);
+      saveErrorFromServerFn(false);
 
-  //   } catch (error : any) {
-  //     let message = error.response.data?.msg || error.message;
-  //     dispatch({type: APPOINTMENT_ERROR});
-  //     dispatch({type: LOADING_FORM, loadingFormAppointment: false });
-  //     console.log(error);
+    } catch (error : any) {
+      let message = error.response.data?.msg || error.message;
+      dispatch({type: THEE_ERROR});
+      dispatch({type: LOADING_CREATE_UPDATE_TOOTH, loadingCreateUpdateTeeth: false });
+      console.log(error);
 
-  //     if(error.response?.status == "404"){//el usuario se intenta actualizar pero no está en la base de datos
-  //       dispatch({type:UPDATE_MSJ_ERROR, msjErrorAppointment:message})
-  //       setTimeout(() => dispatch({type:UPDATE_MSJ_ERROR, msjErrorAppointment:""}), 8000);
-     
-  //     }else if (error.response?.status == "403") { //usuario con el token inválido. NOTA: ya el token se elimina desde el backend
-  //       await logOut();
+      if (error.response?.status == "403") { //usuario con el token inválido. NOTA: ya el token se elimina desde el backend
+        await logOut();
 
-  //     }else {
-  //       saveErrorFromServerFn(true);
-  //     }
-  //   }
-  // }
+      }else {
+        saveErrorFromServerFn(true);
+      }
+    }
+  }
 
   // async function updateAppointmentFn(appointment:AppointmentInf){
   //   try {
@@ -391,6 +389,7 @@ const OdontogramaProvider = ({ children }: props) => {
         loadingTeethList: state.loadingTeethList,
         setVisibleToothOptionsModalFn,
         setSelectedToothFn,
+        createOrToothFn,
         getTeethFn,
       }}
     >

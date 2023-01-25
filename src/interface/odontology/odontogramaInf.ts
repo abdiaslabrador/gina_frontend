@@ -32,5 +32,6 @@ export interface OdontogramaInfContext{
     loadingTeethList: boolean,
     setVisibleToothOptionsModalFn(visible : boolean):void,
     setSelectedToothFn(tooth:any):void,
+    createOrToothFn(tooth:any):void,
     getTeethFn():void,
 }

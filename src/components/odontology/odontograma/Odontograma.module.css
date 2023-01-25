@@ -35,9 +35,23 @@
     flex-direction: column;
 }
 
+.tooth__frame--molar{
+    background-color: rgb(255, 255, 255);
+}
+.tooth__frame--before{
+    background-color: rgb(184, 184, 175);
+}
+/* .tooth__frame{
+    flex: 1 1 auto;
+    height: 140px;
+    border: 1px solid white;
+    display: flex;
+    flex-direction: column;
+} */
+
 .tooth__dash{
     height: 30%;
-    background-color: white;
+    /* background-color: white; */
     display: flex;
     flex-direction: column;
 }
@@ -85,7 +99,7 @@
     align-items: center;
     border-top:  1px solid white;
     font-weight: bold;
-    background-color: white;
+    /* background-color: white; */
 }
 
 .tooth__ring{

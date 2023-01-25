@@ -5,10 +5,11 @@ import {
   LOADING_GET_THEE,
   THEE_ERROR,
   SET_ODTG_EDITABLE,
+  LOADING_CREATE_UPDATE_TOOTH
 } from "./odontogramaType";
   
   type Action =
-  
+    
     | {
       type: "SET_ODTG_EDITABLE";
       odontogramaEditable: any;
@@ -32,6 +33,10 @@ import {
     | {
       type: "LOADING_GET_THEE";
       loadingTeethList: boolean;
+    }
+    | {
+      type: "LOADING_CREATE_UPDATE_TOOTH";
+      loadingCreateUpdateTeeth: boolean;
     }
     // | {
     //   type: "UPDATE_MSJ_SUCCESS";
@@ -84,6 +89,12 @@ import {
           ...state,
           loadingTeethList: action.loadingTeethList,
         };
+        case LOADING_CREATE_UPDATE_TOOTH:
+        return {
+          ...state,
+          loadingCreateUpdateTeeth: action.loadingCreateUpdateTeeth,
+        };
+        
       //   case UPDATE_MSJ_SUCCESS:
       //   return {
       //     ...state,

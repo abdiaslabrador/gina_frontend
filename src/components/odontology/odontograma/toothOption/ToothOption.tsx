@@ -7,7 +7,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import comunModalCss from "../../../../styles/modal.module.css";
 
 const ToothOption = () => {
-  const {tooth, visibleToothOptions, setVisibleToothOptionsModalFn, setSelectedToothFn} = useContext(odontogramaContext);
+  const {tooth, visibleToothOptions, createOrToothFn, setVisibleToothOptionsModalFn, setSelectedToothFn} = useContext(odontogramaContext);
 
   const closeHandler = () => {
     // setSelectedToothFn({} as ToothInf);
@@ -48,7 +48,7 @@ const ToothOption = () => {
                 five: values.five
             }
     }
-    await setSelectedToothFn(new_tooth);
+    await createOrToothFn(new_tooth);
   }
 
 
@@ -104,7 +104,7 @@ const ToothOption = () => {
                       <div className={comunModalCss["form_group__label"]}>
                         <label>M:</label>
                       </div>
-                      <Field name="m" as="select" className={`${(values.m != "")?toothOptionCss["tooth__letter--red"]:null}`}>
+                      <Field name="m" as="select" className={`${(values.m)?toothOptionCss["tooth__letter--red"]:null}`}>
                         <option value="" style={{color: "black"}}>nada</option>
                         <option value="m1" className={toothOptionCss["tooth__letter--red"]}>M1</option>
                         <option value="m2" className={toothOptionCss["tooth__letter--red"]}>M2</option>
@@ -265,7 +265,9 @@ const ToothOption = () => {
                         />
                     </div>
 
-                    {(tooth.toothParts?.five)?
+                    {( (tooth.number >=44 && tooth.number <=48) || (tooth.number >=34 && tooth.number <=38) ||
+                       (tooth.number >=24 && tooth.number <=28) || (tooth.number >=14 && tooth.number <=18)
+                      )?
                     <div className={comunModalCss["form_group"]}>
                       <div className={comunModalCss["form_group__label"]}>
                         <label>5:</label>
