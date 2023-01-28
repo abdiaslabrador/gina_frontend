@@ -1,32 +1,59 @@
 import React, {Fragment, useContext, useEffect, useState} from "react";
-import { useRouter } from "next/router";
-import appointmentCss from './Appointment_form.module.css'
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { useFormikContext, Formik, Form, Field, ErrorMessage } from "formik";
 import { Modal, Loading } from "@nextui-org/react";
+import appoiment_formCss from "./Appointment_form.module.css"
 import { patientContext } from "../../../../context/odontology/patient/patientContext";
 import comunModalCss from "../../../../styles/modal.module.css";
 import moment from "moment";
 import { appointmentContext } from "../../../../context/odontology/work_table/appointment/appointmentContext";
 
+const AutoReset = () => {
+  const {  resetForm } = useFormikContext();
+  const {patient} = useContext(patientContext);
+  useEffect(() => {
+    resetForm();
+  }, [patient]);
+  return null;
+
+};
+
 const Appointment_form = () => {
-  const router = useRouter();
   const {loadingFormAppointment, createAppointmentFn} = useContext(appointmentContext);
   const {patient} = useContext(patientContext);
-  const today_date =moment(new Date()).format("YYYY-MM-DD")
+  const today_date = moment(new Date()).format("YYYY-MM-DD")
   const initialValues = {
     today_date: today_date,
     reason: "",
     description: "",
   }
-
-  async function formHandler(values : any){
+  
+  async function formHandler(values: any, resetForm: any){
+    
     const appointment = {
       today_date: values.today_date,
       reason: values.reason,
       description: values.description,
     }
     await createAppointmentFn(appointment);
+    resetForm();
   }
+
+  function validateDate(value: any){
+    let error;
+  
+      if (!value) {
+        error = "Campo requerido";
+      }
+      return error;
+   }
+
+   function validateTextareas(value: any){
+    let error;
+      if (!value.trim()) {
+        error = "Campo requerido";
+      }
+      return error;
+   }
 
   return (
     <Fragment>
@@ -36,62 +63,69 @@ const Appointment_form = () => {
           {
               <Formik
                 initialValues={initialValues}
-                onSubmit={formHandler}
+                onSubmit={(values, { resetForm }) =>
+                formHandler(values, resetForm)
+              }
                 validateOnChange={false}
                 validateOnBlur={false}
               >
                 <Form>
-                <div className={comunModalCss["form_group"]} >
-                    <div className={comunModalCss["form_group__label"]}>
-                      <label>Fecha de nacimiento*:</label>
-                    </div>
-
+                <AutoReset/>
+                <div className={appoiment_formCss["form_group"]}>
+                  <div className={comunModalCss["form_group__label"]}>Fecha de consulta*:</div >
                     <Field
-                      // validate={validateBirthday}
+                      style={{color: "black"}}
+                      validate={validateDate}
                       type="date"
                       name="today_date"
-                      max={today_date}
-                      placeholder="Escriba el teléfono"
                       disabled={loadingFormAppointment}
                     />
                     <ErrorMessage
                       className={comunModalCss["square__form-error"]}
                       component="div"
                       name="today_date"
-                    />
-                  </div>
-
-                  <div className={comunModalCss["form_group"]}>
-                    <div className={comunModalCss["form_group__label"]}>
-                      <div>Motivo:</div>
-                    </div>
-                      <Field
-                        as="textarea"
-                        type="text"
-                        name="reason"
-                        placeholder="Escriba el motivo"
-                        style={{ resize: "none" }}
-                        rows={3}
-                        cols={23}
-                        disabled={loadingFormAppointment}
                       />
                   </div>
 
-                  <div className={comunModalCss["form_group"]}>
-                      <div className={comunModalCss["form_group__label"]}>
-                        <div>Descripción:</div>
+                    <div style={{color: "white"}}>Motivo*:</div>
+                    <div className={appoiment_formCss["textarea_input"]}>
+                      <Field
+                        validate={validateTextareas}
+                        as="textarea"
+                        type="text"
+                        name="reason"
+                        placeholder="Escriba el motivo de la consulta"
+                        style={{ resize: "none" }}
+                        rows={2}
+                        cols={150}
+                        disabled={loadingFormAppointment}
+                      />
+                      <ErrorMessage
+                        className={comunModalCss["square__form-error"]}
+                        component="div"
+                        name="reason"
+                      />
                       </div>
+
+                      <div style={{color: "white"}}>Descripción*:</div>
+                      <div className={appoiment_formCss["textarea_input"]}>
                         <Field
+                          validate={validateTextareas}
                           as="textarea"
                           type="text"
                           name="description"
-                          placeholder="Escriba el antecedente"
+                          placeholder="Escriba el descripción de la consulta"
                           style={{ resize: "none" }}
-                          rows={5}
-                          cols={23}
+                          rows={10}
+                          cols={150}
                           disabled={loadingFormAppointment}
                         />
-                      </div>
+                        <ErrorMessage
+                          className={comunModalCss["square__form-error"]}
+                          component="div"
+                          name="description"
+                        />
+                        </div>
                       <div className={comunModalCss["button_group"]}>
                       <button
                           type="submit"
@@ -120,3 +154,5 @@ const Appointment_form = () => {
 };
 
 export default Appointment_form;
+
+

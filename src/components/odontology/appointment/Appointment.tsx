@@ -15,7 +15,9 @@ const Appointment = () => {
     <div className={appointmentCss["container"]}>
          
           <div className={appointmentCss["buttom_form"]}>
+            <div className={appointmentCss["search_patient"]}>
               <SearchPatientManager/>
+            </div>
               <Appointment_form/>
             </div>
     </div>

@@ -37,11 +37,6 @@ const AppointmentHistory = () => {
                   {appointmentList.map((appointment, index) => (
                     <div
                       key={index}
-                      // style={
-                      //   appointment.id === selectedPatient?.id
-                      //     ? { backgroundColor: "#313030" }
-                      //     : {}
-                      // }
                       className={appointmentHistoryCss["appoiment"]}
                       onClick={() => {  
                                         setSelectedAppointmentFn(appointment)

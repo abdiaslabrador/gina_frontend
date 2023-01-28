@@ -35,7 +35,6 @@ const PatientProvider = ({ children }: props) => {
   const [state, dispatch] = useReducer(patientReducer, initialState);
 
   function setPatientFn(patient: PatientInf) {
-    
     dispatch({
       type: SET_PATIENT,
       patient: patient

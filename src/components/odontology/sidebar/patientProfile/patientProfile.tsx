@@ -61,19 +61,19 @@ const PatientProfile = () => {
     if (!value.trim()) {
       error = "Campo requerido";
     }
-    // try {
-    //   const resp = await customAxios.post("employee/getbyciupdate", {
-    //     look_ci_rif: value.toLowerCase().trim(),
-    //     ci_rif: patient.ci_rif,
-    //   });
-    //   if (resp?.data) {
-    //     error = "Usuario ya existe";
-    //   }
-    // } catch (errorPetition: any) {
-    //   if (errorPetition.response?.status != "404") {
-    //     error = errorPetition.response.data?.msg || errorPetition.message;
-    //   }
-    // }
+    try {
+      const resp = await customAxios.post("patient/getbyciupdate", {
+        look_ci_rif: value.toLowerCase().trim(),
+        ci_rif: patient?.ci_rif,
+      });
+      if (resp?.data) {
+        error = "Usuario ya existe";
+      }
+    } catch (errorPetition: any) {
+      if (errorPetition.response?.status != "404") {
+        error = errorPetition.response.data?.msg || errorPetition.message;
+      }
+    }
 
     return error;
   }

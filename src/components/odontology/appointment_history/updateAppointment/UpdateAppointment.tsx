@@ -12,15 +12,16 @@ import DeleteAppointment from "../deleteAppointment/DeleteAppointment";
 
 
 const UpdateAppointment = () => {
-  const {  appointment, visibleAppointmentEdit, 
+  const {  msjSuccessAppointment, msjErrorAppointment,
+           appointment, visibleAppointmentEdit, 
            loadingFormAppointment, setVisibleAppointmentEditFn,
            updateAppointmentFn
         } = useContext(appointmentContext);
 
   const initialValues = {
-    today_date: appointment.appointment_date,
-    reason: appointment.reason,
-    description: appointment.description,
+    today_date: appointment?.appointment_date,
+    reason: appointment?.reason,
+    description: appointment?.description,
   }
   const closeHandler = () => {
     setVisibleAppointmentEditFn(false);
@@ -36,11 +37,28 @@ const UpdateAppointment = () => {
     await updateAppointmentFn(new_appointment);
   }
 
+ function validateTextareas(value: any){
+  let error;
+
+    if (!value.trim()) {
+      error = "Campo requerido";
+    }
+    return error;
+ }
+ function validateDate(value: any){
+  let error;
+
+    if (!value) {
+      error = "Campo requerido";
+    }
+    return error;
+ }
+
  return (
     <Modal
         animated={false}
-        width="600px"
-        css={{ height: "600px", backgroundColor: "#302F2F" }}
+        width="100%"
+        css={{ height: "100%", backgroundColor: "#302F2F" }}
         closeButton={!loadingFormAppointment}
         preventClose
         aria-labelledby="modal-title"
@@ -52,14 +70,14 @@ const UpdateAppointment = () => {
             flexDirection: "column",
           }}
         >
-          {/* <div className={comunModalCss["header_container"]}>
+          <div className={comunModalCss["header_container"]}>
             <div className={comunModalCss["header_title"]}>
-              Creando un paciente
+              Editando un consulta
             </div>
             <div className={comunModalCss["header_subtitle"]}>
               (*) Atributos requeridos
             </div>
-          </div> */}
+          </div>
         </Modal.Header>
         <Modal.Body>
         <div className={updateAppointmentCss["delete_button"]}>
@@ -73,13 +91,11 @@ const UpdateAppointment = () => {
                 validateOnBlur={false}
               >
                 <Form>
-                <div className={comunModalCss["form_group"]} >
-                    <div className={comunModalCss["form_group__label"]}>
-                      <label>Fecha de nacimiento*:</label>
-                    </div>
-
+                  <div className={updateAppointmentCss["form_group"]}>
+                  <div className={comunModalCss["form_group__label"]}>Fecha de consulta*:</div >
                     <Field
-                      // validate={validateBirthday}
+                      style={{color: "black"}}
+                      validate={validateDate}
                       type="date"
                       name="today_date"
                       disabled={loadingFormAppointment}
@@ -88,40 +104,48 @@ const UpdateAppointment = () => {
                       className={comunModalCss["square__form-error"]}
                       component="div"
                       name="today_date"
-                    />
-                  </div>
-
-                  <div className={comunModalCss["form_group"]}>
-                    <div className={comunModalCss["form_group__label"]}>
-                      <div>Motivo:</div>
-                    </div>
-                      <Field
-                        as="textarea"
-                        type="text"
-                        name="reason"
-                        placeholder="Escriba el motivo"
-                        style={{ resize: "none" }}
-                        rows={3}
-                        cols={23}
-                        disabled={loadingFormAppointment}
                       />
                   </div>
 
-                  <div className={comunModalCss["form_group"]}>
-                      <div className={comunModalCss["form_group__label"]}>
-                        <div>Descripción:</div>
+                    <div style={{color: "white"}}>Motivo*:</div>
+                    <div className={updateAppointmentCss["textarea_input"]}>
+                      <Field
+                        validate={validateTextareas}
+                        as="textarea"
+                        type="text"
+                        name="reason"
+                        placeholder="Escriba el motivo de la consulta"
+                        style={{ resize: "none" }}
+                        rows={2}
+                        cols={150}
+                        disabled={loadingFormAppointment}
+                      />
+                      <ErrorMessage
+                        className={comunModalCss["square__form-error"]}
+                        component="div"
+                        name="reason"
+                      />
                       </div>
+
+                      <div style={{color: "white"}}>Descripción*:</div>
+                      <div className={updateAppointmentCss["textarea_input"]}>
                         <Field
+                          validate={validateTextareas}
                           as="textarea"
                           type="text"
                           name="description"
-                          placeholder="Escriba el antecedente"
+                          placeholder="Escriba el descripción de la consulta"
                           style={{ resize: "none" }}
                           rows={10}
-                          cols={23}
+                          cols={150}
                           disabled={loadingFormAppointment}
                         />
-                      </div>
+                        <ErrorMessage
+                          className={comunModalCss["square__form-error"]}
+                          component="div"
+                          name="description"
+                        />
+                        </div>
                       <div className={comunModalCss["button_group"]}>
                         <button
                             type="submit"
@@ -144,10 +168,10 @@ const UpdateAppointment = () => {
                 </Formik>
         </Modal.Body>
         <Modal.Footer>
-           {/* <div className={comunModalCss["footer_container"]}>
-            {( msjSuccessPatientList )?(<div className={comunModalCss["msj_success"]}>{msjSuccessPatientList}</div>): null}
-            {( msjErrorPatientList )?(<div className={comunModalCss["msj_error"]}>{msjErrorPatientList}</div>):null}
-           </div> */}
+           <div className={comunModalCss["footer_container"]}>
+            {( msjSuccessAppointment )?(<div className={comunModalCss["msj_success"]}>{msjSuccessAppointment}</div>): null}
+            {( msjErrorAppointment )?(<div className={comunModalCss["msj_error"]}>{msjErrorAppointment}</div>):null}
+           </div>
         </Modal.Footer>
       </Modal>
   );

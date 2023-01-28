@@ -93,6 +93,8 @@ const AppointmentProvider = ({ children }: props) => {
           });
           await updateAppointmentListFn();
           dispatch({ type: LOADING_FORM, loadingFormAppointment: false })
+          dispatch({type:UPDATE_MSJ_SUCCESS, msjSuccessAppointment:"Consulta actualizada exitosamente"});
+          setTimeout(() => dispatch({type:UPDATE_MSJ_SUCCESS, msjSuccessAppointment:""}), 8000);
           saveErrorFromServerFn(false);
     
         } catch (error : any) {
@@ -101,7 +103,12 @@ const AppointmentProvider = ({ children }: props) => {
           dispatch({ type: LOADING_FORM, loadingFormAppointment: false });
           console.log(error);
     
-          if (error.response?.status == "403") { //usuario con el token inválido. NOTA: ya el token se elimina desde el backend
+          if(error.response?.status == "404") { 
+            dispatch({type:UPDATE_MSJ_ERROR, msjErrorAppointment:message});
+            setTimeout(() => dispatch({type:UPDATE_MSJ_ERROR, msjErrorAppointment:""}), 8000);
+            await updateAppointmentListFn();
+            
+          }else if (error.response?.status == "403") { //usuario con el token inválido. NOTA: ya el token se elimina desde el backend
             await logOut();
     
           }else {
@@ -126,7 +133,7 @@ const AppointmentProvider = ({ children }: props) => {
       dispatch({type: APPOINTMENT_ERROR});
       dispatch({ type: LOADING_FORM, loadingFormAppointment: false });
       console.log(error);
-
+      
       if (error.response?.status == "403") { //usuario con el token inválido. NOTA: ya el token se elimina desde el backend
         await logOut();
 
@@ -160,73 +167,6 @@ const AppointmentProvider = ({ children }: props) => {
           }
         }
   }
-  // async function updateAppointment(appointment:any){
-  //   try {
-  //     dispatch({ type: LOADING_FORM, loadingFormAppointment: true })
-  //     await customAxios.post("appointment/update", {
-  //       appointment: appointment
-  //     });
-  //     dispatch({ type: LOADING_FORM, loadingFormAppointment: false })
-
-  //     setAppointmentFn(appointment);
-  //     dispatch({type:UPDATE_MSJ_SUCCESS, msjSuccessAppointment:"Paciente actualizado exitosamente"});
-  //     setTimeout(() => dispatch({type:UPDATE_MSJ_SUCCESS, msjSuccessAppointment:""}), 8000);
-  //     saveErrorFromServerFn(false);
-
-  //   } catch (error : any) {
-  //     let message = error.response.data?.msg || error.message;
-  //     dispatch({type: APPOINTMENT_ERROR});
-  //     dispatch({type: LOADING_FORM, loadingFormAppointment: false });
-  //     console.log(error);
-
-  //     if(error.response?.status == "404"){//el usuario se intenta actualizar pero no está en la base de datos
-  //       dispatch({type:UPDATE_MSJ_ERROR, msjErrorAppointment:message})
-  //       setTimeout(() => dispatch({type:UPDATE_MSJ_ERROR, msjErrorAppointment:""}), 8000);
-     
-  //     }else if (error.response?.status == "403") { //usuario con el token inválido. NOTA: ya el token se elimina desde el backend
-  //       await logOut();
-
-  //     }else {
-  //       saveErrorFromServerFn(true);
-  //     }
-  //   }
-  // }
-
-  // async function deleteAppointment(id:number){
-  //   try {
-  //     dispatch({ type: LOADING_FORM, loadingFormAppointment: true })
-  //     await customAxios.post("appointment/update", {
-  //       appointment: appointment
-  //     });
-  //     dispatch({ type: LOADING_FORM, loadingFormAppointment: false })
-
-  //     setAppointmentFn(appointment);
-  //     dispatch({type:UPDATE_MSJ_SUCCESS, msjSuccessAppointment:"Paciente actualizado exitosamente"});
-  //     setTimeout(() => dispatch({type:UPDATE_MSJ_SUCCESS, msjSuccessAppointment:""}), 8000);
-  //     saveErrorFromServerFn(false);
-
-  //   } catch (error : any) {
-  //     let message = error.response.data?.msg || error.message;
-  //     dispatch({type: APPOINTMENT_ERROR});
-  //     dispatch({type: LOADING_FORM, loadingFormAppointment: false });
-  //     console.log(error);
-
-  //     if(error.response?.status == "404"){//el usuario se intenta actualizar pero no está en la base de datos
-  //       dispatch({type:UPDATE_MSJ_ERROR, msjErrorAppointment:message})
-  //       setTimeout(() => dispatch({type:UPDATE_MSJ_ERROR, msjErrorAppointment:""}), 8000);
-     
-  //     }else if (error.response?.status == "403") { //usuario con el token inválido. NOTA: ya el token se elimina desde el backend
-  //       await logOut();
-
-  //     }else {
-  //       saveErrorFromServerFn(true);
-  //     }
-  //   }
-  // }
-  // function cleanAppointmentsFn(){
-  //       dispatch({type: APPOINTMENT_ERROR});
-  // }
-  
 
   return (
     <appointmentContext.Provider

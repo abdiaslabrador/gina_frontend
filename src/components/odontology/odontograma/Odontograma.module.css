@@ -1,13 +1,32 @@
-.container {
+.odontograma {
     grid-row: 1/4;
+    border: 1px solid white;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+}
+.content__odont{
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
     color:white;
-    border: 1px solid white;
     justify-content: center;
     align-items: center;
 }
+.title{
+    text-align: center;
+    background-color: var(--cl-headers);
+    color: white;
+    font-size: 1rem;
+    position: sticky;
+    word-spacing: 8px;
+    letter-spacing: 3px;
+    top:0px;
+}
 
+.title--upper{
+    text-transform:  uppercase;
+}
 .odont__above{
  display: flex;
  margin: 0px 5px 5px 5px;
@@ -41,17 +60,9 @@
 .tooth__frame--before{
     background-color: rgb(184, 184, 175);
 }
-/* .tooth__frame{
-    flex: 1 1 auto;
-    height: 140px;
-    border: 1px solid white;
-    display: flex;
-    flex-direction: column;
-} */
 
 .tooth__dash{
     height: 30%;
-    /* background-color: white; */
     display: flex;
     flex-direction: column;
 }
@@ -99,7 +110,6 @@
     align-items: center;
     border-top:  1px solid white;
     font-weight: bold;
-    /* background-color: white; */
 }
 
 .tooth__ring{

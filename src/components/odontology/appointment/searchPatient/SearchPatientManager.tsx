@@ -29,7 +29,7 @@ const searchPatientManager = () => {
         <button
           className="button_form__button button_form__button--efect"
           onClick={handler}
-          disabled={loadingFormAppointment}
+          disabled={loadingFormAppointment }
         >
           Buscar paciente
         </button>
@@ -53,6 +53,7 @@ const searchPatientManager = () => {
                 <button
                   className="button_form__button button_form__button--efect"
                   onClick={setPatient}
+                  disabled={(selectedPatient.id ? false : true)}
                 >
                   Seleccionar
                 </button>
