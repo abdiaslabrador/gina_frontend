@@ -43,7 +43,7 @@ const EmployeeSystem = () => {
                   <div>Nombre</div>
                   <div>Apellido</div>
                   <div>Activo</div>
-                  <div>Secretario</div>
+                  {/* <div>Secretario</div> */}
                   <div>Superusuario</div>
                 </div>
                 <div className={employeeSystemCss["product_list__products"]}>
@@ -71,9 +71,9 @@ const EmployeeSystem = () => {
                         <div className={employeeSystemCss["active"]}>
                           {employee.active ? "SI" : "NO"}
                         </div>
-                        <div className={employeeSystemCss["secretary"]}>
+                        {/* <div className={employeeSystemCss["secretary"]}>
                           {employee.secretary ? "SI" : "NO"}
-                        </div>
+                        </div> */}
                         <div className={employeeSystemCss["superuser"]}>
                           {employee.superuser ? "SI" : "NO"}
                         </div>

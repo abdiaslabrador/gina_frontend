@@ -346,7 +346,7 @@ const CreateEmployee = () => {
                       />
                     </div>
 
-                    <div className={comunModalCss["form_group"]}>
+                    {/* <div className={comunModalCss["form_group"]}>
                       <div className={comunModalCss["form_group__label"]}>
                         <label>Secretario:</label>
                       </div>
@@ -356,7 +356,7 @@ const CreateEmployee = () => {
                         placeholder="Escriba el teléfono"
                         disabled={loadingForm}
                       />
-                    </div>
+                    </div> */}
 
                     <div className={comunModalCss["form_group"]}>
                       <div className={comunModalCss["form_group__label"]}>

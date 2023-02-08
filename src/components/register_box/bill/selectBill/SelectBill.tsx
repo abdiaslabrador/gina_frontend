@@ -53,7 +53,7 @@ const SelectBill = () => {
             <div>Documento: {selectedBill.docu?.id}</div> 
             <div>Cliente: {selectedBill.docu?.client?.name} {selectedBill.docu?.client?.last_name}</div>
             <div>Ci: {selectedBill.docu?.client?.ci_rif}</div>
-            <div>Dir: {selectedBill.docu?.client?.direction}</div>
+            <div>Dirección: {selectedBill.docu?.client?.direction}</div>
             <div className={selectBillCss["client_side__bill_title"]}> FACTURA</div>
             <div className={selectBillCss["client_side__bill_number"]}>
                 <div>FACTURA:</div>

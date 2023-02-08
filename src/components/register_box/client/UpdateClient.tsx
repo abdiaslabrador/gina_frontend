@@ -52,12 +52,12 @@ const UpdateClient = () => {
   async function validateCi(value: any) {
     let error;
 
-    if (!value.trim()) {
+    if (!value) {
       error = "Campo requerido";
     }
     try {
       const resp = await customAxios.post("client/getbyciupdate", {
-        look_ci_rif: value.toLowerCase().trim(),
+        look_ci_rif: value,
         ci_rif: selectedClient.ci_rif,
       });
       if (resp?.data) {
@@ -78,7 +78,7 @@ const UpdateClient = () => {
           id: selectedClient.id,
           name: values.name.toLowerCase().trim(),
           last_name: values.last_name.toLowerCase().trim(),
-          ci_rif: values.ci_rif.toLowerCase().trim(),
+          ci_rif: values.ci_rif,
           phone_number: values.phone_number.toLowerCase().trim(),
           direction: values.direction.toLowerCase().trim(),
         };
@@ -174,7 +174,7 @@ const UpdateClient = () => {
 
                     <Field
                       validate={validateCi}
-                      type="text"
+                      type="number"
                       name="ci_rif"
                       placeholder="Escriba la cédula"
                       disabled={loadingForm}

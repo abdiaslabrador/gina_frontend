@@ -23,7 +23,8 @@
     background-color: var(--cl-headers);
     flex: 0 1 auto;
     display: grid;
-    grid-template-columns: 0.17fr 0.22fr 0.22fr 0.17fr 0.22fr 0.22fr 4px;
+    grid-template-columns: 0.17fr 0.22fr 0.22fr 0.17fr 0.22fr 4px;
+    /* grid-template-columns: 0.17fr 0.22fr 0.22fr 0.17fr 0.22fr 0.22fr 4px; */
 }
 
 .product_list__titles>* {
@@ -43,8 +44,10 @@
 .product_list__item {
     background-color: var(--cl-table-items);
     display: grid;
-    grid-template-columns: 1.7fr 2.2fr 2.2fr 1.7fr 2.2fr 2.2fr;
-    grid-template-areas: "ci name last_name active secretary superuser";
+    grid-template-columns: 1.7fr 2.2fr 2.2fr 1.7fr 2.2fr;
+    grid-template-areas: "ci name last_name active  superuser";
+    /* grid-template-columns: 1.7fr 2.2fr 2.2fr 1.7fr 2.2fr 2.2fr; */
+    /* grid-template-areas: "ci name last_name active secretary superuser"; */
 }
 
 .product_list__item>* {
@@ -69,9 +72,9 @@
     grid-area: "active";
 }
 
-.secretary {
+/* .secretary {
     grid-area: "secretary";
-}
+} */
 
 .superuser {
     grid-area: "superuser";

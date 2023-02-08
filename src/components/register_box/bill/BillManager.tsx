@@ -2,16 +2,15 @@ import React, {Fragment, useContext} from "react";
 import { Modal, } from "@nextui-org/react";
 import cajaCss from "../register_box/Caja.module.css";
 import billManagerCss from "./BillManager.module.css";
-import customAxios from "../../../config/axios";
+import comunModalCss from "../../../styles/modal.module.css";
 import SearchFormBillManager from "./SearchFormBillManager";
 import BillManagerTable from "./BillManagerTable";
 import { billContext } from "../../../context/register_box/bill/billContext";
 
 
-
 const BillManager = () => {
   const [ visible, setVisible ] = React.useState(false);
-  const { cleanBillFn } = useContext(billContext);
+  const { cleanBillFn, msjSuccessBill, msjErrorBill, } = useContext(billContext);
   const handler = async () => { 
     setVisible(true);
   }
@@ -48,6 +47,13 @@ const BillManager = () => {
             <SearchFormBillManager/>
             <BillManagerTable/>
         </Modal.Body>
+        <Modal.Footer>
+            <div className={comunModalCss["footer_container"]}>
+            {( msjSuccessBill )?(<div className={comunModalCss["msj_success"]}>{msjSuccessBill}</div>): null}
+            {( msjErrorBill )?(<div className={comunModalCss["msj_error"]}>{msjErrorBill}</div>):null}
+           </div>
+        </Modal.Footer>
+
       </Modal>
     </Fragment>
   );

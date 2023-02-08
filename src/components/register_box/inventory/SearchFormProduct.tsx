@@ -101,7 +101,7 @@ return (
                       <option value=""> -- Seleccione un opción -- </option>
                       <option value="all">Todos</option>
                       <option value="description">Descripción</option>
-                      <option value="lessThan">Menor que</option>
+                      <option value="lessThan">Menor o igual que</option>
                       <option value="code">Código</option>
                   </select>
               </div>

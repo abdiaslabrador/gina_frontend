@@ -96,7 +96,7 @@ const Appointment_form = () => {
                         name="reason"
                         placeholder="Escriba el motivo de la consulta"
                         style={{ resize: "none" }}
-                        rows={2}
+                        rows={1}
                         cols={150}
                         disabled={loadingFormAppointment}
                       />
@@ -116,7 +116,7 @@ const Appointment_form = () => {
                           name="description"
                           placeholder="Escriba el descripción de la consulta"
                           style={{ resize: "none" }}
-                          rows={10}
+                          rows={3}
                           cols={150}
                           disabled={loadingFormAppointment}
                         />

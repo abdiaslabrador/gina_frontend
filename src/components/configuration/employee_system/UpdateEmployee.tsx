@@ -353,17 +353,16 @@ const UpdateEmployee = () => {
                     />
                   </div>
 
-                  <div className={comunModalCss["form_group"]}>
+                  {/* <div className={comunModalCss["form_group"]}>
                     <div className={comunModalCss["form_group__label"]}>
                       <label>Secretario:</label>
                     </div>
                     <Field
                       type="checkbox"
                       name="secretary"
-                      placeholder="Escriba el teléfono"
                       disabled={loadingForm}
                     />
-                  </div>
+                  </div> */}
 
                   <div className={comunModalCss["form_group"]}>
                     <div className={comunModalCss["form_group__label"]}>

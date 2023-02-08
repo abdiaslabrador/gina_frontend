@@ -20,12 +20,12 @@ const SearchFormClient = () => {
   async function validateCi(value: any) {
     let error;
 
-    if (!value.trim()) {
+    if (!value) {
       return error = "Campo requerido";
     }
     try {
       const resp = await customAxios.post("client/getbyci", {
-        ci_rif: value.toLowerCase().trim(),
+        ci_rif: value,
       });
       
     } catch (errorPetition: any) {
@@ -49,7 +49,7 @@ const SearchFormClient = () => {
                     <Field
                         validate={validateCi}
                         className={searchFormClientCss["square__form"]}
-                        type="text"
+                        type="number"
                         name="ci_rif"
                         placeholder="Escriba la cédula"
                     />

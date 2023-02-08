@@ -20,7 +20,7 @@ const CreateClient = () => {
         const client  = {
           name: values.name.toLowerCase().trim(),
           last_name: values.last_name.toLowerCase().trim(),
-          ci_rif: values.ci_rif.toLowerCase().trim(),
+          ci_rif: values.ci_rif,
           phone_number: values.phone_number.toLowerCase().trim(),
           direction: values.direction.toLowerCase().trim(),
         };
@@ -62,12 +62,12 @@ const CreateClient = () => {
   async function validateCi(value: any) {
     let error;
   
-    if (!value.trim()) {
+    if (!value) {
       return error = "Campo requerido";
     }
     try {
       const resp = await customAxios.post("client/getbyci", {
-        ci_rif: value.toLowerCase().trim(),
+        ci_rif: value,
       });
       if (resp?.data) {
         error = "Cliente ya existe";
@@ -171,7 +171,7 @@ const CreateClient = () => {
 
                       <Field
                         validate={validateCi}
-                        type="text"
+                        type="number"
                         name="ci_rif"
                         placeholder="Escriba la cédula"
                         disabled={loadingForm}

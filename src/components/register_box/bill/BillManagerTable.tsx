@@ -4,7 +4,9 @@ import billTableCss from "./BillManagerTable.module.css";
 import { billContext } from "../../../context/register_box/bill/billContext";
 import { BillInf } from "../../../interface/billInf";
 import SelectBill from "./selectBill/SelectBill";
+import CancelBill from "./CancelBill";
 import moment from "moment";
+
 
 const BillManagerTable = () => {
     const { billList,
@@ -20,15 +22,14 @@ const BillManagerTable = () => {
 
   return (
     <Fragment>
-                <div className={billTableCss["pickup_botton"]}>
-                  <SelectBill/>
-                </div>
-             
+              <div className={billTableCss["pickup_botton"]}>
+                <SelectBill/>
+              </div>
 
               <div className={billTableCss["product_list"]}>
                 <div className={billTableCss["product_list__titles"]}>
                   <div>Fecha</div>
-                  <div>Código</div>
+                  <div>Número</div>
                   <div>Monto</div>
                   <div>Estado</div>
                 </div>
@@ -52,7 +53,7 @@ const BillManagerTable = () => {
                                     <div className={billTableCss["bill_date"]}>{moment(bill?.docu?.document_date).format("DD-MM-YYYY")}</div>
                                     <div className={billTableCss["bill_id"]}>{bill.id}</div>
                                     <div className={billTableCss["amount"]}>{bill?.docu?.total}</div>
-                                    <div className={billTableCss["state"]}>No echo todavía</div>
+                                    <div className={billTableCss["state"]}>{bill?.docu?.canceled ? "cancelado": "activa"}</div>
                                     </div>
                                 ))}
                                 </Fragment>
@@ -73,20 +74,9 @@ const BillManagerTable = () => {
                 </Fragment>
               </div>
               
-                <div className={billTableCss["delete_bottom"]}>
-                <button
-                    className="button_form__button button_form__button--efect"
-                    // onClick={handler}
-                    // disabled={selectedProduct.id ? false : true}
-                    disabled={loadingBillList ? true : false}
-
-                >
-                    Anular
-                </button>
-                 {/* <DeleteClient/> */}
-                </div> 
-             
-         
+              <div className={billTableCss["delete_bottom"]}>
+                <CancelBill/>
+              </div> 
     </Fragment>
   );
 };

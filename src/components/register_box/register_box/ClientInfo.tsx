@@ -11,7 +11,8 @@ const ClientInfo = () => {
     <Fragment>
         {(!loadingClient)?
           <div className={cajaCss["client_info"]}>
-            <div className={cajaCss["client_info__title"]}>Factura</div>
+            {/* <div className={cajaCss["client_info__title"]}>Factura</div> */}
+            <div className={cajaCss["client_info__title"]}>Cliente</div>
             <div className={cajaCss["client_info__content"]}>
                 {(client)? 
                   <Fragment>

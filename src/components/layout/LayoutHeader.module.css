@@ -18,12 +18,14 @@
 
 .nav__list-item {
     border-right: 1px solid #606060;
-    width: 31.25%;
+    width: 45%;
+    /* width: 31.25%; */
     letter-spacing: 3px;
 }
 
 .nav__list-gear {
-    width: 6.25%;
+    width: 10%;
+    /* width: 6.25%; */
 }
 
 .nav__list-item,

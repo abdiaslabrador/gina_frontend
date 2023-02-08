@@ -325,7 +325,7 @@ const EmployeeProfile: NextPage = () => {
                         />
                       </div>
 
-                      <div className={comunModalCss["form_group"]}>
+                      {/* <div className={comunModalCss["form_group"]}>
                         <div className={comunModalCss["form_group__label"]}>
                           <label>Secretario:</label>
                         </div>
@@ -334,7 +334,7 @@ const EmployeeProfile: NextPage = () => {
                           name="secretary"
                           disabled={loadingForm}
                         />
-                      </div>
+                      </div> */}
 
                       <div className={comunModalCss["form_group"]}>
                         <div className={comunModalCss["form_group__label"]}>

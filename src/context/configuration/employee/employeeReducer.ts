@@ -78,7 +78,8 @@ import {
     | {
       type: "UPDATE_MSJ_ERROR";
       msjError : string,
-    };
+    }
+    ;
     
     
   const employeeReducer = (state: any = {}, action: Action) => {

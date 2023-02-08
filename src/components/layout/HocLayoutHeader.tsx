@@ -25,14 +25,14 @@ const WithLayout = (ExternalComponent: React.FunctionComponent) => {
               >
                 odontología
               </li>
-              <li
+              {/* <li
                 className={headerCss["nav__list-item"]}
                 onClick={() => {
                   Router.push("/salaEspera");
                 }}
               >
                 sala de espera
-              </li>
+              </li> */}
               <li
                 className={headerCss["nav__list-gear"]}
                 onClick={() => {
