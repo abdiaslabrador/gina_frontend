@@ -30,6 +30,7 @@ export interface OdontogramaInfContext{
     odontogramaEditable: any,
     visibleToothOptions: boolean, 
     loadingTeethList: boolean,
+    loadingCreateUpdateTeeth: boolean,
     setVisibleToothOptionsModalFn(visible : boolean):void,
     setSelectedToothFn(tooth:any):void,
     createOrToothFn(tooth:any):void,

@@ -387,6 +387,7 @@ const OdontogramaProvider = ({ children }: props) => {
         visibleToothOptions: state.visibleToothOptions,
         odontogramaEditable: state.odontogramaEditable,
         loadingTeethList: state.loadingTeethList,
+        loadingCreateUpdateTeeth: state.loadingCreateUpdateTeeth,
         setVisibleToothOptionsModalFn,
         setSelectedToothFn,
         createOrToothFn,

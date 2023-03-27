@@ -7,7 +7,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import comunModalCss from "../../../../styles/modal.module.css";
 
 const ToothOption = () => {
-  const {tooth, visibleToothOptions, createOrToothFn, setVisibleToothOptionsModalFn, setSelectedToothFn} = useContext(odontogramaContext);
+  const {tooth, visibleToothOptions, loadingCreateUpdateTeeth, createOrToothFn, setVisibleToothOptionsModalFn, setSelectedToothFn} = useContext(odontogramaContext);
 
   const closeHandler = () => {
     // setSelectedToothFn({} as ToothInf);
@@ -195,7 +195,7 @@ const ToothOption = () => {
                     </div>
 
                   <div className={toothOptionCss["subtitle"]}>
-                    Dentro del los cuadritos
+                    Partes del diente
                   </div>
                     <div className={comunModalCss["form_group"]}>
                       <div className={comunModalCss["form_group__label"]}>
@@ -302,7 +302,13 @@ const ToothOption = () => {
                         type="submit"
                         className="button_form__button button_form__button--efect"
                       >
-                        Actualizar
+                        {
+                        (!loadingCreateUpdateTeeth) ? <span>Actualizar</span>  : 
+                        (<Loading
+                          type="spinner"
+                          color="currentColor"
+                          size="sm"
+                        />)}
                       </button>
                     {/* )} */}
                   </div>
