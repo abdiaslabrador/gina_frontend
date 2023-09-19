@@ -30,7 +30,7 @@ const Employees: NextPage = () => {
   useEffect(()=>{
     if(user){
       if(user.superuser == false){
-        router.push("/configuracion")
+        router.push("/configuration")
       }
     }
   },[user])

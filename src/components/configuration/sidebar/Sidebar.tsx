@@ -19,11 +19,11 @@ const Sidebar = () => {
 
   return (
     <div className={sidebarCss["sidebar"]}>
-          <div className={sidebarCss["sidebar__item"]} onClick={()=> router.push('/configuracion')}>
+          <div className={sidebarCss["sidebar__item"]} onClick={()=> router.push('/configuration')}>
             Datos personales
           </div>
           {(showEmployeeSystem) ?
-          <div className={sidebarCss["sidebar__item"]} onClick={()=> router.push('/configuracion/empleados')}>Sistema de empleados</div> :
+          <div className={sidebarCss["sidebar__item"]} onClick={()=> router.push('/configuration/employees')}>Sistema de empleados</div> :
            null}
           
           <Logout />

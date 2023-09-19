@@ -36,7 +36,7 @@ const WithLayout = (ExternalComponent: React.FunctionComponent) => {
               <li
                 className={headerCss["nav__list-gear"]}
                 onClick={() => {
-                  Router.push("/configuracion");
+                  Router.push("/configuration");
                 }}
               >
                 <i className="fa-solid fa-gear"></i>
